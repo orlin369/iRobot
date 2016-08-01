@@ -129,9 +129,9 @@ namespace RoombaSharp.iRobot.RoombaSharp
         {
             byte data = 0;
 
-            for (int bitIndex = 0; bitIndex < bits.Length; bitIndex++)
+            for (int bitIndex = bits.Length; bitIndex >= 0; bitIndex--)
             {
-                data |= (byte)((bits[bitIndex] ? 1 : 0) << 7 - bitIndex);
+                data |= (byte)((bits[bitIndex] ? 1 : 0) << bitIndex);
             }
 
             return data;
