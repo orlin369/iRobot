@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("iRobot")]
+[assembly: AssemblyTitle("RoombaSharp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("iRobot")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyProduct("RoombaSharp")]
+[assembly: AssemblyCopyright("Copyright © 2013 Prodigy Productions LLC")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d79ecfdd-49be-4698-ad29-743869f13f3b")]
+[assembly: Guid("4007fb3e-be52-4727-904e-4469d3266021")]
 
 // Version information for an assembly consists of the following four values:
 //
