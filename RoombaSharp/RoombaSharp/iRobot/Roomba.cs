@@ -56,18 +56,11 @@ namespace RoombaSharp.iRobot.RoombaSharp
             System.Threading.Thread.Sleep(20);
             for (int i = 31; i <= 127; i++)
             {
-                PlayNote(i);
+                Song(i);
                 System.Threading.Thread.Sleep(200);
             }
         }
-
-        public void PlayNote(int note)
-        {
-            if (!SerialPort.IsOpen) return;
-            byte[] command = { (byte)RoombaOpCode.SONG, 3, 1, (byte)note, (byte)10, (byte)RoombaOpCode.PLAY, 3 };
-            this.SerialPort.Write(command, 0, command.Length);
-        }
-
+        
         public void Drive(int velocity, int radius)
         {
             //https://msdn.microsoft.com/en-us/library/atf689tw(v=vs.110).aspx
@@ -124,7 +117,26 @@ namespace RoombaSharp.iRobot.RoombaSharp
             if (!SerialPort.IsOpen) return;
             this.SerialPort.Write(new byte[] { (byte)RoombaOpCode.MAX }, 0, 1);
         }
-        
+
+        public void Song(byte[] song)
+        {
+            //TODO: Test
+            if (!SerialPort.IsOpen) return;
+            byte[] command = new byte[1 + song.Length];
+            System.Buffer.BlockCopy(new byte[] { (byte)RoombaOpCode.SONG }, 0, command, 0, 1);
+            System.Buffer.BlockCopy(song, 0, command, 1, song.Length);
+            this.SerialPort.Write(command, 0, command.Length);
+        }
+
+        public void Play(byte songIndex)
+        {
+            if (!SerialPort.IsOpen) return;
+            byte[] command = { (byte)RoombaOpCode.PLAY, songIndex };
+            this.SerialPort.Write(command, 0, command.Length);
+        }
+
+        #region Private Methods
+
         private static byte Convert(bool[] bits)
         {
             byte data = 0;
@@ -135,6 +147,8 @@ namespace RoombaSharp.iRobot.RoombaSharp
             }
 
             return data;
-        } 
+        }
+
+        #endregion
     }
 }
