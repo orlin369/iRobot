@@ -52,8 +52,10 @@
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
     <Compile Include="iRobot\Communicator.cs" />
-    <Compile Include="iRobot\Messages\MessageString.cs" />
-    <Compile Include="iRobot\RoombaOpCode.cs" />
+    <Compile Include="iRobot\Data\BoudRates.cs" />
+    <Compile Include="iRobot\Data\SensorsPackageType.cs" />
+    <Compile Include="iRobot\Events\MessageString.cs" />
+    <Compile Include="iRobot\Data\RoombaOpCode.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

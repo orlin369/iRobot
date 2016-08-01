@@ -1,4 +1,28 @@
-﻿namespace RoombaSharp
+﻿/*
+ MIT License
+
+Copyright (c) [2016] [Orlin Dimitrov]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial SerialPortions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+namespace RoombaSharp
 {
     partial class MainForm
     {
@@ -45,8 +69,10 @@
             this.btnLeft = new System.Windows.Forms.Button();
             this.btnUp = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.trbRadius = new System.Windows.Forms.TrackBar();
             this.msMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).BeginInit();
             this.SuspendLayout();
             // 
             // OutputWindow
@@ -150,10 +176,12 @@
             // 
             this.trbSpeed.Location = new System.Drawing.Point(228, 281);
             this.trbSpeed.Margin = new System.Windows.Forms.Padding(4);
-            this.trbSpeed.Maximum = 15;
+            this.trbSpeed.Maximum = 70;
             this.trbSpeed.Name = "trbSpeed";
-            this.trbSpeed.Size = new System.Drawing.Size(96, 56);
+            this.trbSpeed.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.trbSpeed.Size = new System.Drawing.Size(56, 96);
             this.trbSpeed.TabIndex = 22;
+            this.trbSpeed.ValueChanged += new System.EventHandler(this.trbSpeed_ValueChanged);
             // 
             // btnDown
             // 
@@ -217,11 +245,21 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // trbRadius
+            // 
+            this.trbRadius.Location = new System.Drawing.Point(292, 375);
+            this.trbRadius.Margin = new System.Windows.Forms.Padding(4);
+            this.trbRadius.Maximum = 200;
+            this.trbRadius.Name = "trbRadius";
+            this.trbRadius.Size = new System.Drawing.Size(96, 56);
+            this.trbRadius.TabIndex = 26;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(540, 649);
+            this.Controls.Add(this.trbRadius);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.lblSpeed);
@@ -242,6 +280,7 @@
             this.msMain.ResumeLayout(false);
             this.msMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -265,6 +304,7 @@
         private System.Windows.Forms.Button btnLeft;
         private System.Windows.Forms.Button btnUp;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TrackBar trbRadius;
     }
 }
 

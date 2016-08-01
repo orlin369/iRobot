@@ -1,9 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*
+ MIT License
+
+Copyright (c) [2016] [Orlin Dimitrov]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial SerialPortions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+using System;
 using System.Text;
 using System.Windows.Forms;
 using RoombaSharp.iRobot.RoombaSharp;
-using RoombaSharp.iRobot.Messages;
+using RoombaSharp.iRobot.Events;
 
 namespace RoombaSharp
 {
@@ -126,7 +149,15 @@ namespace RoombaSharp
         private void tsmiBeep_Click(object sender, EventArgs e)
         {
             if (this.robot == null) return;
-            this.robot.PlayNotes();
+
+            this.robot.Start();
+            this.robot.Control();
+            System.Threading.Thread.Sleep(20);
+            for (byte i = 31; i <= 127; i++)
+            {
+                this.robot.Play(i);
+                System.Threading.Thread.Sleep(50);
+            }
         }
 
         #endregion
@@ -134,25 +165,25 @@ namespace RoombaSharp
         private void btnRight_MouseDown(object sender, MouseEventArgs e)
         {
             if (this.robot == null) return;
-            this.robot.Drive(1, -1);
+            this.robot.Drive(this.trbSpeed.Value, -this.trbRadius.Value);
         }
 
         private void btnLeft_MouseDown(object sender, MouseEventArgs e)
         {
             if (this.robot == null) return;
-            this.robot.Drive(1, 1);
+            this.robot.Drive(this.trbSpeed.Value, this.trbRadius.Value);
         }
 
         private void btnUp_MouseDown(object sender, MouseEventArgs e)
         {
             if (this.robot == null) return;
-            this.robot.Drive(1, 0);
+            this.robot.Drive(this.trbSpeed.Value, 0);
         }
 
         private void btnDown_MouseDown(object sender, MouseEventArgs e)
         {
             if (this.robot == null) return;
-            this.robot.Drive(-1, 0);
+            this.robot.Drive(-this.trbSpeed.Value, 0);
         }
 
 
@@ -190,7 +221,12 @@ namespace RoombaSharp
         private void button1_Click(object sender, EventArgs e)
         {
             if (this.robot == null) return;
-            this.robot.LEDs(false, true, false);
+            this.robot.LEDs(false, false, true);
+        }
+
+        private void trbSpeed_ValueChanged(object sender, EventArgs e)
+        {
+            this.lblSpeed.Text = String.Format("Speed: {0}", this.trbSpeed.Value);
         }
     }
 }
