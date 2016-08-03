@@ -29,6 +29,10 @@ using RoombaSharp.iRobot.Data;
 
 namespace RoombaSharp.iRobot.RoombaSharp
 {
+    /// <summary>
+    /// This API class is imeplemented by this documemtation:
+    /// http://www.ecsl.cs.sunysb.edu/mint/Roomba_SCI_Spec_Manual.pdf
+    /// </summary>
     public class Roomba : Communicator
     {
 
@@ -100,10 +104,10 @@ namespace RoombaSharp.iRobot.RoombaSharp
         /// <param name="spot">Spot</param>
         /// <param name="clean">Clean</param>
         /// <param name="max">Max</param>
-        public void LEDs(bool spot, bool clean, bool max)
+        public void LEDs(bool spot, bool clean, bool max, bool dirtDetect)
         {
             if (!SerialPort.IsOpen) return;
-            byte leds = Convert(new bool[] { false, false, false, false, spot, clean, max, false });
+            byte leds = Convert(new bool[] { false, false, false, false, spot, clean, max, dirtDetect });
             byte[] command = { (byte)RoombaOpCode.LEDS,  leds};
             this.SerialPort.Write(command, 0, command.Length);
         }
@@ -184,11 +188,11 @@ namespace RoombaSharp.iRobot.RoombaSharp
         /// </summary>
         /// <param name="mainBrush">Main Brush</param>
         /// <param name="vacuumSide">Vacuum Side</param>
-        /// <param name="brush">Brush</param>
-        public void Motors(bool mainBrush, bool vacuumSide, bool brush)
+        /// <param name="sideBrush">Brush</param>
+        public void Motors(bool mainBrush, bool vacuum, bool sideBrush)
         {
             if (!SerialPort.IsOpen) return;
-            byte motors = Convert(new bool[] { false, false, false, false, false, mainBrush, vacuumSide, brush });
+            byte motors = Convert(new bool[] { false, false, false, false, false, mainBrush, vacuum, sideBrush });
             byte[] command = { (byte)RoombaOpCode.MOTORS, motors };
             this.SerialPort.Write(command, 0, command.Length);
         }

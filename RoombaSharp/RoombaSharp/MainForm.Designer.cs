@@ -61,6 +61,21 @@ namespace RoombaSharp
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiRobot = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBeep = new System.Windows.Forms.ToolStripMenuItem();
+            this.lEDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.spotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cleanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.maxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dirtDetectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.motorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainBrushToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.vacuumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sideBrushToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cleanToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.spotToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.dockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.powerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.maxToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.btnStop = new System.Windows.Forms.Button();
             this.lblSpeed = new System.Windows.Forms.Label();
             this.trbSpeed = new System.Windows.Forms.TrackBar();
@@ -68,7 +83,6 @@ namespace RoombaSharp
             this.btnRight = new System.Windows.Forms.Button();
             this.btnLeft = new System.Windows.Forms.Button();
             this.btnUp = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.trbRadius = new System.Windows.Forms.TrackBar();
             this.msMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).BeginInit();
@@ -139,7 +153,10 @@ namespace RoombaSharp
             // tsmiRobot
             // 
             this.tsmiRobot.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiBeep});
+            this.tsmiBeep,
+            this.lEDsToolStripMenuItem,
+            this.motorsToolStripMenuItem,
+            this.buttonsToolStripMenuItem});
             this.tsmiRobot.Name = "tsmiRobot";
             this.tsmiRobot.Size = new System.Drawing.Size(62, 24);
             this.tsmiRobot.Text = "Robot";
@@ -147,9 +164,114 @@ namespace RoombaSharp
             // tsmiBeep
             // 
             this.tsmiBeep.Name = "tsmiBeep";
-            this.tsmiBeep.Size = new System.Drawing.Size(118, 26);
+            this.tsmiBeep.Size = new System.Drawing.Size(181, 26);
             this.tsmiBeep.Text = "Beep";
             this.tsmiBeep.Click += new System.EventHandler(this.tsmiBeep_Click);
+            // 
+            // lEDsToolStripMenuItem
+            // 
+            this.lEDsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.spotToolStripMenuItem,
+            this.cleanToolStripMenuItem,
+            this.maxToolStripMenuItem,
+            this.dirtDetectToolStripMenuItem});
+            this.lEDsToolStripMenuItem.Name = "lEDsToolStripMenuItem";
+            this.lEDsToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.lEDsToolStripMenuItem.Text = "LEDs";
+            // 
+            // spotToolStripMenuItem
+            // 
+            this.spotToolStripMenuItem.Name = "spotToolStripMenuItem";
+            this.spotToolStripMenuItem.Size = new System.Drawing.Size(157, 26);
+            this.spotToolStripMenuItem.Text = "Spot";
+            // 
+            // cleanToolStripMenuItem
+            // 
+            this.cleanToolStripMenuItem.Name = "cleanToolStripMenuItem";
+            this.cleanToolStripMenuItem.Size = new System.Drawing.Size(157, 26);
+            this.cleanToolStripMenuItem.Text = "Clean";
+            // 
+            // maxToolStripMenuItem
+            // 
+            this.maxToolStripMenuItem.Name = "maxToolStripMenuItem";
+            this.maxToolStripMenuItem.Size = new System.Drawing.Size(157, 26);
+            this.maxToolStripMenuItem.Text = "Max";
+            // 
+            // dirtDetectToolStripMenuItem
+            // 
+            this.dirtDetectToolStripMenuItem.Name = "dirtDetectToolStripMenuItem";
+            this.dirtDetectToolStripMenuItem.Size = new System.Drawing.Size(157, 26);
+            this.dirtDetectToolStripMenuItem.Text = "Dirt Detect";
+            // 
+            // motorsToolStripMenuItem
+            // 
+            this.motorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainBrushToolStripMenuItem,
+            this.vacuumToolStripMenuItem,
+            this.sideBrushToolStripMenuItem});
+            this.motorsToolStripMenuItem.Name = "motorsToolStripMenuItem";
+            this.motorsToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.motorsToolStripMenuItem.Text = "Motors";
+            // 
+            // mainBrushToolStripMenuItem
+            // 
+            this.mainBrushToolStripMenuItem.Name = "mainBrushToolStripMenuItem";
+            this.mainBrushToolStripMenuItem.Size = new System.Drawing.Size(157, 26);
+            this.mainBrushToolStripMenuItem.Text = "Main Brush";
+            // 
+            // vacuumToolStripMenuItem
+            // 
+            this.vacuumToolStripMenuItem.Name = "vacuumToolStripMenuItem";
+            this.vacuumToolStripMenuItem.Size = new System.Drawing.Size(157, 26);
+            this.vacuumToolStripMenuItem.Text = "Vacuum";
+            // 
+            // sideBrushToolStripMenuItem
+            // 
+            this.sideBrushToolStripMenuItem.Name = "sideBrushToolStripMenuItem";
+            this.sideBrushToolStripMenuItem.Size = new System.Drawing.Size(157, 26);
+            this.sideBrushToolStripMenuItem.Text = "Side Brush";
+            // 
+            // buttonsToolStripMenuItem
+            // 
+            this.buttonsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cleanToolStripMenuItem1,
+            this.spotToolStripMenuItem1,
+            this.dockToolStripMenuItem,
+            this.powerToolStripMenuItem,
+            this.maxToolStripMenuItem1});
+            this.buttonsToolStripMenuItem.Name = "buttonsToolStripMenuItem";
+            this.buttonsToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.buttonsToolStripMenuItem.Text = "Buttons";
+            // 
+            // cleanToolStripMenuItem1
+            // 
+            this.cleanToolStripMenuItem1.Name = "cleanToolStripMenuItem1";
+            this.cleanToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
+            this.cleanToolStripMenuItem1.Text = "Clean";
+            // 
+            // spotToolStripMenuItem1
+            // 
+            this.spotToolStripMenuItem1.Name = "spotToolStripMenuItem1";
+            this.spotToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
+            this.spotToolStripMenuItem1.Text = "Spot";
+            // 
+            // dockToolStripMenuItem
+            // 
+            this.dockToolStripMenuItem.Name = "dockToolStripMenuItem";
+            this.dockToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.dockToolStripMenuItem.Text = "Dock";
+            // 
+            // powerToolStripMenuItem
+            // 
+            this.powerToolStripMenuItem.Name = "powerToolStripMenuItem";
+            this.powerToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.powerToolStripMenuItem.Text = "Power";
+            // 
+            // maxToolStripMenuItem1
+            // 
+            this.maxToolStripMenuItem1.Name = "maxToolStripMenuItem1";
+            this.maxToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
+            this.maxToolStripMenuItem1.Text = "Max";
             // 
             // btnStop
             // 
@@ -235,16 +357,6 @@ namespace RoombaSharp
             this.btnUp.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnUp_MouseDown);
             this.btnUp.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnUp_MouseUp);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(355, 118);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 25;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // trbRadius
             // 
             this.trbRadius.Location = new System.Drawing.Point(292, 375);
@@ -260,7 +372,6 @@ namespace RoombaSharp
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(540, 649);
             this.Controls.Add(this.trbRadius);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.lblSpeed);
             this.Controls.Add(this.trbSpeed);
@@ -303,8 +414,22 @@ namespace RoombaSharp
         private System.Windows.Forms.Button btnRight;
         private System.Windows.Forms.Button btnLeft;
         private System.Windows.Forms.Button btnUp;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TrackBar trbRadius;
+        private System.Windows.Forms.ToolStripMenuItem lEDsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem motorsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem spotToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cleanToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem maxToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dirtDetectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mainBrushToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem vacuumToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sideBrushToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buttonsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cleanToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem spotToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem dockToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem powerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem maxToolStripMenuItem1;
     }
 }
 

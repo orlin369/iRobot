@@ -218,12 +218,6 @@ namespace RoombaSharp
             this.robot.Drive(0, 0);
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.LEDs(false, false, true);
-        }
-
         private void trbSpeed_ValueChanged(object sender, EventArgs e)
         {
             this.lblSpeed.Text = String.Format("Speed: {0}", this.trbSpeed.Value);

@@ -24,6 +24,9 @@ SOFTWARE.
 
 namespace RoombaSharp.iRobot.Data
 {
+    /// <summary>
+    /// Roomba operation codes.
+    /// </summary>
     public enum RoombaOpCode : byte
     {
         INVALID = 0,
