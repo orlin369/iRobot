@@ -117,6 +117,8 @@ namespace RoombaSharp
         {
             this.robot = new Roomba(portName);
             this.robot.OnMesage += this.robot_OnMesage;
+            this.robot.OnConnect += Robot_OnConnect;
+            this.robot.OnDisconnect += Robot_OnDisconnect;
             this.robot.Connect();
         }
 
@@ -127,7 +129,21 @@ namespace RoombaSharp
         {
             if (this.robot == null) return;
             this.robot.OnMesage -= this.robot_OnMesage;
+            this.robot.OnConnect -= Robot_OnConnect;
+            this.robot.OnDisconnect -= Robot_OnDisconnect;
+
             this.robot.Disconnect();
+        }
+
+        private void Robot_OnDisconnect(object sender, EventArgs e)
+        {
+            this.LogMessage("Disconnected from robot robot.");
+        }
+
+        private void Robot_OnConnect(object sender, EventArgs e)
+        {
+            Roomba robot = (Roomba)sender;
+            this.LogMessage("Connected to robot port: " + robot.PortName);
         }
 
         private void robot_OnMesage(object sender, MessageString e)
@@ -287,8 +303,8 @@ namespace RoombaSharp
             this.lblRadius.Text = String.Format("Radius: {0}", this.trbRadius.Value);
         }
 
-        #endregion
 
+        #endregion
 
     }
 }

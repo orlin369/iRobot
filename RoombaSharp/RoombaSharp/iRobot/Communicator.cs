@@ -69,6 +69,17 @@ namespace RoombaSharp.iRobot.RoombaSharp
                 return this.isConnected;
             }
         }
+        
+        /// <summary>
+        /// Robot serial port name.
+        /// </summary>
+        public string PortName
+        {
+            get
+            {
+                return this.portName;
+            }
+        }
 
         #endregion
 
@@ -79,9 +90,9 @@ namespace RoombaSharp.iRobot.RoombaSharp
         /// </summary>
         public event EventHandler<MessageString> OnMesage;
 
-        public event EventHandler<MessageString> OnConnect;
+        public event EventHandler<EventArgs> OnConnect;
 
-        public event EventHandler<MessageString> OnDisconnect;
+        public event EventHandler<EventArgs> OnDisconnect;
 
 
         #endregion
@@ -211,7 +222,7 @@ namespace RoombaSharp.iRobot.RoombaSharp
 
                     this.isConnected = true;
 
-                    this.OnConnect?.Invoke(this, null);
+                    this.OnConnect?.Invoke(this, new MessageString(""));
                 }
             }
             catch
@@ -245,7 +256,7 @@ namespace RoombaSharp.iRobot.RoombaSharp
 
                         if (this.OnMesage != null)
                         {
-                            this.OnMesage(this, new MessageString(command));
+                            this.OnMesage(this, null);
                         }
 
                     }
