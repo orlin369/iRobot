@@ -27,6 +27,7 @@ using System.Text;
 using System.Windows.Forms;
 using RoombaSharp.iRobot.RoombaSharp;
 using RoombaSharp.iRobot.Events;
+using System.Threading;
 
 namespace RoombaSharp
 {
@@ -101,7 +102,7 @@ namespace RoombaSharp
         /// <param name="message">The message.</param>
         private void LogMessage(string message)
         {
-            OutputWindow.Text += (Environment.NewLine + message).Trim();
+            this.tbConsole.Text += (Environment.NewLine + message).Trim();
         }
 
         #endregion
@@ -150,17 +151,69 @@ namespace RoombaSharp
         {
             if (this.robot == null) return;
 
+            // Creat the melodie thread.
+            Thread worker = new Thread(
+                new ThreadStart(
+                    delegate ()
+                    {
+                        this.robot.Start();
+                        this.robot.Control();
+                        System.Threading.Thread.Sleep(20);
+                        for (byte i = 31; i <= 127; i++)
+                        {
+                            this.robot.Play(i);
+                            System.Threading.Thread.Sleep(100);
+                        }
+                    }
+                )
+            );
+            
+            // Start the melodie thread.
+            worker.Start();
+        }
+
+        #region Function Buttons
+
+        private void cleanToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
             this.robot.Start();
-            this.robot.Control();
-            System.Threading.Thread.Sleep(20);
-            for (byte i = 31; i <= 127; i++)
-            {
-                this.robot.Play(i);
-                System.Threading.Thread.Sleep(50);
-            }
+            this.robot.Clean();
+        }
+
+        private void spotToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.Spot();
+        }
+
+        private void dockToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.ForceSeekingDock();
+        }
+
+        private void powerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.Power();
+        }
+
+        private void maxToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.Max();
         }
 
         #endregion
+
+        #endregion
+
+        #region Buttons
 
         private void btnRight_MouseDown(object sender, MouseEventArgs e)
         {
@@ -215,47 +268,27 @@ namespace RoombaSharp
         private void btnLeft_MouseUp(object sender, MouseEventArgs e)
         {
             if (this.robot == null) return;
+            this.robot.Start();
+            Thread.Sleep(20);
             this.robot.Drive(0, 0);
         }
+
+        #endregion
+
+        #region Track bar
 
         private void trbSpeed_ValueChanged(object sender, EventArgs e)
         {
             this.lblSpeed.Text = String.Format("Speed: {0}", this.trbSpeed.Value);
         }
 
-        private void cleanToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void trbRadius_ValueChanged(object sender, EventArgs e)
         {
-            if (this.robot == null) return;
-            this.robot.Start();
-            this.robot.Clean();
+            this.lblRadius.Text = String.Format("Radius: {0}", this.trbRadius.Value);
         }
 
-        private void spotToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Start();
-            this.robot.Spot();
-        }
+        #endregion
 
-        private void dockToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Start();
-            this.robot.ForceSeekingDock();
-        }
 
-        private void powerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Start();
-            this.robot.Power();
-        }
-
-        private void maxToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Start();
-            this.robot.Max();
-        }
     }
 }

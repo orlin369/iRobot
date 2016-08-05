@@ -52,8 +52,7 @@ namespace RoombaSharp
         /// </summary>
         private void InitializeComponent()
         {
-            this.OutputWindow = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblOutput = new System.Windows.Forms.Label();
             this.msMain = new System.Windows.Forms.MenuStrip();
             this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiConnect = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,32 +83,23 @@ namespace RoombaSharp
             this.btnLeft = new System.Windows.Forms.Button();
             this.btnUp = new System.Windows.Forms.Button();
             this.trbRadius = new System.Windows.Forms.TrackBar();
+            this.lblRadius = new System.Windows.Forms.Label();
+            this.tbConsole = new System.Windows.Forms.TextBox();
             this.msMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).BeginInit();
             this.SuspendLayout();
             // 
-            // OutputWindow
+            // lblOutput
             // 
-            this.OutputWindow.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.OutputWindow.Location = new System.Drawing.Point(13, 573);
-            this.OutputWindow.Margin = new System.Windows.Forms.Padding(4);
-            this.OutputWindow.Multiline = true;
-            this.OutputWindow.Name = "OutputWindow";
-            this.OutputWindow.Size = new System.Drawing.Size(501, 63);
-            this.OutputWindow.TabIndex = 7;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 536);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 17);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Output";
+            this.lblOutput.AutoSize = true;
+            this.lblOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblOutput.Location = new System.Drawing.Point(22, 506);
+            this.lblOutput.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lblOutput.Name = "lblOutput";
+            this.lblOutput.Size = new System.Drawing.Size(65, 20);
+            this.lblOutput.TabIndex = 9;
+            this.lblOutput.Text = "Output";
             // 
             // msMain
             // 
@@ -119,7 +109,8 @@ namespace RoombaSharp
             this.tsmiRobot});
             this.msMain.Location = new System.Drawing.Point(0, 0);
             this.msMain.Name = "msMain";
-            this.msMain.Size = new System.Drawing.Size(540, 28);
+            this.msMain.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
+            this.msMain.Size = new System.Drawing.Size(546, 28);
             this.msMain.TabIndex = 16;
             this.msMain.Text = "menuStrip1";
             // 
@@ -164,7 +155,7 @@ namespace RoombaSharp
             // tsmiBeep
             // 
             this.tsmiBeep.Name = "tsmiBeep";
-            this.tsmiBeep.Size = new System.Drawing.Size(181, 26);
+            this.tsmiBeep.Size = new System.Drawing.Size(134, 26);
             this.tsmiBeep.Text = "Beep";
             this.tsmiBeep.Click += new System.EventHandler(this.tsmiBeep_Click);
             // 
@@ -176,7 +167,7 @@ namespace RoombaSharp
             this.maxToolStripMenuItem,
             this.dirtDetectToolStripMenuItem});
             this.lEDsToolStripMenuItem.Name = "lEDsToolStripMenuItem";
-            this.lEDsToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.lEDsToolStripMenuItem.Size = new System.Drawing.Size(134, 26);
             this.lEDsToolStripMenuItem.Text = "LEDs";
             // 
             // spotToolStripMenuItem
@@ -210,7 +201,7 @@ namespace RoombaSharp
             this.vacuumToolStripMenuItem,
             this.sideBrushToolStripMenuItem});
             this.motorsToolStripMenuItem.Name = "motorsToolStripMenuItem";
-            this.motorsToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.motorsToolStripMenuItem.Size = new System.Drawing.Size(134, 26);
             this.motorsToolStripMenuItem.Text = "Motors";
             // 
             // mainBrushToolStripMenuItem
@@ -240,51 +231,51 @@ namespace RoombaSharp
             this.powerToolStripMenuItem,
             this.maxToolStripMenuItem1});
             this.buttonsToolStripMenuItem.Name = "buttonsToolStripMenuItem";
-            this.buttonsToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.buttonsToolStripMenuItem.Size = new System.Drawing.Size(134, 26);
             this.buttonsToolStripMenuItem.Text = "Buttons";
             // 
             // cleanToolStripMenuItem1
             // 
             this.cleanToolStripMenuItem1.Name = "cleanToolStripMenuItem1";
-            this.cleanToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
+            this.cleanToolStripMenuItem1.Size = new System.Drawing.Size(124, 26);
             this.cleanToolStripMenuItem1.Text = "Clean";
             this.cleanToolStripMenuItem1.Click += new System.EventHandler(this.cleanToolStripMenuItem1_Click);
             // 
             // spotToolStripMenuItem1
             // 
             this.spotToolStripMenuItem1.Name = "spotToolStripMenuItem1";
-            this.spotToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
+            this.spotToolStripMenuItem1.Size = new System.Drawing.Size(124, 26);
             this.spotToolStripMenuItem1.Text = "Spot";
             this.spotToolStripMenuItem1.Click += new System.EventHandler(this.spotToolStripMenuItem1_Click);
             // 
             // dockToolStripMenuItem
             // 
             this.dockToolStripMenuItem.Name = "dockToolStripMenuItem";
-            this.dockToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.dockToolStripMenuItem.Size = new System.Drawing.Size(124, 26);
             this.dockToolStripMenuItem.Text = "Dock";
             this.dockToolStripMenuItem.Click += new System.EventHandler(this.dockToolStripMenuItem_Click);
             // 
             // powerToolStripMenuItem
             // 
             this.powerToolStripMenuItem.Name = "powerToolStripMenuItem";
-            this.powerToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.powerToolStripMenuItem.Size = new System.Drawing.Size(124, 26);
             this.powerToolStripMenuItem.Text = "Power";
             this.powerToolStripMenuItem.Click += new System.EventHandler(this.powerToolStripMenuItem_Click);
             // 
             // maxToolStripMenuItem1
             // 
             this.maxToolStripMenuItem1.Name = "maxToolStripMenuItem1";
-            this.maxToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
+            this.maxToolStripMenuItem1.Size = new System.Drawing.Size(124, 26);
             this.maxToolStripMenuItem1.Text = "Max";
             this.maxToolStripMenuItem1.Click += new System.EventHandler(this.maxToolStripMenuItem1_Click);
             // 
             // btnStop
             // 
             this.btnStop.Image = global::RoombaSharp.Images.Stop;
-            this.btnStop.Location = new System.Drawing.Point(124, 152);
-            this.btnStop.Margin = new System.Windows.Forms.Padding(4);
+            this.btnStop.Location = new System.Drawing.Point(123, 148);
+            this.btnStop.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(96, 89);
+            this.btnStop.Size = new System.Drawing.Size(96, 96);
             this.btnStop.TabIndex = 24;
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
@@ -292,31 +283,32 @@ namespace RoombaSharp
             // lblSpeed
             // 
             this.lblSpeed.AutoSize = true;
-            this.lblSpeed.Location = new System.Drawing.Point(232, 248);
-            this.lblSpeed.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblSpeed.Location = new System.Drawing.Point(244, 42);
+            this.lblSpeed.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblSpeed.Name = "lblSpeed";
-            this.lblSpeed.Size = new System.Drawing.Size(65, 17);
+            this.lblSpeed.Size = new System.Drawing.Size(83, 20);
             this.lblSpeed.TabIndex = 23;
             this.lblSpeed.Text = "Speed: 0";
             // 
             // trbSpeed
             // 
-            this.trbSpeed.Location = new System.Drawing.Point(228, 281);
-            this.trbSpeed.Margin = new System.Windows.Forms.Padding(4);
+            this.trbSpeed.Location = new System.Drawing.Point(339, 42);
+            this.trbSpeed.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.trbSpeed.Maximum = 70;
             this.trbSpeed.Name = "trbSpeed";
             this.trbSpeed.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trbSpeed.Size = new System.Drawing.Size(56, 96);
+            this.trbSpeed.Size = new System.Drawing.Size(56, 308);
             this.trbSpeed.TabIndex = 22;
             this.trbSpeed.ValueChanged += new System.EventHandler(this.trbSpeed_ValueChanged);
             // 
             // btnDown
             // 
             this.btnDown.Image = global::RoombaSharp.Images.ArrowDown;
-            this.btnDown.Location = new System.Drawing.Point(124, 248);
-            this.btnDown.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDown.Location = new System.Drawing.Point(123, 254);
+            this.btnDown.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btnDown.Name = "btnDown";
-            this.btnDown.Size = new System.Drawing.Size(96, 89);
+            this.btnDown.Size = new System.Drawing.Size(96, 96);
             this.btnDown.TabIndex = 21;
             this.btnDown.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnDown.UseVisualStyleBackColor = true;
@@ -326,10 +318,10 @@ namespace RoombaSharp
             // btnRight
             // 
             this.btnRight.Image = global::RoombaSharp.Images.ArrowRight;
-            this.btnRight.Location = new System.Drawing.Point(228, 152);
-            this.btnRight.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRight.Location = new System.Drawing.Point(231, 148);
+            this.btnRight.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btnRight.Name = "btnRight";
-            this.btnRight.Size = new System.Drawing.Size(96, 89);
+            this.btnRight.Size = new System.Drawing.Size(96, 96);
             this.btnRight.TabIndex = 20;
             this.btnRight.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnRight.UseVisualStyleBackColor = true;
@@ -339,10 +331,10 @@ namespace RoombaSharp
             // btnLeft
             // 
             this.btnLeft.Image = global::RoombaSharp.Images.ArrowLeft;
-            this.btnLeft.Location = new System.Drawing.Point(20, 152);
-            this.btnLeft.Margin = new System.Windows.Forms.Padding(4);
+            this.btnLeft.Location = new System.Drawing.Point(15, 148);
+            this.btnLeft.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btnLeft.Name = "btnLeft";
-            this.btnLeft.Size = new System.Drawing.Size(96, 89);
+            this.btnLeft.Size = new System.Drawing.Size(96, 96);
             this.btnLeft.TabIndex = 19;
             this.btnLeft.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnLeft.UseVisualStyleBackColor = true;
@@ -352,10 +344,10 @@ namespace RoombaSharp
             // btnUp
             // 
             this.btnUp.Image = global::RoombaSharp.Images.ArrowUp;
-            this.btnUp.Location = new System.Drawing.Point(124, 56);
-            this.btnUp.Margin = new System.Windows.Forms.Padding(4);
+            this.btnUp.Location = new System.Drawing.Point(123, 42);
+            this.btnUp.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btnUp.Name = "btnUp";
-            this.btnUp.Size = new System.Drawing.Size(96, 89);
+            this.btnUp.Size = new System.Drawing.Size(96, 96);
             this.btnUp.TabIndex = 18;
             this.btnUp.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnUp.UseVisualStyleBackColor = true;
@@ -364,18 +356,43 @@ namespace RoombaSharp
             // 
             // trbRadius
             // 
-            this.trbRadius.Location = new System.Drawing.Point(292, 375);
-            this.trbRadius.Margin = new System.Windows.Forms.Padding(4);
+            this.trbRadius.Location = new System.Drawing.Point(15, 360);
+            this.trbRadius.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.trbRadius.Maximum = 200;
+            this.trbRadius.Minimum = 1;
             this.trbRadius.Name = "trbRadius";
-            this.trbRadius.Size = new System.Drawing.Size(96, 56);
+            this.trbRadius.Size = new System.Drawing.Size(312, 56);
             this.trbRadius.TabIndex = 26;
+            this.trbRadius.Value = 1;
+            this.trbRadius.ValueChanged += new System.EventHandler(this.trbRadius_ValueChanged);
+            // 
+            // lblRadius
+            // 
+            this.lblRadius.AutoSize = true;
+            this.lblRadius.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblRadius.Location = new System.Drawing.Point(11, 330);
+            this.lblRadius.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lblRadius.Name = "lblRadius";
+            this.lblRadius.Size = new System.Drawing.Size(89, 20);
+            this.lblRadius.TabIndex = 27;
+            this.lblRadius.Text = "Radius: 1";
+            // 
+            // tbConsole
+            // 
+            this.tbConsole.Location = new System.Drawing.Point(22, 535);
+            this.tbConsole.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbConsole.Multiline = true;
+            this.tbConsole.Name = "tbConsole";
+            this.tbConsole.Size = new System.Drawing.Size(487, 84);
+            this.tbConsole.TabIndex = 28;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(540, 649);
+            this.ClientSize = new System.Drawing.Size(546, 659);
+            this.Controls.Add(this.tbConsole);
+            this.Controls.Add(this.lblRadius);
             this.Controls.Add(this.trbRadius);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.lblSpeed);
@@ -384,11 +401,11 @@ namespace RoombaSharp
             this.Controls.Add(this.btnRight);
             this.Controls.Add(this.btnLeft);
             this.Controls.Add(this.btnUp);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.OutputWindow);
+            this.Controls.Add(this.lblOutput);
             this.Controls.Add(this.msMain);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.MainMenuStrip = this.msMain;
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.Name = "MainForm";
             this.Text = "Roomba#";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -403,8 +420,7 @@ namespace RoombaSharp
         }
 
         #endregion
-        private System.Windows.Forms.TextBox OutputWindow;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblOutput;
         private System.Windows.Forms.MenuStrip msMain;
         private System.Windows.Forms.ToolStripMenuItem tsmiFile;
         private System.Windows.Forms.ToolStripMenuItem tsmiConnect;
@@ -435,6 +451,8 @@ namespace RoombaSharp
         private System.Windows.Forms.ToolStripMenuItem dockToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem powerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem maxToolStripMenuItem1;
+        private System.Windows.Forms.Label lblRadius;
+        private System.Windows.Forms.TextBox tbConsole;
     }
 }
 
