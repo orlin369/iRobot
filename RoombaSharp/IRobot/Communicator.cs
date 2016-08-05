@@ -26,9 +26,9 @@ using System;
 using System.IO.Ports;
 using System.Threading;
 
-using RoombaSharp.iRobot.Events;
+using iRobot.Events;
 
-namespace RoombaSharp.iRobot.RoombaSharp
+namespace iRobot.RoombaSharp
 {
     public class Communicator : IDisposable
     {

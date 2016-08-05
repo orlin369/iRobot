@@ -25,8 +25,8 @@ SOFTWARE.
 using System;
 using System.Text;
 using System.Windows.Forms;
-using RoombaSharp.iRobot.RoombaSharp;
-using RoombaSharp.iRobot.Events;
+using iRobot.RoombaSharp;
+using iRobot.Events;
 using System.Threading;
 
 namespace RoombaSharp

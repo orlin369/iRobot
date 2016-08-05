@@ -25,9 +25,9 @@ SOFTWARE.
 using System;
 using System.IO.Ports;
 
-using RoombaSharp.iRobot.Data;
+using iRobot.Data;
 
-namespace RoombaSharp.iRobot.RoombaSharp
+namespace iRobot.RoombaSharp
 {
     /// <summary>
     /// This API class is imeplemented by this documemtation:

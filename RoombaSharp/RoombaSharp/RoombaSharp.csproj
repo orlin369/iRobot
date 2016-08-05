@@ -11,7 +11,8 @@
     <RootNamespace>RoombaSharp</RootNamespace>
     <AssemblyName>RoombaSharp</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -51,11 +52,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
-    <Compile Include="iRobot\Communicator.cs" />
-    <Compile Include="iRobot\Data\BoudRates.cs" />
-    <Compile Include="iRobot\Data\SensorsPackageType.cs" />
-    <Compile Include="iRobot\Events\MessageString.cs" />
-    <Compile Include="iRobot\Data\RoombaOpCode.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,7 +60,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="iRobot\Roomba.cs" />
     <EmbeddedResource Include="Images.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Images.Designer.cs</LastGenOutput>
@@ -80,7 +75,9 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -117,6 +114,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IRobot\IRobot.csproj">
+      <Project>{c4f5c4e4-7f65-49fc-8244-7554722280cc}</Project>
+      <Name>IRobot</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
