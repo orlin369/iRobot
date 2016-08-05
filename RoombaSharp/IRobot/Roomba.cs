@@ -214,7 +214,7 @@ namespace iRobot.RoombaSharp
         /// </summary>
         /// <param name="velocity"></param>
         /// <param name="radius"></param>
-        public void Drive(int velocity, int radius)
+        public void Drive(short velocity, short radius)
         {
             if (!SerialPort.IsOpen) return;
 

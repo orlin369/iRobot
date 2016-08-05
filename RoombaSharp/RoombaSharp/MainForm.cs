@@ -23,22 +23,33 @@ SOFTWARE.
 */
 
 using System;
-using System.Text;
 using System.Windows.Forms;
+using System.Threading;
+
 using iRobot.RoombaSharp;
 using iRobot.Events;
-using System.Threading;
+using Leap;
 
 namespace RoombaSharp
 {
     public partial class MainForm : Form
     {
 
-        private StringBuilder recievedData = new StringBuilder();
+        #region Variables
 
         private string robotSerialPortName;
 
         private Roomba robot;
+
+        private Controller controller;
+
+        private SampleListener listener = new SampleListener();
+
+        private object syncLock = new object();
+
+        private int motionDebonceCounter = 0;
+        
+        #endregion
 
         #region Constructor
 
@@ -54,14 +65,15 @@ namespace RoombaSharp
 
         #region Main Form
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
             this.SearchForPorts();
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.DisconnectFromRobot();
+            this.DisconnectFromLeapMotion();
         }
 
         #endregion
@@ -102,7 +114,136 @@ namespace RoombaSharp
         /// <param name="message">The message.</param>
         private void LogMessage(string message)
         {
-            this.tbConsole.AppendText((Environment.NewLine + message).Trim());
+            lock (this.syncLock)
+            {
+                if (this.tbConsole.InvokeRequired)
+                {
+                    this.tbConsole.BeginInvoke((MethodInvoker)delegate ()
+                    {
+                        this.tbConsole.AppendText(message + Environment.NewLine);
+                    });
+                }
+                else
+                {
+                    this.tbConsole.AppendText(message + Environment.NewLine);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Connect to Leapmotion.
+        /// </summary>
+        private void ConnectToLeapMotion()
+        {
+            this.controller = new Controller();
+            // Have the sample listener receive events from the controller
+            this.listener.FrameGrabed += this.listener_FrameGrabed;
+            this.controller.AddListener(this.listener);
+
+            // Log.
+            this.LogMessage("Leap connection state: " + this.controller.IsConnected);
+        }
+
+        /// <summary>
+        /// Disconnect from Leapmotion.
+        /// </summary>
+        private void DisconnectFromLeapMotion()
+        {
+            try
+            {
+                // Remove the sample listener when done
+                this.controller.RemoveListener(this.listener);
+                this.controller.Dispose();
+            }
+            catch
+            { }
+            // Log.
+            //this.LogMessage("Leap connection state: " + this.controller.IsConnected);
+        }
+
+        /// <summary>
+        /// Transform radians to degree.
+        /// </summary>
+        /// <param name="radians">Value</param>
+        /// <returns>Transformed value.</returns>
+        private float ToDegree(float radians)
+        {
+            return radians * 180.0f / (float)Math.PI;
+        }
+
+        private void OnFrame(Controller controller)
+        {
+            if (this.robot == null || this.controller == null) return;
+
+            string message = "";
+
+            // Get the most recent frame and report some basic information
+            Frame frame = controller.Frame();
+
+            //message += "Frame id: " + frame.Id
+            //            + ", timestamp: " + frame.Timestamp
+            //            + ", hands: " + frame.Hands.Count
+            //            + ", fingers: " + frame.Fingers.Count
+            //            + ", tools: " + frame.Tools.Count
+            //            + ", gestures: " + frame.Gestures().Count;
+            //message += Environment.NewLine;
+
+
+
+            foreach (Hand hand in frame.Hands)
+            {
+                message += "Hand id: " + hand.Id + "\r\n";
+                //            + ", palm position: " + hand.PalmPosition;
+                //message += Environment.NewLine;
+
+                // Get the hand's normal vector and direction
+                Vector normal = hand.PalmNormal;
+                Vector direction = hand.Direction;
+
+                // Convert to degree.
+                float pitch = -((this.ToDegree(normal.Pitch) + 90) * 1.5F);
+                float roll = this.ToDegree(normal.Roll);
+                float yaw = this.ToDegree(normal.Yaw);
+                
+                // Calculate the hand's pitch, roll, and yaw angles
+                message += String.Format("P: {0}\r\nR: {1}\r\nY: {2}\r\n",
+                    (int)pitch,
+                    (int)roll,
+                    (int)yaw);
+                
+                // Band filter.
+                if (roll < 20 && roll > -20) roll = 0;
+
+
+                this.motionDebonceCounter++;
+                if ((this.motionDebonceCounter % 8) == 0)
+                {
+                    // Move my dorabal vacuum cleaner robot maaaaan!
+                    this.robot.Drive((short)pitch, (short)roll);
+                    this.motionDebonceCounter = 0;
+                }
+            }
+
+            if (!frame.Hands.IsEmpty && !frame.Gestures().IsEmpty)
+            {
+                message += "";
+                if (this.robot != null && this.robot.IsConnected)
+                {
+                    this.robot.Drive(0, 0);
+                }
+            }
+
+            if (this.lblHandPosition.InvokeRequired)
+            {
+                this.lblHandPosition.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    this.lblHandPosition.Text = message;
+                });
+            }
+            else
+            {
+                this.lblHandPosition.Text = message;
+            }
         }
 
         #endregion
@@ -234,25 +375,25 @@ namespace RoombaSharp
         private void btnRight_MouseDown(object sender, MouseEventArgs e)
         {
             if (this.robot == null) return;
-            this.robot.Drive(this.trbSpeed.Value, -this.trbRadius.Value);
+            this.robot.Drive((short)this.trbSpeed.Value, (short)-this.trbRadius.Value);
         }
 
         private void btnLeft_MouseDown(object sender, MouseEventArgs e)
         {
             if (this.robot == null) return;
-            this.robot.Drive(this.trbSpeed.Value, this.trbRadius.Value);
+            this.robot.Drive((short)this.trbSpeed.Value, (short)this.trbRadius.Value);
         }
 
         private void btnUp_MouseDown(object sender, MouseEventArgs e)
         {
             if (this.robot == null) return;
-            this.robot.Drive(this.trbSpeed.Value, 0);
+            this.robot.Drive((short)this.trbSpeed.Value, 0);
         }
 
         private void btnDown_MouseDown(object sender, MouseEventArgs e)
         {
             if (this.robot == null) return;
-            this.robot.Drive(-this.trbSpeed.Value, 0);
+            this.robot.Drive((short)-this.trbSpeed.Value, 0);
         }
 
 
@@ -284,9 +425,18 @@ namespace RoombaSharp
         private void btnLeft_MouseUp(object sender, MouseEventArgs e)
         {
             if (this.robot == null) return;
-            this.robot.Start();
-            Thread.Sleep(20);
             this.robot.Drive(0, 0);
+        }
+
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.ConnectToLeapMotion();
+        }
+
+        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.DisconnectFromLeapMotion();
         }
 
         #endregion
@@ -295,7 +445,7 @@ namespace RoombaSharp
 
         private void trbSpeed_ValueChanged(object sender, EventArgs e)
         {
-            this.lblSpeed.Text = String.Format("Speed: {0}", this.trbSpeed.Value);
+            this.lblSpeed.Text = String.Format("Speed: {0:F3}[mm/s]", ((float)this.trbSpeed.Value / 5.0));
         }
 
         private void trbRadius_ValueChanged(object sender, EventArgs e)
@@ -305,6 +455,15 @@ namespace RoombaSharp
 
 
         #endregion
+        
+        #region Leapmotion frame graber
 
+        private void listener_FrameGrabed(object sender, ControlerArg e)
+        {
+            //e.Controller.
+            this.OnFrame(e.Controller);
+        }
+
+        #endregion
     }
 }
