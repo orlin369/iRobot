@@ -248,30 +248,35 @@ namespace RoombaSharp
             this.cleanToolStripMenuItem1.Name = "cleanToolStripMenuItem1";
             this.cleanToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
             this.cleanToolStripMenuItem1.Text = "Clean";
+            this.cleanToolStripMenuItem1.Click += new System.EventHandler(this.cleanToolStripMenuItem1_Click);
             // 
             // spotToolStripMenuItem1
             // 
             this.spotToolStripMenuItem1.Name = "spotToolStripMenuItem1";
             this.spotToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
             this.spotToolStripMenuItem1.Text = "Spot";
+            this.spotToolStripMenuItem1.Click += new System.EventHandler(this.spotToolStripMenuItem1_Click);
             // 
             // dockToolStripMenuItem
             // 
             this.dockToolStripMenuItem.Name = "dockToolStripMenuItem";
             this.dockToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.dockToolStripMenuItem.Text = "Dock";
+            this.dockToolStripMenuItem.Click += new System.EventHandler(this.dockToolStripMenuItem_Click);
             // 
             // powerToolStripMenuItem
             // 
             this.powerToolStripMenuItem.Name = "powerToolStripMenuItem";
             this.powerToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.powerToolStripMenuItem.Text = "Power";
+            this.powerToolStripMenuItem.Click += new System.EventHandler(this.powerToolStripMenuItem_Click);
             // 
             // maxToolStripMenuItem1
             // 
             this.maxToolStripMenuItem1.Name = "maxToolStripMenuItem1";
             this.maxToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
             this.maxToolStripMenuItem1.Text = "Max";
+            this.maxToolStripMenuItem1.Click += new System.EventHandler(this.maxToolStripMenuItem1_Click);
             // 
             // btnStop
             // 

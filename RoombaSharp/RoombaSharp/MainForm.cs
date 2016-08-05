@@ -222,5 +222,40 @@ namespace RoombaSharp
         {
             this.lblSpeed.Text = String.Format("Speed: {0}", this.trbSpeed.Value);
         }
+
+        private void cleanToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.Clean();
+        }
+
+        private void spotToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.Spot();
+        }
+
+        private void dockToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.ForceSeekingDock();
+        }
+
+        private void powerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.Power();
+        }
+
+        private void maxToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.Max();
+        }
     }
 }
