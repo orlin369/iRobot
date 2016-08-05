@@ -102,7 +102,7 @@ namespace RoombaSharp
         /// <param name="message">The message.</param>
         private void LogMessage(string message)
         {
-            this.tbConsole.Text += (Environment.NewLine + message).Trim();
+            this.tbConsole.AppendText((Environment.NewLine + message).Trim());
         }
 
         #endregion

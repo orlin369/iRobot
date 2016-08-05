@@ -379,7 +379,7 @@ namespace RoombaSharp
             // 
             // tbConsole
             // 
-            this.tbConsole.Location = new System.Drawing.Point(22, 535);
+            this.tbConsole.Location = new System.Drawing.Point(15, 539);
             this.tbConsole.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tbConsole.Multiline = true;
             this.tbConsole.Name = "tbConsole";

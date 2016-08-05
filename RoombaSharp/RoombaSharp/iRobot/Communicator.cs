@@ -79,6 +79,11 @@ namespace RoombaSharp.iRobot.RoombaSharp
         /// </summary>
         public event EventHandler<MessageString> OnMesage;
 
+        public event EventHandler<MessageString> OnConnect;
+
+        public event EventHandler<MessageString> OnDisconnect;
+
+
         #endregion
 
         #region Constructor / Destructor
@@ -205,6 +210,8 @@ namespace RoombaSharp.iRobot.RoombaSharp
                     this.SerialPort.Open();
 
                     this.isConnected = true;
+
+                    this.OnConnect?.Invoke(this, null);
                 }
             }
             catch
@@ -222,6 +229,7 @@ namespace RoombaSharp.iRobot.RoombaSharp
             {
                 this.SerialPort.Close();
                 this.isConnected = false;
+                this.OnDisconnect?.Invoke(this, null);
             }
         }
 
