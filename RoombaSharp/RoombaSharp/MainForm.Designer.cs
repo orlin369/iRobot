@@ -90,9 +90,11 @@ namespace RoombaSharp
             this.btnUp = new System.Windows.Forms.Button();
             this.lblHandPosition = new System.Windows.Forms.Label();
             this.captureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pbCam1 = new System.Windows.Forms.PictureBox();
             this.msMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCam1)).BeginInit();
             this.SuspendLayout();
             // 
             // lblOutput
@@ -117,7 +119,7 @@ namespace RoombaSharp
             this.msMain.Location = new System.Drawing.Point(0, 0);
             this.msMain.Name = "msMain";
             this.msMain.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.msMain.Size = new System.Drawing.Size(1523, 28);
+            this.msMain.Size = new System.Drawing.Size(1006, 28);
             this.msMain.TabIndex = 16;
             this.msMain.Text = "menuStrip1";
             // 
@@ -434,11 +436,21 @@ namespace RoombaSharp
             this.captureToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
             this.captureToolStripMenuItem.Text = "Capture";
             // 
+            // pbCam1
+            // 
+            this.pbCam1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbCam1.Location = new System.Drawing.Point(459, 42);
+            this.pbCam1.Name = "pbCam1";
+            this.pbCam1.Size = new System.Drawing.Size(513, 404);
+            this.pbCam1.TabIndex = 30;
+            this.pbCam1.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1523, 659);
+            this.ClientSize = new System.Drawing.Size(1006, 659);
+            this.Controls.Add(this.pbCam1);
             this.Controls.Add(this.lblHandPosition);
             this.Controls.Add(this.tbConsole);
             this.Controls.Add(this.lblRadius);
@@ -463,6 +475,7 @@ namespace RoombaSharp
             this.msMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCam1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -507,6 +520,7 @@ namespace RoombaSharp
         private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
         private System.Windows.Forms.Label lblHandPosition;
         private System.Windows.Forms.ToolStripMenuItem captureToolStripMenuItem;
+        private System.Windows.Forms.PictureBox pbCam1;
     }
 }
 

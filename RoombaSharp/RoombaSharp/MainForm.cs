@@ -25,10 +25,18 @@ SOFTWARE.
 using System;
 using System.Windows.Forms;
 using System.Threading;
+using System.Drawing;
 
 using iRobot.RoombaSharp;
 using iRobot.Events;
+
 using Leap;
+
+using Emgu.CV;
+
+using AForge.Video.DirectShow;
+
+using Video;
 
 namespace RoombaSharp
 {
@@ -58,6 +66,8 @@ namespace RoombaSharp
 
         private Bitmap matCamera1;
 
+        private System.Windows.Forms.Timer grabTimer = new System.Windows.Forms.Timer();
+
         #endregion
 
         #region Constructor
@@ -77,12 +87,43 @@ namespace RoombaSharp
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.SearchForPorts();
+
+            // Check to see what video inputs we have available.
+            this.videoDevices = this.GetDevices();
+
+            if (videoDevices.Length == 0)
+            {
+                DialogResult res = MessageBox.Show("A camera device was not detected. Do you want to exit?", "",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (res == System.Windows.Forms.DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
+            }
+
+            // Add cameras to the menus.
+            this.AddCameras(this.videoDevices, this.captureToolStripMenuItem, this.mItCaptureeDevice_Click);
+
+            this.grabTimer.Stop();
+            this.grabTimer.Interval = 100;
+            this.grabTimer.Tick += GrabTimer_Tick;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.DisconnectFromRobot();
             this.DisconnectFromLeapMotion();
+            this.CloseCamera();
+        }
+
+        #endregion
+
+        #region Camera
+
+        private void CloseCamera()
+        {
+            if (this.camera1 != null) this.camera1.Stop();
+            this.grabTimer.Stop();
         }
 
         #endregion
@@ -255,6 +296,61 @@ namespace RoombaSharp
             }
         }
 
+        /// <summary>
+        /// Get list of all available devices on the PC.
+        /// </summary>
+        /// <returns></returns>
+        private VideoDevice[] GetDevices()
+        {
+            //Set up the capture method 
+            //-> Find systems cameras with DirectShow.Net dll, thanks to Charles Lorette.
+            //DsDevice[] systemCamereas = DsDevice.GetDevicesOfCat(AForge.Video.DirectShow.FilterCategory.VideoInputDevice);
+
+            // Enumerate video devices
+            FilterInfoCollection systemCamereas = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+
+            VideoDevice[] videoDevices = new VideoDevice[systemCamereas.Count];
+
+            for (int index = 0; index < systemCamereas.Count; index++)
+            {
+                videoDevices[index] = new VideoDevice(index, systemCamereas[index].Name, systemCamereas[index].MonikerString);
+            }
+
+            return videoDevices;
+        }
+
+        /// <summary>
+        /// Add video devices to the tool strip menu.
+        /// </summary>
+        /// <param name="videoDevices">List of cameras.</param>
+        /// <param name="menu">Menu item.</param>
+        /// <param name="callback">Callback</param>
+        private void AddCameras(VideoDevice[] videoDevices, ToolStripMenuItem menu, EventHandler callback)
+        {
+            if (videoDevices.Length == 0)
+            {
+                return;
+            }
+
+            menu.DropDown.Items.Clear();
+
+            foreach (VideoDevice device in videoDevices)
+            {
+                // Store the each retrieved available capture device into the MenuItems.
+                ToolStripMenuItem mItem = new ToolStripMenuItem();
+
+                mItem.Text = String.Format("{0:D2} / {1}", device.Index, device.Name);
+                mItem.Tag = device;
+                mItem.Enabled = true;
+                mItem.Checked = false;
+
+                //TODO: Grozno
+                mItem.Click += callback;
+
+                menu.DropDown.Items.Add(mItem);
+            }
+        }
+
         #endregion
 
         #region Robot
@@ -303,7 +399,7 @@ namespace RoombaSharp
 
         #endregion
 
-        #region Tool Stript Menu Items
+        #region Tool Strip Menu Items
 
         private void tsmiConnect_Click(object sender, EventArgs e)
         {
@@ -336,6 +432,34 @@ namespace RoombaSharp
             
             // Start the melodie thread.
             worker.Start();
+        }
+
+        private void mItCaptureeDevice_Click(object sender, EventArgs e)
+        {
+            // Create instance of caller.
+            ToolStripMenuItem item = (ToolStripMenuItem)sender;
+
+            // Display text.
+            this.pbCam1.Tag = item.Text;
+
+            // Get device.
+            VideoDevice videoDevice = (VideoDevice)item.Tag;
+
+            try
+            {
+                // Create camera.
+                this.camera1 = new Emgu.CV.Capture(videoDevice.Index);
+                // Stop if other stream was displaying.
+                this.camera1.Stop();
+                // Start the new stream.
+                this.camera1.Start();
+
+                this.grabTimer.Start();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.ToString());
+            }
         }
 
         #region Function Buttons
@@ -465,7 +589,7 @@ namespace RoombaSharp
 
         #endregion
         
-        #region Leapmotion frame graber
+        #region Leapmotion frame grabber
 
         private void listener_FrameGrabed(object sender, ControlerArg e)
         {
@@ -474,6 +598,38 @@ namespace RoombaSharp
         }
 
         #endregion
+
+        #region Timer Events
+
+        private void GrabTimer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.matCamera1 != null) this.matCamera1.Dispose();
+
+                this.matCamera1 = (Bitmap)this.camera1.QueryFrame().Bitmap.Clone();
+
+                if (this.matCamera1 == null) return;
+
+                if (this.pbCam1.InvokeRequired)
+                {
+                    this.pbCam1.BeginInvoke((MethodInvoker)delegate ()
+                    {
+                        this.pbCam1.Image = this.matCamera1;
+                    });
+                }
+                else
+                {
+                    this.pbCam1.Image = this.matCamera1;
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.ToString());
+            }
+        }
+
+        #endregion.
 
     }
 }
