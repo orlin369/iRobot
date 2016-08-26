@@ -132,18 +132,18 @@ namespace RoombaSharp
             // tsmiConnect
             // 
             this.tsmiConnect.Name = "tsmiConnect";
-            this.tsmiConnect.Size = new System.Drawing.Size(138, 26);
+            this.tsmiConnect.Size = new System.Drawing.Size(181, 26);
             this.tsmiConnect.Text = "Connect";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(135, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(178, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(138, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // tsmiRobot
@@ -160,7 +160,7 @@ namespace RoombaSharp
             // tsmiBeep
             // 
             this.tsmiBeep.Name = "tsmiBeep";
-            this.tsmiBeep.Size = new System.Drawing.Size(134, 26);
+            this.tsmiBeep.Size = new System.Drawing.Size(181, 26);
             this.tsmiBeep.Text = "Beep";
             this.tsmiBeep.Click += new System.EventHandler(this.tsmiBeep_Click);
             // 
@@ -172,7 +172,7 @@ namespace RoombaSharp
             this.maxToolStripMenuItem,
             this.dirtDetectToolStripMenuItem});
             this.lEDsToolStripMenuItem.Name = "lEDsToolStripMenuItem";
-            this.lEDsToolStripMenuItem.Size = new System.Drawing.Size(134, 26);
+            this.lEDsToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.lEDsToolStripMenuItem.Text = "LEDs";
             // 
             // spotToolStripMenuItem
@@ -206,7 +206,7 @@ namespace RoombaSharp
             this.vacuumToolStripMenuItem,
             this.sideBrushToolStripMenuItem});
             this.motorsToolStripMenuItem.Name = "motorsToolStripMenuItem";
-            this.motorsToolStripMenuItem.Size = new System.Drawing.Size(134, 26);
+            this.motorsToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.motorsToolStripMenuItem.Text = "Motors";
             // 
             // mainBrushToolStripMenuItem
@@ -236,7 +236,7 @@ namespace RoombaSharp
             this.powerToolStripMenuItem,
             this.maxToolStripMenuItem1});
             this.buttonsToolStripMenuItem.Name = "buttonsToolStripMenuItem";
-            this.buttonsToolStripMenuItem.Size = new System.Drawing.Size(134, 26);
+            this.buttonsToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.buttonsToolStripMenuItem.Text = "Buttons";
             // 
             // cleanToolStripMenuItem1

@@ -51,6 +51,22 @@ namespace iRobot.RoombaSharp
 
         #region API
 
+        public void powerOnRobot()
+        {
+            if (!SerialPort.IsOpen) return;
+            // If Create's power is off, turn it on
+            for (int times = 0; times < 3; times++)
+            {
+                this.SerialPort.DtrEnable = false;
+                System.Threading.Thread.Sleep(500);  // Delay in this state
+                this.SerialPort.DtrEnable = true;
+                System.Threading.Thread.Sleep(100);  // Delay in this state
+            }
+            this.SerialPort.DtrEnable = false;
+            System.Threading.Thread.Sleep(3500);  // Delay for startup
+        }
+
+
         /// <summary>
         /// Starts the SCI.The Start command must be sent before any
         /// other SCI commands.This command puts the SCI in passive
