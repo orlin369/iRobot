@@ -48,7 +48,16 @@ namespace RoombaSharp
         private object syncLock = new object();
 
         private int motionDebonceCounter = 0;
-        
+
+        /// <summary>
+        /// Camera 1.
+        /// </summary>
+        private Capture camera1;
+
+        private VideoDevice[] videoDevices;
+
+        private Bitmap matCamera1;
+
         #endregion
 
         #region Constructor
