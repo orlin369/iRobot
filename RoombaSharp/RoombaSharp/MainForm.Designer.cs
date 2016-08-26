@@ -78,6 +78,7 @@ namespace RoombaSharp
             this.leapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.captureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblSpeed = new System.Windows.Forms.Label();
             this.trbSpeed = new System.Windows.Forms.TrackBar();
             this.trbRadius = new System.Windows.Forms.TrackBar();
@@ -89,13 +90,13 @@ namespace RoombaSharp
             this.btnLeft = new System.Windows.Forms.Button();
             this.btnUp = new System.Windows.Forms.Button();
             this.lblHandPosition = new System.Windows.Forms.Label();
-            this.captureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pbCam1 = new System.Windows.Forms.PictureBox();
+            this.pbMain = new System.Windows.Forms.PictureBox();
             this.btnCapture = new System.Windows.Forms.Button();
+            this.btnRedSand = new System.Windows.Forms.Button();
             this.msMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCam1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
             this.SuspendLayout();
             // 
             // lblOutput
@@ -302,6 +303,12 @@ namespace RoombaSharp
             this.disconnectToolStripMenuItem.Text = "Disconnect";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.disconnectToolStripMenuItem_Click);
             // 
+            // captureToolStripMenuItem
+            // 
+            this.captureToolStripMenuItem.Name = "captureToolStripMenuItem";
+            this.captureToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
+            this.captureToolStripMenuItem.Text = "Capture";
+            // 
             // lblSpeed
             // 
             this.lblSpeed.AutoSize = true;
@@ -431,20 +438,14 @@ namespace RoombaSharp
             this.lblHandPosition.TabIndex = 29;
             this.lblHandPosition.Text = "Pos:";
             // 
-            // captureToolStripMenuItem
+            // pbMain
             // 
-            this.captureToolStripMenuItem.Name = "captureToolStripMenuItem";
-            this.captureToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
-            this.captureToolStripMenuItem.Text = "Capture";
-            // 
-            // pbCam1
-            // 
-            this.pbCam1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbCam1.Location = new System.Drawing.Point(570, 42);
-            this.pbCam1.Name = "pbCam1";
-            this.pbCam1.Size = new System.Drawing.Size(513, 404);
-            this.pbCam1.TabIndex = 30;
-            this.pbCam1.TabStop = false;
+            this.pbMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbMain.Location = new System.Drawing.Point(570, 42);
+            this.pbMain.Name = "pbMain";
+            this.pbMain.Size = new System.Drawing.Size(513, 404);
+            this.pbMain.TabIndex = 30;
+            this.pbMain.TabStop = false;
             // 
             // btnCapture
             // 
@@ -456,13 +457,24 @@ namespace RoombaSharp
             this.btnCapture.UseVisualStyleBackColor = true;
             this.btnCapture.Click += new System.EventHandler(this.btnCapture_Click);
             // 
+            // btnRedSand
+            // 
+            this.btnRedSand.Location = new System.Drawing.Point(710, 452);
+            this.btnRedSand.Name = "btnRedSand";
+            this.btnRedSand.Size = new System.Drawing.Size(134, 47);
+            this.btnRedSand.TabIndex = 32;
+            this.btnRedSand.Text = "Sand";
+            this.btnRedSand.UseVisualStyleBackColor = true;
+            this.btnRedSand.Click += new System.EventHandler(this.btnRedSand_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1290, 659);
+            this.Controls.Add(this.btnRedSand);
             this.Controls.Add(this.btnCapture);
-            this.Controls.Add(this.pbCam1);
+            this.Controls.Add(this.pbMain);
             this.Controls.Add(this.lblHandPosition);
             this.Controls.Add(this.tbConsole);
             this.Controls.Add(this.lblRadius);
@@ -487,7 +499,7 @@ namespace RoombaSharp
             this.msMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCam1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMain)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -532,8 +544,9 @@ namespace RoombaSharp
         private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
         private System.Windows.Forms.Label lblHandPosition;
         private System.Windows.Forms.ToolStripMenuItem captureToolStripMenuItem;
-        private System.Windows.Forms.PictureBox pbCam1;
+        private System.Windows.Forms.PictureBox pbMain;
         private System.Windows.Forms.Button btnCapture;
+        private System.Windows.Forms.Button btnRedSand;
     }
 }
 

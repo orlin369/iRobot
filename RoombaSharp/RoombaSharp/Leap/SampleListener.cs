@@ -31,7 +31,7 @@ namespace Leap
 
         public event EventHandler<ControlerArg> FrameGrabed;
 
-        private Object thisLock = new Object();
+        private object thisLock = new Object();
 
         private void SafeWriteLine(String line)
         {

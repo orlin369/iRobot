@@ -37,6 +37,7 @@ using Emgu.CV;
 using AForge.Video.DirectShow;
 
 using Video;
+using Emgu.CV.Structure;
 
 namespace RoombaSharp
 {
@@ -64,7 +65,9 @@ namespace RoombaSharp
 
         private VideoDevice[] videoDevices;
 
-        private Bitmap matCamera1;
+        private Bitmap inputImage;
+
+        private Bitmap outputImage;
 
         #endregion
 
@@ -334,6 +337,88 @@ namespace RoombaSharp
             }
         }
 
+        /// <summary>
+        /// Fit image from one size to input size.
+        /// </summary>
+        /// <param name="image">Input image.</param>
+        /// <param name="size">New size.</param>
+        /// <returns>Resized image.</returns>
+        public Bitmap FitImage(Bitmap image, Size size)
+        {
+            var ratioX = (double)size.Width / image.Width;
+            var ratioY = (double)size.Height / image.Height;
+            var ratio = Math.Min(ratioX, ratioY);
+
+            var newWidth = (int)(image.Width * ratio);
+            var newHeight = (int)(image.Height * ratio);
+
+            var newImage = new Bitmap(newWidth, newHeight);
+
+            using (var graphics = Graphics.FromImage(newImage))
+            {
+                graphics.DrawImage(image, 0, 0, newWidth, newHeight);
+            }
+
+            return newImage;
+        }
+
+        #endregion
+
+        #region Image Processing
+
+        /// <summary>
+        /// Process rocks in the image.
+        /// </summary>
+        private void ProcessSand()
+        {
+            // TODO: Make image be saved in MyDocs/Pictures.
+            if (this.inputImage == null)
+            {
+                return;
+            }
+
+            Thread workerThread = new Thread(() =>
+            {
+                /*
+                string path = @"C:\Users\POLYGONTeam\Documents\GitHub\Androbot\Androbot\Androbot\bin\Debug\Images\2D_20160728170358.PNG";
+                */
+                //Emgu.CV.Image<Bgr, byte> inpImg = new Emgu.CV.Image<Bgr, byte>(this.inputImage);
+                Emgu.CV.Image<Bgr, byte> inpImg = new Emgu.CV.Image<Bgr, byte>(inputImage);
+                
+                Emgu.CV.Image<Gray, byte> water = inpImg.InRange(new Bgr(0, 100, 0), new Bgr(255, 255, 255));
+                //TODO: To check does we need mask?
+                //water = water.Add(mask); 
+                //water._Dilate(1);
+
+                // Create the blobs.
+                Emgu.CV.Cvb.CvBlobs blobs = new Emgu.CV.Cvb.CvBlobs();
+                // Create blob detector.
+                Emgu.CV.Cvb.CvBlobDetector dtk = new Emgu.CV.Cvb.CvBlobDetector();
+                // Detect blobs.
+                uint state = dtk.Detect(water, blobs);
+
+                foreach (Emgu.CV.Cvb.CvBlob blob in blobs.Values)
+                {
+                    //Console.WriteLine("Center: X:{0:F3} Y:{1:F3}", blob.Centroid.X, blob.Centroid.Y);
+                    //Console.WriteLine("{0}", blob.Area);
+                    if (blob.Area >= 4500 && blob.Area < 34465)
+                    {
+                        //Console.WriteLine("{0}", blob.Area);
+                        inpImg.Draw(new CircleF(blob.Centroid, 5), new Bgr(Color.Red), 2);
+                        inpImg.Draw(blob.BoundingBox, new Bgr(Color.Blue), 2);
+                    }
+                }
+
+                if (this.outputImage != null) this.outputImage.Dispose();
+                // Dump the image.
+                this.outputImage = inpImg.ToBitmap();
+                // Show the nwe mage.
+                this.pbMain.Image = this.FitImage(this.outputImage, this.pbMain.Size);
+            });
+
+            workerThread.Start();
+        }
+
         #endregion
 
         #region Robot
@@ -423,7 +508,7 @@ namespace RoombaSharp
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
 
             // Display text.
-            this.pbCam1.Tag = item.Text;
+            this.pbMain.Tag = item.Text;
 
             // Get device.
             VideoDevice videoDevice = (VideoDevice)item.Tag;
@@ -560,6 +645,42 @@ namespace RoombaSharp
             this.DisconnectFromLeapMotion();
         }
 
+
+        private void btnCapture_Click(object sender, EventArgs e)
+        {
+            if (this.camera1 == null) return;
+
+            try
+            {
+                if (this.inputImage != null) this.inputImage.Dispose();
+
+                this.inputImage = (Bitmap)this.camera1.QueryFrame().Bitmap.Clone();
+
+                if (this.inputImage == null) return;
+
+                if (this.pbMain.InvokeRequired)
+                {
+                    this.pbMain.BeginInvoke((MethodInvoker)delegate ()
+                    {
+                        this.pbMain.Image = this.inputImage;
+                    });
+                }
+                else
+                {
+                    this.pbMain.Image = this.inputImage;
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.ToString());
+            }
+        }
+
+        private void btnRedSand_Click(object sender, EventArgs e)
+        {
+            this.ProcessSand();
+        }
+
         #endregion
 
         #region Track bar
@@ -587,32 +708,6 @@ namespace RoombaSharp
 
         #endregion
 
-        private void btnCapture_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (this.matCamera1 != null) this.matCamera1.Dispose();
 
-                this.matCamera1 = (Bitmap)this.camera1.QueryFrame().Bitmap.Clone();
-
-                if (this.matCamera1 == null) return;
-
-                if (this.pbCam1.InvokeRequired)
-                {
-                    this.pbCam1.BeginInvoke((MethodInvoker)delegate ()
-                    {
-                        this.pbCam1.Image = this.matCamera1;
-                    });
-                }
-                else
-                {
-                    this.pbCam1.Image = this.matCamera1;
-                }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.ToString());
-            }
-        }
     }
 }
