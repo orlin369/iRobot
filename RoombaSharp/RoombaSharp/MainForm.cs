@@ -38,6 +38,7 @@ using AForge.Video.DirectShow;
 
 using Video;
 using Emgu.CV.Structure;
+using Emgu.CV.UI;
 
 namespace RoombaSharp
 {
@@ -61,7 +62,7 @@ namespace RoombaSharp
         /// <summary>
         /// Camera 1.
         /// </summary>
-        private Capture camera1;
+        VideoCaptureDevice videoDevice = null;
 
         private VideoDevice[] videoDevices;
 
@@ -110,6 +111,16 @@ namespace RoombaSharp
         {
             this.DisconnectFromRobot();
             this.DisconnectFromLeapMotion();
+
+            // Stop if other stream was displaying.
+            if (this.videoDevice.IsRunning)
+            {
+                this.videoDevice.Stop();
+            }
+
+            this.videoDevice.NewFrame -= VideoDevice_NewFrame;
+
+            this.videoDevice = null;
         }
 
         #endregion
@@ -369,54 +380,58 @@ namespace RoombaSharp
         /// <summary>
         /// Process rocks in the image.
         /// </summary>
-        private void ProcessSand()
+        private void ProcessSand(Bitmap inputImage)
         {
-            // TODO: Make image be saved in MyDocs/Pictures.
-            if (this.inputImage == null)
-            {
-                return;
-            }
+            //Emgu.CV.Image<Bgr, byte> inpImg = new Emgu.CV.Image<Bgr, byte>(this.inputImage);
+            Emgu.CV.Image<Bgr, byte> inpImg = new Emgu.CV.Image<Bgr, byte>(inputImage);
 
-            Thread workerThread = new Thread(() =>
+            //FF2038
+            //Emgu.CV.Image<Gray, byte> sand = inpImg.InRange(new Bgr(20, 20, 255), new Bgr(150, 150, 255));
+            //TODO: To check if we need mask?
+            //water = water.Add(mask); 
+            //water._Dilate(1);
+
+
+            using (Image<Hsv, byte> hsv = inpImg.Convert<Hsv, byte>())
             {
-                /*
-                string path = @"C:\Users\POLYGONTeam\Documents\GitHub\Androbot\Androbot\Androbot\bin\Debug\Images\2D_20160728170358.PNG";
-                */
-                //Emgu.CV.Image<Bgr, byte> inpImg = new Emgu.CV.Image<Bgr, byte>(this.inputImage);
-                Emgu.CV.Image<Bgr, byte> inpImg = new Emgu.CV.Image<Bgr, byte>(inputImage);
-                
-                Emgu.CV.Image<Gray, byte> water = inpImg.InRange(new Bgr(0, 100, 0), new Bgr(255, 255, 255));
-                //TODO: To check does we need mask?
-                //water = water.Add(mask); 
-                //water._Dilate(1);
+                // 2. Obtain the 3 channels (hue, saturation and value) that compose the HSV image
+                Image<Gray, byte>[] channels = hsv.Split();
+
+                Image<Gray, byte> sand = channels[0].InRange(new Gray(0), new Gray(65)).ThresholdBinaryInv(new Gray(127), new Gray(255)).Erode(3);
+
+                //ImageViewer.Show(sand, "Sand Mask");
 
                 // Create the blobs.
                 Emgu.CV.Cvb.CvBlobs blobs = new Emgu.CV.Cvb.CvBlobs();
                 // Create blob detector.
                 Emgu.CV.Cvb.CvBlobDetector dtk = new Emgu.CV.Cvb.CvBlobDetector();
                 // Detect blobs.
-                uint state = dtk.Detect(water, blobs);
+                uint state = dtk.Detect(sand, blobs);
 
                 foreach (Emgu.CV.Cvb.CvBlob blob in blobs.Values)
                 {
                     //Console.WriteLine("Center: X:{0:F3} Y:{1:F3}", blob.Centroid.X, blob.Centroid.Y);
                     //Console.WriteLine("{0}", blob.Area);
-                    if (blob.Area >= 4500 && blob.Area < 34465)
+                    if (blob.Area >= 50 && blob.Area < 700)
                     {
                         //Console.WriteLine("{0}", blob.Area);
                         inpImg.Draw(new CircleF(blob.Centroid, 5), new Bgr(Color.Red), 2);
                         inpImg.Draw(blob.BoundingBox, new Bgr(Color.Blue), 2);
                     }
                 }
+            }
 
-                if (this.outputImage != null) this.outputImage.Dispose();
-                // Dump the image.
-                this.outputImage = inpImg.ToBitmap();
-                // Show the nwe mage.
-                this.pbMain.Image = this.FitImage(this.outputImage, this.pbMain.Size);
-            });
+            //return;
 
-            workerThread.Start();
+
+
+            //ImageViewer.Show(sand, "Sand Mask");
+            //return;
+
+            if (this.outputImage != null) this.outputImage.Dispose();
+            // Dump the image.
+            this.outputImage = inpImg.ToBitmap();
+            // Show the new image.
         }
 
         #endregion
@@ -508,7 +523,7 @@ namespace RoombaSharp
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
 
             // Display text.
-            this.pbMain.Tag = item.Text;
+            //this.pbMain.Tag = item.Text;
 
             // Get device.
             VideoDevice videoDevice = (VideoDevice)item.Tag;
@@ -523,16 +538,33 @@ namespace RoombaSharp
             try
             {
                 // Create camera.
-                this.camera1 = new Emgu.CV.Capture(videoDevice.Index);
+                
+                this.videoDevice = new VideoCaptureDevice(videoDevice.MonikerString);
+                this.videoDevice.NewFrame += VideoDevice_NewFrame;
+
                 // Stop if other stream was displaying.
-                this.camera1.Stop();
+                if (this.videoDevice.IsRunning)
+                {
+                    this.videoDevice.Stop();
+                }
+
                 // Start the new stream.
-                this.camera1.Start();
+                this.videoDevice.Start();
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception.ToString());
             }
+        }
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.ConnectToLeapMotion();
+        }
+
+        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.DisconnectFromLeapMotion();
         }
 
         #region Function Buttons
@@ -634,53 +666,6 @@ namespace RoombaSharp
             this.robot.Drive(0, 0);
         }
 
-
-        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.ConnectToLeapMotion();
-        }
-
-        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.DisconnectFromLeapMotion();
-        }
-
-
-        private void btnCapture_Click(object sender, EventArgs e)
-        {
-            if (this.camera1 == null) return;
-
-            try
-            {
-                if (this.inputImage != null) this.inputImage.Dispose();
-
-                this.inputImage = (Bitmap)this.camera1.QueryFrame().Bitmap.Clone();
-
-                if (this.inputImage == null) return;
-
-                if (this.pbMain.InvokeRequired)
-                {
-                    this.pbMain.BeginInvoke((MethodInvoker)delegate ()
-                    {
-                        this.pbMain.Image = this.inputImage;
-                    });
-                }
-                else
-                {
-                    this.pbMain.Image = this.inputImage;
-                }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.ToString());
-            }
-        }
-
-        private void btnRedSand_Click(object sender, EventArgs e)
-        {
-            this.ProcessSand();
-        }
-
         #endregion
 
         #region Track bar
@@ -708,6 +693,26 @@ namespace RoombaSharp
 
         #endregion
 
+        #region Camera
 
+        private void VideoDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
+        {
+            try
+            {
+                if (this.inputImage != null) this.inputImage.Dispose();
+
+                this.inputImage = (Bitmap)eventArgs.Frame.Clone();// clone the bitmap
+
+                if (this.inputImage == null) return;
+
+                this.ProcessSand((Bitmap)this.inputImage.Clone());
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.ToString());
+            }
+        }
+
+        #endregion
     }
 }

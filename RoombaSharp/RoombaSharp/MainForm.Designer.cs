@@ -52,7 +52,6 @@ namespace RoombaSharp
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblOutput = new System.Windows.Forms.Label();
             this.msMain = new System.Windows.Forms.MenuStrip();
             this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiConnect = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,36 +78,33 @@ namespace RoombaSharp
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.captureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tbcMain = new System.Windows.Forms.TabControl();
+            this.tbpMotion = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tbConsole = new System.Windows.Forms.TextBox();
+            this.pnlManualControl = new System.Windows.Forms.Panel();
+            this.lblHandPosition = new System.Windows.Forms.Label();
+            this.lblRadius = new System.Windows.Forms.Label();
+            this.trbRadius = new System.Windows.Forms.TrackBar();
+            this.btnStop = new System.Windows.Forms.Button();
             this.lblSpeed = new System.Windows.Forms.Label();
             this.trbSpeed = new System.Windows.Forms.TrackBar();
-            this.trbRadius = new System.Windows.Forms.TrackBar();
-            this.lblRadius = new System.Windows.Forms.Label();
-            this.tbConsole = new System.Windows.Forms.TextBox();
-            this.btnStop = new System.Windows.Forms.Button();
             this.btnDown = new System.Windows.Forms.Button();
             this.btnRight = new System.Windows.Forms.Button();
             this.btnLeft = new System.Windows.Forms.Button();
             this.btnUp = new System.Windows.Forms.Button();
-            this.lblHandPosition = new System.Windows.Forms.Label();
-            this.pbMain = new System.Windows.Forms.PictureBox();
-            this.btnCapture = new System.Windows.Forms.Button();
-            this.btnRedSand = new System.Windows.Forms.Button();
+            this.tbpCamera = new System.Windows.Forms.TabPage();
+            this.pbSand = new System.Windows.Forms.PictureBox();
             this.msMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).BeginInit();
+            this.tbcMain.SuspendLayout();
+            this.tbpMotion.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.pnlManualControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).BeginInit();
+            this.tbpCamera.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSand)).BeginInit();
             this.SuspendLayout();
-            // 
-            // lblOutput
-            // 
-            this.lblOutput.AutoSize = true;
-            this.lblOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblOutput.Location = new System.Drawing.Point(22, 506);
-            this.lblOutput.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.lblOutput.Name = "lblOutput";
-            this.lblOutput.Size = new System.Drawing.Size(65, 20);
-            this.lblOutput.TabIndex = 9;
-            this.lblOutput.Text = "Output";
             // 
             // msMain
             // 
@@ -309,82 +305,147 @@ namespace RoombaSharp
             this.captureToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
             this.captureToolStripMenuItem.Text = "Capture";
             // 
+            // tbcMain
+            // 
+            this.tbcMain.Controls.Add(this.tbpMotion);
+            this.tbcMain.Controls.Add(this.tbpCamera);
+            this.tbcMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbcMain.Location = new System.Drawing.Point(0, 28);
+            this.tbcMain.Name = "tbcMain";
+            this.tbcMain.SelectedIndex = 0;
+            this.tbcMain.Size = new System.Drawing.Size(1290, 631);
+            this.tbcMain.TabIndex = 34;
+            // 
+            // tbpMotion
+            // 
+            this.tbpMotion.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.tbpMotion.Controls.Add(this.tableLayoutPanel1);
+            this.tbpMotion.Location = new System.Drawing.Point(4, 29);
+            this.tbpMotion.Name = "tbpMotion";
+            this.tbpMotion.Padding = new System.Windows.Forms.Padding(3);
+            this.tbpMotion.Size = new System.Drawing.Size(1282, 598);
+            this.tbpMotion.TabIndex = 0;
+            this.tbpMotion.Text = "Motion";
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.tbConsole, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.pnlManualControl, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 71.79054F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 28.20946F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1276, 592);
+            this.tableLayoutPanel1.TabIndex = 42;
+            // 
+            // tbConsole
+            // 
+            this.tbConsole.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbConsole.Location = new System.Drawing.Point(4, 429);
+            this.tbConsole.Margin = new System.Windows.Forms.Padding(4);
+            this.tbConsole.Multiline = true;
+            this.tbConsole.Name = "tbConsole";
+            this.tbConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbConsole.Size = new System.Drawing.Size(1268, 159);
+            this.tbConsole.TabIndex = 41;
+            // 
+            // pnlManualControl
+            // 
+            this.pnlManualControl.Controls.Add(this.lblHandPosition);
+            this.pnlManualControl.Controls.Add(this.lblRadius);
+            this.pnlManualControl.Controls.Add(this.trbRadius);
+            this.pnlManualControl.Controls.Add(this.btnStop);
+            this.pnlManualControl.Controls.Add(this.lblSpeed);
+            this.pnlManualControl.Controls.Add(this.trbSpeed);
+            this.pnlManualControl.Controls.Add(this.btnDown);
+            this.pnlManualControl.Controls.Add(this.btnRight);
+            this.pnlManualControl.Controls.Add(this.btnLeft);
+            this.pnlManualControl.Controls.Add(this.btnUp);
+            this.pnlManualControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlManualControl.Location = new System.Drawing.Point(3, 3);
+            this.pnlManualControl.Name = "pnlManualControl";
+            this.pnlManualControl.Size = new System.Drawing.Size(1270, 419);
+            this.pnlManualControl.TabIndex = 42;
+            // 
+            // lblHandPosition
+            // 
+            this.lblHandPosition.AutoSize = true;
+            this.lblHandPosition.Location = new System.Drawing.Point(34, 383);
+            this.lblHandPosition.Name = "lblHandPosition";
+            this.lblHandPosition.Size = new System.Drawing.Size(47, 20);
+            this.lblHandPosition.TabIndex = 51;
+            this.lblHandPosition.Text = "Pos:";
+            // 
+            // lblRadius
+            // 
+            this.lblRadius.AutoSize = true;
+            this.lblRadius.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblRadius.Location = new System.Drawing.Point(23, 303);
+            this.lblRadius.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lblRadius.Name = "lblRadius";
+            this.lblRadius.Size = new System.Drawing.Size(89, 20);
+            this.lblRadius.TabIndex = 50;
+            this.lblRadius.Text = "Radius: 1";
+            // 
+            // trbRadius
+            // 
+            this.trbRadius.Location = new System.Drawing.Point(27, 333);
+            this.trbRadius.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.trbRadius.Maximum = 200;
+            this.trbRadius.Minimum = 1;
+            this.trbRadius.Name = "trbRadius";
+            this.trbRadius.Size = new System.Drawing.Size(312, 56);
+            this.trbRadius.TabIndex = 49;
+            this.trbRadius.Value = 1;
+            this.trbRadius.ValueChanged += new System.EventHandler(this.trbRadius_ValueChanged);
+            // 
+            // btnStop
+            // 
+            this.btnStop.Image = global::RoombaSharp.Images.Stop;
+            this.btnStop.Location = new System.Drawing.Point(135, 121);
+            this.btnStop.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(96, 96);
+            this.btnStop.TabIndex = 48;
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
             // lblSpeed
             // 
             this.lblSpeed.AutoSize = true;
             this.lblSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblSpeed.Location = new System.Drawing.Point(244, 42);
+            this.lblSpeed.Location = new System.Drawing.Point(256, 15);
             this.lblSpeed.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblSpeed.Name = "lblSpeed";
             this.lblSpeed.Size = new System.Drawing.Size(176, 20);
-            this.lblSpeed.TabIndex = 23;
+            this.lblSpeed.TabIndex = 47;
             this.lblSpeed.Text = "Speed: 0,000[mm/s]";
             // 
             // trbSpeed
             // 
-            this.trbSpeed.Location = new System.Drawing.Point(368, 42);
+            this.trbSpeed.Location = new System.Drawing.Point(380, 15);
             this.trbSpeed.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.trbSpeed.Maximum = 200;
             this.trbSpeed.Minimum = 15;
             this.trbSpeed.Name = "trbSpeed";
             this.trbSpeed.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.trbSpeed.Size = new System.Drawing.Size(56, 308);
-            this.trbSpeed.TabIndex = 22;
+            this.trbSpeed.TabIndex = 46;
             this.trbSpeed.Value = 15;
             this.trbSpeed.ValueChanged += new System.EventHandler(this.trbSpeed_ValueChanged);
-            // 
-            // trbRadius
-            // 
-            this.trbRadius.Location = new System.Drawing.Point(15, 360);
-            this.trbRadius.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
-            this.trbRadius.Maximum = 200;
-            this.trbRadius.Minimum = 1;
-            this.trbRadius.Name = "trbRadius";
-            this.trbRadius.Size = new System.Drawing.Size(312, 56);
-            this.trbRadius.TabIndex = 26;
-            this.trbRadius.Value = 1;
-            this.trbRadius.ValueChanged += new System.EventHandler(this.trbRadius_ValueChanged);
-            // 
-            // lblRadius
-            // 
-            this.lblRadius.AutoSize = true;
-            this.lblRadius.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRadius.Location = new System.Drawing.Point(11, 330);
-            this.lblRadius.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.lblRadius.Name = "lblRadius";
-            this.lblRadius.Size = new System.Drawing.Size(89, 20);
-            this.lblRadius.TabIndex = 27;
-            this.lblRadius.Text = "Radius: 1";
-            // 
-            // tbConsole
-            // 
-            this.tbConsole.Location = new System.Drawing.Point(15, 539);
-            this.tbConsole.Margin = new System.Windows.Forms.Padding(4);
-            this.tbConsole.Multiline = true;
-            this.tbConsole.Name = "tbConsole";
-            this.tbConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbConsole.Size = new System.Drawing.Size(487, 84);
-            this.tbConsole.TabIndex = 28;
-            // 
-            // btnStop
-            // 
-            this.btnStop.Image = global::RoombaSharp.Images.Stop;
-            this.btnStop.Location = new System.Drawing.Point(123, 148);
-            this.btnStop.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(96, 96);
-            this.btnStop.TabIndex = 24;
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // btnDown
             // 
             this.btnDown.Image = global::RoombaSharp.Images.ArrowDown;
-            this.btnDown.Location = new System.Drawing.Point(123, 254);
+            this.btnDown.Location = new System.Drawing.Point(135, 227);
             this.btnDown.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btnDown.Name = "btnDown";
             this.btnDown.Size = new System.Drawing.Size(96, 96);
-            this.btnDown.TabIndex = 21;
+            this.btnDown.TabIndex = 45;
             this.btnDown.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnDown.UseVisualStyleBackColor = true;
             this.btnDown.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnDown_MouseDown);
@@ -393,11 +454,11 @@ namespace RoombaSharp
             // btnRight
             // 
             this.btnRight.Image = global::RoombaSharp.Images.ArrowRight;
-            this.btnRight.Location = new System.Drawing.Point(231, 148);
+            this.btnRight.Location = new System.Drawing.Point(243, 121);
             this.btnRight.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btnRight.Name = "btnRight";
             this.btnRight.Size = new System.Drawing.Size(96, 96);
-            this.btnRight.TabIndex = 20;
+            this.btnRight.TabIndex = 44;
             this.btnRight.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnRight.UseVisualStyleBackColor = true;
             this.btnRight.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnRight_MouseDown);
@@ -406,11 +467,11 @@ namespace RoombaSharp
             // btnLeft
             // 
             this.btnLeft.Image = global::RoombaSharp.Images.ArrowLeft;
-            this.btnLeft.Location = new System.Drawing.Point(15, 148);
+            this.btnLeft.Location = new System.Drawing.Point(27, 121);
             this.btnLeft.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btnLeft.Name = "btnLeft";
             this.btnLeft.Size = new System.Drawing.Size(96, 96);
-            this.btnLeft.TabIndex = 19;
+            this.btnLeft.TabIndex = 43;
             this.btnLeft.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnLeft.UseVisualStyleBackColor = true;
             this.btnLeft.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnLeft_MouseDown);
@@ -419,74 +480,42 @@ namespace RoombaSharp
             // btnUp
             // 
             this.btnUp.Image = global::RoombaSharp.Images.ArrowUp;
-            this.btnUp.Location = new System.Drawing.Point(123, 42);
+            this.btnUp.Location = new System.Drawing.Point(135, 15);
             this.btnUp.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btnUp.Name = "btnUp";
             this.btnUp.Size = new System.Drawing.Size(96, 96);
-            this.btnUp.TabIndex = 18;
+            this.btnUp.TabIndex = 42;
             this.btnUp.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnUp.UseVisualStyleBackColor = true;
             this.btnUp.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnUp_MouseDown);
             this.btnUp.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnUp_MouseUp);
             // 
-            // lblHandPosition
+            // tbpCamera
             // 
-            this.lblHandPosition.AutoSize = true;
-            this.lblHandPosition.Location = new System.Drawing.Point(361, 383);
-            this.lblHandPosition.Name = "lblHandPosition";
-            this.lblHandPosition.Size = new System.Drawing.Size(47, 20);
-            this.lblHandPosition.TabIndex = 29;
-            this.lblHandPosition.Text = "Pos:";
+            this.tbpCamera.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.tbpCamera.Controls.Add(this.pbSand);
+            this.tbpCamera.Location = new System.Drawing.Point(4, 29);
+            this.tbpCamera.Name = "tbpCamera";
+            this.tbpCamera.Padding = new System.Windows.Forms.Padding(3);
+            this.tbpCamera.Size = new System.Drawing.Size(1282, 598);
+            this.tbpCamera.TabIndex = 1;
+            this.tbpCamera.Text = "Camera";
             // 
-            // pbMain
+            // pbSand
             // 
-            this.pbMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbMain.Location = new System.Drawing.Point(570, 42);
-            this.pbMain.Name = "pbMain";
-            this.pbMain.Size = new System.Drawing.Size(513, 404);
-            this.pbMain.TabIndex = 30;
-            this.pbMain.TabStop = false;
-            // 
-            // btnCapture
-            // 
-            this.btnCapture.Location = new System.Drawing.Point(570, 452);
-            this.btnCapture.Name = "btnCapture";
-            this.btnCapture.Size = new System.Drawing.Size(134, 47);
-            this.btnCapture.TabIndex = 31;
-            this.btnCapture.Text = "Capture";
-            this.btnCapture.UseVisualStyleBackColor = true;
-            this.btnCapture.Click += new System.EventHandler(this.btnCapture_Click);
-            // 
-            // btnRedSand
-            // 
-            this.btnRedSand.Location = new System.Drawing.Point(710, 452);
-            this.btnRedSand.Name = "btnRedSand";
-            this.btnRedSand.Size = new System.Drawing.Size(134, 47);
-            this.btnRedSand.TabIndex = 32;
-            this.btnRedSand.Text = "Sand";
-            this.btnRedSand.UseVisualStyleBackColor = true;
-            this.btnRedSand.Click += new System.EventHandler(this.btnRedSand_Click);
+            this.pbSand.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbSand.Location = new System.Drawing.Point(29, 19);
+            this.pbSand.Name = "pbSand";
+            this.pbSand.Size = new System.Drawing.Size(640, 480);
+            this.pbSand.TabIndex = 34;
+            this.pbSand.TabStop = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1290, 659);
-            this.Controls.Add(this.btnRedSand);
-            this.Controls.Add(this.btnCapture);
-            this.Controls.Add(this.pbMain);
-            this.Controls.Add(this.lblHandPosition);
-            this.Controls.Add(this.tbConsole);
-            this.Controls.Add(this.lblRadius);
-            this.Controls.Add(this.trbRadius);
-            this.Controls.Add(this.btnStop);
-            this.Controls.Add(this.lblSpeed);
-            this.Controls.Add(this.trbSpeed);
-            this.Controls.Add(this.btnDown);
-            this.Controls.Add(this.btnRight);
-            this.Controls.Add(this.btnLeft);
-            this.Controls.Add(this.btnUp);
-            this.Controls.Add(this.lblOutput);
+            this.Controls.Add(this.tbcMain);
             this.Controls.Add(this.msMain);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.MainMenuStrip = this.msMain;
@@ -497,16 +526,22 @@ namespace RoombaSharp
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.msMain.ResumeLayout(false);
             this.msMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).EndInit();
+            this.tbcMain.ResumeLayout(false);
+            this.tbpMotion.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.pnlManualControl.ResumeLayout(false);
+            this.pnlManualControl.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbMain)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).EndInit();
+            this.tbpCamera.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbSand)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Label lblOutput;
         private System.Windows.Forms.MenuStrip msMain;
         private System.Windows.Forms.ToolStripMenuItem tsmiFile;
         private System.Windows.Forms.ToolStripMenuItem tsmiConnect;
@@ -514,14 +549,6 @@ namespace RoombaSharp
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiRobot;
         private System.Windows.Forms.ToolStripMenuItem tsmiBeep;
-        private System.Windows.Forms.Button btnStop;
-        private System.Windows.Forms.Label lblSpeed;
-        private System.Windows.Forms.TrackBar trbSpeed;
-        private System.Windows.Forms.Button btnDown;
-        private System.Windows.Forms.Button btnRight;
-        private System.Windows.Forms.Button btnLeft;
-        private System.Windows.Forms.Button btnUp;
-        private System.Windows.Forms.TrackBar trbRadius;
         private System.Windows.Forms.ToolStripMenuItem lEDsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem motorsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem spotToolStripMenuItem;
@@ -537,16 +564,27 @@ namespace RoombaSharp
         private System.Windows.Forms.ToolStripMenuItem dockToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem powerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem maxToolStripMenuItem1;
-        private System.Windows.Forms.Label lblRadius;
-        private System.Windows.Forms.TextBox tbConsole;
         private System.Windows.Forms.ToolStripMenuItem leapToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
-        private System.Windows.Forms.Label lblHandPosition;
         private System.Windows.Forms.ToolStripMenuItem captureToolStripMenuItem;
-        private System.Windows.Forms.PictureBox pbMain;
-        private System.Windows.Forms.Button btnCapture;
-        private System.Windows.Forms.Button btnRedSand;
+        private System.Windows.Forms.TabControl tbcMain;
+        private System.Windows.Forms.TabPage tbpMotion;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TextBox tbConsole;
+        private System.Windows.Forms.Panel pnlManualControl;
+        private System.Windows.Forms.Label lblHandPosition;
+        private System.Windows.Forms.Label lblRadius;
+        private System.Windows.Forms.TrackBar trbRadius;
+        private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.Label lblSpeed;
+        private System.Windows.Forms.TrackBar trbSpeed;
+        private System.Windows.Forms.Button btnDown;
+        private System.Windows.Forms.Button btnRight;
+        private System.Windows.Forms.Button btnLeft;
+        private System.Windows.Forms.Button btnUp;
+        private System.Windows.Forms.TabPage tbpCamera;
+        private System.Windows.Forms.PictureBox pbSand;
     }
 }
 
