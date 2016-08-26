@@ -66,8 +66,6 @@ namespace RoombaSharp
 
         private Bitmap matCamera1;
 
-        private System.Windows.Forms.Timer grabTimer = new System.Windows.Forms.Timer();
-
         #endregion
 
         #region Constructor
@@ -103,27 +101,12 @@ namespace RoombaSharp
 
             // Add cameras to the menus.
             this.AddCameras(this.videoDevices, this.captureToolStripMenuItem, this.mItCaptureeDevice_Click);
-
-            this.grabTimer.Stop();
-            this.grabTimer.Interval = 100;
-            this.grabTimer.Tick += GrabTimer_Tick;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.DisconnectFromRobot();
             this.DisconnectFromLeapMotion();
-            this.CloseCamera();
-        }
-
-        #endregion
-
-        #region Camera
-
-        private void CloseCamera()
-        {
-            if (this.camera1 != null) this.camera1.Stop();
-            this.grabTimer.Stop();
         }
 
         #endregion
@@ -445,6 +428,13 @@ namespace RoombaSharp
             // Get device.
             VideoDevice videoDevice = (VideoDevice)item.Tag;
 
+            foreach(ToolStripMenuItem mItem in this.captureToolStripMenuItem.DropDown.Items)
+            {
+                item.Checked = false;
+            }
+
+            item.Checked = true;
+
             try
             {
                 // Create camera.
@@ -453,8 +443,6 @@ namespace RoombaSharp
                 this.camera1.Stop();
                 // Start the new stream.
                 this.camera1.Start();
-
-                this.grabTimer.Start();
             }
             catch (Exception exception)
             {
@@ -599,9 +587,7 @@ namespace RoombaSharp
 
         #endregion
 
-        #region Timer Events
-
-        private void GrabTimer_Tick(object sender, EventArgs e)
+        private void btnCapture_Click(object sender, EventArgs e)
         {
             try
             {
@@ -628,8 +614,5 @@ namespace RoombaSharp
                 Console.WriteLine(exception.ToString());
             }
         }
-
-        #endregion.
-
     }
 }

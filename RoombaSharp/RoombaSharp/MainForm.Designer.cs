@@ -91,6 +91,7 @@ namespace RoombaSharp
             this.lblHandPosition = new System.Windows.Forms.Label();
             this.captureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pbCam1 = new System.Windows.Forms.PictureBox();
+            this.btnCapture = new System.Windows.Forms.Button();
             this.msMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).BeginInit();
@@ -119,7 +120,7 @@ namespace RoombaSharp
             this.msMain.Location = new System.Drawing.Point(0, 0);
             this.msMain.Name = "msMain";
             this.msMain.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.msMain.Size = new System.Drawing.Size(1006, 28);
+            this.msMain.Size = new System.Drawing.Size(1290, 28);
             this.msMain.TabIndex = 16;
             this.msMain.Text = "menuStrip1";
             // 
@@ -439,17 +440,28 @@ namespace RoombaSharp
             // pbCam1
             // 
             this.pbCam1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbCam1.Location = new System.Drawing.Point(459, 42);
+            this.pbCam1.Location = new System.Drawing.Point(570, 42);
             this.pbCam1.Name = "pbCam1";
             this.pbCam1.Size = new System.Drawing.Size(513, 404);
             this.pbCam1.TabIndex = 30;
             this.pbCam1.TabStop = false;
             // 
+            // btnCapture
+            // 
+            this.btnCapture.Location = new System.Drawing.Point(570, 452);
+            this.btnCapture.Name = "btnCapture";
+            this.btnCapture.Size = new System.Drawing.Size(134, 47);
+            this.btnCapture.TabIndex = 31;
+            this.btnCapture.Text = "Capture";
+            this.btnCapture.UseVisualStyleBackColor = true;
+            this.btnCapture.Click += new System.EventHandler(this.btnCapture_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1006, 659);
+            this.ClientSize = new System.Drawing.Size(1290, 659);
+            this.Controls.Add(this.btnCapture);
             this.Controls.Add(this.pbCam1);
             this.Controls.Add(this.lblHandPosition);
             this.Controls.Add(this.tbConsole);
@@ -521,6 +533,7 @@ namespace RoombaSharp
         private System.Windows.Forms.Label lblHandPosition;
         private System.Windows.Forms.ToolStripMenuItem captureToolStripMenuItem;
         private System.Windows.Forms.PictureBox pbCam1;
+        private System.Windows.Forms.Button btnCapture;
     }
 }
 
