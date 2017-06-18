@@ -33,6 +33,8 @@ using iRobot.RoombaSharp;
 using iRobot.Events;
 
 using RoombaSharp.Video;
+using RoombaSharp.Connectors;
+using RoombaSharp.Adapters;
 
 namespace RoombaSharp
 {
@@ -70,6 +72,13 @@ namespace RoombaSharp
         /// Dump image.
         /// </summary>
         private Bitmap dumpImage;
+
+        private System.Windows.Forms.Timer sendImageTimer;
+        
+        /// <summary>
+        /// Connector
+        /// </summary>
+        private DataConnector connector;
 
         #endregion
 
@@ -186,7 +195,248 @@ namespace RoombaSharp
         {
             this.DisconnectFromRobot();
             this.DisconnectFromCamera();
+            this.StopSendImageTimer();
+            this.DisconnectVisionSystemFromMqtt();
         }
+
+        #endregion
+
+        #region Tool Strip Menu Items
+
+        #region Robot
+
+        private void tsmiConnect_Click(object sender, EventArgs e)
+        {
+            this.DisconnectFromRobot();
+            ToolStripMenuItem item = (ToolStripMenuItem)sender;
+            this.ConnectToRobot(item.Text);
+        }
+
+        private void tsmiBeep_Click(object sender, EventArgs e)
+        {
+            // Create the Melodie thread.
+            Thread worker = new Thread(
+                new ThreadStart(
+                    delegate ()
+                    {
+                        if (this.robot == null) return;
+
+                        System.Threading.Thread.Sleep(20);
+                        for (byte i = 31; i <= 127; i++)
+                        {
+                            this.robot.Play(i);
+                            System.Threading.Thread.Sleep(100);
+                        }
+                    }
+                )
+            );
+
+            // Start the Melodie thread.
+            worker.Start();
+        }
+
+        #region Buttons
+
+        private void tsmiBtnClean_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Clean();
+        }
+
+        private void tsmiBtnSpot_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Spot();
+        }
+
+        private void tsmiBtnDock_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.ForceSeekingDock();
+        }
+
+        private void tsmiBtnPower_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.Power();
+        }
+
+        private void tsmiBtnMax_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Max();
+        }
+
+        #endregion
+
+        #endregion
+
+        private void tsmiSettings_Click(object sender, EventArgs e)
+        {
+            using (Settings.SettingsForm sf = new Settings.SettingsForm())
+            {
+                sf.ShowDialog();
+            }
+        }
+
+        private void tsmiExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        #region Camera
+
+        private void tsmiStopCaptureeDevice_Click(object sender, EventArgs e)
+        {
+            this.DisconnectFromCamera();
+            this.StopSendImageTimer();
+
+            foreach (ToolStripMenuItem cameraItem in this.tsmiCapture.DropDown.Items)
+            {
+                cameraItem.Enabled = true;
+                cameraItem.Checked = false;
+            }
+        }
+
+        private void tsmiCaptureeDevice_Click(object sender, EventArgs e)
+        {
+            // Create instance of caller.
+            ToolStripMenuItem item = (ToolStripMenuItem)sender;
+
+            // Display text.
+            //this.pbMain.Tag = item.Text;
+
+            // Get device.
+            VideoDevice videoDevice = (VideoDevice)item.Tag;
+
+            foreach (ToolStripMenuItem mItem in this.tsmiCapture.DropDown.Items)
+            {
+                item.Checked = false;
+            }
+
+            item.Checked = true;
+
+            try
+            {
+                // Create camera.
+
+                this.videoDevice = new VideoCaptureDevice(videoDevice.MonikerString);
+                this.videoDevice.NewFrame += VideoDevice_NewFrame;
+
+                // Stop if other stream was displaying.
+                if (this.videoDevice.IsRunning)
+                {
+                    this.videoDevice.Stop();
+                }
+
+                // Start the new stream.
+                this.videoDevice.Start();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.ToString());
+            }
+        }
+
+        #endregion
+
+        #region MQTT
+
+        private void tsmiMqttConnect_Click(object sender, EventArgs e)
+        {
+            this.ConnectVisionSystemViaMqtt();
+            this.StartSendImageTimer();
+
+            this.tsslMQTTConnection.Text = "MQTT Connection: " + this.connector.IsConnected.ToString();
+        }
+
+        private void tsmiMqttDisconnect_Click(object sender, EventArgs e)
+        {
+            this.StopSendImageTimer();
+            this.DisconnectVisionSystemFromMqtt();
+
+            this.tsslMQTTConnection.Text = "MQTT Connection: " + this.connector.IsConnected.ToString();
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Buttons
+
+        private void btnRight_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Drive((short)this.trbSpeed.Value, (short)-this.trbRadius.Value);
+        }
+
+        private void btnLeft_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Drive((short)this.trbSpeed.Value, (short)this.trbRadius.Value);
+        }
+
+        private void btnUp_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Drive((short)this.trbSpeed.Value, 0);
+        }
+
+        private void btnDown_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Drive((short)-this.trbSpeed.Value, 0);
+        }
+
+
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Drive(0, 0);
+        }
+
+        private void btnUp_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Drive(0, 0);
+        }
+
+        private void btnRight_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Drive(0, 0);
+        }
+
+        private void btnDown_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Drive(0, 0);
+        }
+
+        private void btnLeft_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Drive(0, 0);
+        }
+
+        #endregion
+
+        #region Track bar
+
+        private void trbSpeed_ValueChanged(object sender, EventArgs e)
+        {
+            this.lblSpeed.Text = String.Format("Speed: {0:F3}[mm/s]", ((float)this.trbSpeed.Value / 5.0));
+        }
+
+        private void trbRadius_ValueChanged(object sender, EventArgs e)
+        {
+            this.lblRadius.Text = String.Format("Radius: {0}", this.trbRadius.Value);
+        }
+
+
 
         #endregion
 
@@ -202,7 +452,7 @@ namespace RoombaSharp
             this.communicator.OnMesage += this.robot_OnMesage;
             this.communicator.OnConnect += Robot_OnConnect;
             this.communicator.OnDisconnect += Robot_OnDisconnect;
-            
+
             this.robot = new Roomba(communicator);
             this.robot.Connect();
             this.robot.Start();
@@ -388,235 +638,105 @@ namespace RoombaSharp
 
         #endregion
 
-        #region Tool Strip Menu Items
+        #region Send Image Timer
 
-        #region Robot
-
-        private void tsmiConnect_Click(object sender, EventArgs e)
+        private void StartSendImageTimer()
         {
-            this.DisconnectFromRobot();
-            ToolStripMenuItem item = (ToolStripMenuItem)sender;
-            this.ConnectToRobot(item.Text);
+            if (this.sendImageTimer == null)
+            {
+                this.sendImageTimer = new System.Windows.Forms.Timer();
+                this.sendImageTimer.Stop();
+                this.sendImageTimer.Tick += SendImageTimer_Tick;
+                this.sendImageTimer.Interval = 1000;
+            }
+
+            if(!this.sendImageTimer.Enabled)
+            {
+                this.sendImageTimer.Start();
+            }
         }
 
-        private void tsmiBeep_Click(object sender, EventArgs e)
+        private void StopSendImageTimer()
         {
-            // Create the Melodie thread.
-            Thread worker = new Thread(
-                new ThreadStart(
-                    delegate ()
-                    {
-                        if (this.robot == null) return;
+            if (this.sendImageTimer == null) return;
 
-                        System.Threading.Thread.Sleep(20);
-                        for (byte i = 31; i <= 127; i++)
-                        {
-                            this.robot.Play(i);
-                            System.Threading.Thread.Sleep(100);
-                        }
-                    }
-                )
-            );
+            if (this.sendImageTimer.Enabled)
+            {
+                this.sendImageTimer.Stop();
+            }
 
-            // Start the Melodie thread.
-            worker.Start();
+            this.sendImageTimer.Stop();
         }
 
-        #region Buttons
-
-        private void tsmiBtnClean_Click(object sender, EventArgs e)
+        private void SendImageTimer_Tick(object sender, EventArgs e)
         {
-            if (this.robot == null) return;
-            this.robot.Clean();
-        }
-
-        private void tsmiBtnSpot_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Spot();
-        }
-
-        private void tsmiBtnDock_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Start();
-            this.robot.ForceSeekingDock();
-        }
-
-        private void tsmiBtnPower_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Start();
-            this.robot.Power();
-        }
-
-        private void tsmiBtnMax_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Max();
+            if (this.dumpImage == null) return;
+            this.SendImageData(this.dumpImage);
         }
 
         #endregion
 
-        #endregion
+        #region Data Connector
 
-        private void tsmiSettings_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Connect vision system.
+        /// </summary>
+        private void ConnectVisionSystemViaMqtt()
         {
-            using (Settings.SettingsForm sf = new Settings.SettingsForm())
-            {
-                sf.ShowDialog();
-            }
-        }
-
-        private void tsmiExit_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        #region Camera
-
-        private void tsmiStopCaptureeDevice_Click(object sender, EventArgs e)
-        {
-            this.DisconnectFromCamera();
-
-            foreach (ToolStripMenuItem cameraItem in this.tsmiCapture.DropDown.Items)
-            {
-                cameraItem.Enabled = true;
-                cameraItem.Checked = false;
-            }
-        }
-
-        private void tsmiCaptureeDevice_Click(object sender, EventArgs e)
-        {
-            // Create instance of caller.
-            ToolStripMenuItem item = (ToolStripMenuItem)sender;
-
-            // Display text.
-            //this.pbMain.Tag = item.Text;
-
-            // Get device.
-            VideoDevice videoDevice = (VideoDevice)item.Tag;
-
-            foreach (ToolStripMenuItem mItem in this.tsmiCapture.DropDown.Items)
-            {
-                item.Checked = false;
-            }
-
-            item.Checked = true;
 
             try
             {
-                // Create camera.
+                this.connector = new DataConnector(new MqttAdapter(
+                    Properties.Settings.Default.BrokerHost,
+                    Properties.Settings.Default.BrokerPort,
+                    Properties.Settings.Default.MqttInputTopic,
+                    Properties.Settings.Default.MqttOutputTopic,
+                    Properties.Settings.Default.MqttImageTopic));
 
-                this.videoDevice = new VideoCaptureDevice(videoDevice.MonikerString);
-                this.videoDevice.NewFrame += VideoDevice_NewFrame;
-
-                // Stop if other stream was displaying.
-                if (this.videoDevice.IsRunning)
-                {
-                    this.videoDevice.Stop();
-                }
-
-                // Start the new stream.
-                this.videoDevice.Start();
+                //this.robot.OnMessage += myRobot_OnMessage;
+                //this.robot.OnSensors += myRobot_OnSensors;
+                //this.robot.OnDistanceSensors += myRobot_OnDistanceSensors;
+                //this.robot.OnGreatingsMessage += myRobot_OnGreatingsMessage;
+                //this.robot.OnStoped += myRobot_OnStoped;
+                //this.robot.OnPosition += myRobot_OnPosition;
+                this.connector.Connect();
+                //this.robot.Reset();
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
+                this.LogMessage(exception.ToString());
             }
         }
 
-        #endregion
-
-        #region MQTT
-
-        private void tsmiMqttConnect_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Disconnect vision system.
+        /// </summary>
+        private void DisconnectVisionSystemFromMqtt()
         {
-
+            try
+            {
+                if (this.connector != null && this.connector.IsConnected)
+                {
+                    this.connector.Disconnect();
+                }
+            }
+            catch (Exception exception)
+            {
+                this.LogMessage(exception.ToString());
+            }
         }
 
-        private void tsmiMqttDisconnect_Click(object sender, EventArgs e)
+        private void SendImageData(Bitmap image)
         {
-
+            if (this.connector == null || !this.connector.IsConnected) return;
+            if (image == null) return;
+            try
+            {
+                this.connector.SendImage(this.FitImage(image, Properties.Settings.Default.ImageSize));
+            }
+            catch
+            { }
         }
-
-        #endregion
-
-        #endregion
-
-        #region Buttons
-
-        private void btnRight_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Drive((short)this.trbSpeed.Value, (short)-this.trbRadius.Value);
-        }
-
-        private void btnLeft_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Drive((short)this.trbSpeed.Value, (short)this.trbRadius.Value);
-        }
-
-        private void btnUp_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Drive((short)this.trbSpeed.Value, 0);
-        }
-
-        private void btnDown_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Drive((short)-this.trbSpeed.Value, 0);
-        }
-
-
-
-        private void btnStop_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Drive(0, 0);
-        }
-
-        private void btnUp_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Drive(0, 0);
-        }
-
-        private void btnRight_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Drive(0, 0);
-        }
-
-        private void btnDown_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Drive(0, 0);
-        }
-
-        private void btnLeft_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Drive(0, 0);
-        }
-
-        #endregion
-
-        #region Track bar
-
-        private void trbSpeed_ValueChanged(object sender, EventArgs e)
-        {
-            this.lblSpeed.Text = String.Format("Speed: {0:F3}[mm/s]", ((float)this.trbSpeed.Value / 5.0));
-        }
-
-        private void trbRadius_ValueChanged(object sender, EventArgs e)
-        {
-            this.lblRadius.Text = String.Format("Radius: {0}", this.trbRadius.Value);
-        }
-
-
 
         #endregion
 
