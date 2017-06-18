@@ -32,7 +32,7 @@ using AForge.Video.DirectShow;
 using iRobot.RoombaSharp;
 using iRobot.Events;
 
-using Video;
+using RoombaSharp.Video;
 
 namespace RoombaSharp
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Video
+namespace RoombaSharp.Video
 {
     /// <summary>
     /// Structure to Store Information about Video Devices

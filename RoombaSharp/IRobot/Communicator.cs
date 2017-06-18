@@ -61,11 +61,9 @@ namespace iRobot.RoombaSharp
         {
             get
             {
-                bool state = false;
+                if (this.SerialPort == null) return false;
 
-                state = (this.SerialPort != null) && (this.SerialPort.IsOpen);
-
-                return state;
+                return this.SerialPort.IsOpen;
             }
         }
         
