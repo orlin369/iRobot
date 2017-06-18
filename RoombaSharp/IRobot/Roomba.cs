@@ -70,7 +70,7 @@ namespace iRobot.RoombaSharp
         {
             
             if (!communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpCode.START }, 0, 1);
+            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.START }, 0, 1);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace iRobot.RoombaSharp
         public void Baud(BoudRates baudRate)
         {
             if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpCode.BAUD, (byte)baudRate }, 0, 2);
+            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.BAUD, (byte)baudRate }, 0, 2);
         }
         
         /// <summary>
@@ -101,7 +101,7 @@ namespace iRobot.RoombaSharp
         public void Control()
         {
             if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpCode.CONTROL }, 0, 1);
+            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.CONTROL }, 0, 1);
         }
         
         /// <summary>
@@ -116,7 +116,7 @@ namespace iRobot.RoombaSharp
         {
             if (this.communicator == null || !communicator.IsConnected) return;
             byte leds = Convert(new bool[] { false, false, false, false, spot, clean, max, dirtDetect });
-            byte[] command = { (byte)RoombaOpCode.LEDS,  leds};
+            byte[] command = { (byte)RoombaOpcodes.LEDS,  leds};
             this.communicator.Write(command, 0, command.Length);
         }
         
@@ -127,7 +127,7 @@ namespace iRobot.RoombaSharp
         public void Safe()
         {
             if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpCode.SAFE }, 0, 1);
+            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.SAFE }, 0, 1);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace iRobot.RoombaSharp
         public void Full()
         {
             if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpCode.FULL }, 0, 1);
+            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.FULL }, 0, 1);
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace iRobot.RoombaSharp
         public void Power()
         {
             if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpCode.POWER }, 0, 1);
+            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.POWER }, 0, 1);
         }
 
         public void Connect()
@@ -168,7 +168,7 @@ namespace iRobot.RoombaSharp
         public void Spot()
         {
             if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpCode.SPOT }, 0, 1);
+            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.SPOT }, 0, 1);
         }
 
         public void Disconnect()
@@ -185,7 +185,7 @@ namespace iRobot.RoombaSharp
         public void Clean()
         {
             if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpCode.CLEAN }, 0, 1);
+            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.CLEAN }, 0, 1);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace iRobot.RoombaSharp
         public void Max()
         {
             if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpCode.MAX }, 0, 1);
+            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.MAX }, 0, 1);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace iRobot.RoombaSharp
         {
             if (this.communicator == null || !communicator.IsConnected) return;
             byte motors = Convert(new bool[] { false, false, false, false, false, mainBrush, vacuum, sideBrush });
-            byte[] command = { (byte)RoombaOpCode.MOTORS, motors };
+            byte[] command = { (byte)RoombaOpcodes.MOTORS, motors };
             this.communicator.Write(command, 0, command.Length);
         }
 
@@ -243,7 +243,7 @@ namespace iRobot.RoombaSharp
             byte[] bRadius = BitConverter.GetBytes(radius);
 
             // Build command package.
-            byte[] command = { (byte)RoombaOpCode.DRIVE, bVelocity[1], bVelocity[0], bRadius[1], bRadius[0] };
+            byte[] command = { (byte)RoombaOpcodes.DRIVE, bVelocity[1], bVelocity[0], bRadius[1], bRadius[0] };
 
             // Send command package.
             this.communicator.Write(command, 0, command.Length);
@@ -273,7 +273,7 @@ namespace iRobot.RoombaSharp
             byte[] command = new byte[1 + 1 + song.Length];
 
             // Build command package.
-            System.Buffer.BlockCopy(new byte[] { (byte)RoombaOpCode.SONG }, 0, command, 0, 1);
+            System.Buffer.BlockCopy(new byte[] { (byte)RoombaOpcodes.SONG }, 0, command, 0, 1);
             System.Buffer.BlockCopy(new byte[] { (byte)song.Length },       0, command, 1, 1);
             System.Buffer.BlockCopy(song,                                   0, command, 2, song.Length);
 
@@ -292,7 +292,7 @@ namespace iRobot.RoombaSharp
         public void Play(byte songNumber)
         {
             if (this.communicator == null || !communicator.IsConnected) return;
-            byte[] command = { (byte)RoombaOpCode.PLAY, songNumber };
+            byte[] command = { (byte)RoombaOpcodes.PLAY, songNumber };
             this.communicator.Write(command, 0, command.Length);
         }
 
@@ -307,7 +307,7 @@ namespace iRobot.RoombaSharp
         public void Sensors(SensorsPackageCode packageCode)
         {
             if (this.communicator == null || !communicator.IsConnected) return;
-            byte[] command = { (byte)RoombaOpCode.SENSORS, (byte)packageCode };
+            byte[] command = { (byte)RoombaOpcodes.SENSORS, (byte)packageCode };
             this.communicator.Write(command, 0, command.Length);
         }
 
@@ -325,7 +325,7 @@ namespace iRobot.RoombaSharp
         public void ForceSeekingDock()
         {
             if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpCode.DOCK }, 0, 1);
+            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.DOCK }, 0, 1);
         }
 
         #endregion

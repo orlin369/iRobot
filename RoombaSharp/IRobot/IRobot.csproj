@@ -41,7 +41,7 @@
     <Compile Include="Communicator.cs" />
     <Compile Include="Create.cs" />
     <Compile Include="Data\BoudRates.cs" />
-    <Compile Include="Data\RoombaOpCode.cs" />
+    <Compile Include="Data\RoombaOpcodes.cs" />
     <Compile Include="Data\SensorsPackageType.cs" />
     <Compile Include="Events\MessageString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

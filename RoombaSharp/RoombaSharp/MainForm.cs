@@ -27,14 +27,12 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Drawing;
 
+using AForge.Video.DirectShow;
+
 using iRobot.RoombaSharp;
 using iRobot.Events;
 
-using AForge.Video.DirectShow;
-
 using Video;
-
-using Emgu.CV.Structure;
 
 namespace RoombaSharp
 {
@@ -43,24 +41,35 @@ namespace RoombaSharp
 
         #region Variables
 
-        private string robotSerialPortName;
-
+        /// <summary>
+        /// Robot communicator.
+        /// </summary>
         private Communicator communicator;
 
+        /// <summary>
+        /// Robot
+        /// </summary>
         private Roomba robot;
 
-        private object syncLock = new object();
+        /// <summary>
+        /// Log messages sync lock object.
+        /// </summary>
+        private object syncLockLogs = new object();
 
         /// <summary>
-        /// Camera 1.
+        /// Video capture device.
         /// </summary>
         private VideoCaptureDevice videoDevice = null;
 
+        /// <summary>
+        /// 
+        /// </summary>
         private VideoDevice[] videoDevices;
 
-        private Bitmap inputImage;
-
-        private Bitmap outputImage;
+        /// <summary>
+        /// Dump image.
+        /// </summary>
+        private Bitmap dumpImage;
 
         #endregion
 
@@ -72,22 +81,6 @@ namespace RoombaSharp
         public MainForm()
         {
             InitializeComponent();
-        }
-
-        #endregion
-
-        #region Main Form
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            this.SearchForPorts();
-            this.SearchForCameras();
-        }
-
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            this.DisconnectFromRobot();
-            this.DisconnectFromCamera();
         }
 
         #endregion
@@ -128,7 +121,7 @@ namespace RoombaSharp
         /// <param name="message">The message.</param>
         private void LogMessage(string message)
         {
-            lock (this.syncLock)
+            lock (this.syncLockLogs)
             {
                 if (this.tbConsole.InvokeRequired)
                 {
@@ -181,6 +174,22 @@ namespace RoombaSharp
 
         #endregion
 
+        #region Main Form
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            this.SearchForPorts();
+            this.SearchForCameras();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.DisconnectFromRobot();
+            this.DisconnectFromCamera();
+        }
+
+        #endregion
+
         #region Robot
 
         /// <summary>
@@ -210,6 +219,7 @@ namespace RoombaSharp
         {
             if (this.communicator == null || !this.communicator.IsConnected) return;
 
+            this.robot.Drive(0, 0);
             this.communicator.OnMesage -= this.robot_OnMesage;
             this.communicator.OnConnect -= Robot_OnConnect;
             this.communicator.OnDisconnect -= Robot_OnDisconnect;
@@ -329,17 +339,17 @@ namespace RoombaSharp
         {
             try
             {
-                if (this.inputImage != null) this.inputImage.Dispose();
+                if (this.dumpImage != null) this.dumpImage.Dispose();
 
-                this.inputImage = (Bitmap)eventArgs.Frame.Clone();// clone the bitmap
+                this.dumpImage = (Bitmap)eventArgs.Frame.Clone();// clone the bitmap
 
-                if (this.inputImage == null) return;
+                if (this.dumpImage == null) return;
 
-                this.ProcessSand((Bitmap)this.inputImage.Clone());
+                this.ProcessSand((Bitmap)this.dumpImage.Clone());
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
+                this.LogMessage(exception.ToString());
             }
         }
 
@@ -348,68 +358,18 @@ namespace RoombaSharp
         /// </summary>
         private void ProcessSand(Bitmap inputImage)
         {
-            //Emgu.CV.Image<Bgr, byte> inpImg = new Emgu.CV.Image<Bgr, byte>(this.inputImage);
-            Emgu.CV.Image<Bgr, byte> inpImg = new Emgu.CV.Image<Bgr, byte>(inputImage);
-
-            //FF2038
-            //Emgu.CV.Image<Gray, byte> sand = inpImg.InRange(new Bgr(20, 20, 255), new Bgr(150, 150, 255));
-            //TODO: To check if we need mask?
-            //water = water.Add(mask); 
-            //water._Dilate(1);
-
-            /*
-            using (Image<Hsv, byte> hsv = inpImg.Convert<Hsv, byte>())
-            {
-                // 2. Obtain the 3 channels (hue, saturation and value) that compose the HSV image
-                Image<Gray, byte>[] channels = hsv.Split();
-
-                Image<Gray, byte> sand = channels[0].InRange(new Gray(0), new Gray(65)).ThresholdBinaryInv(new Gray(127), new Gray(255)).Erode(3);
-
-                //ImageViewer.Show(sand, "Sand Mask");
-
-                // Create the blobs.
-                Emgu.CV.Cvb.CvBlobs blobs = new Emgu.CV.Cvb.CvBlobs();
-                // Create blob detector.
-                Emgu.CV.Cvb.CvBlobDetector dtk = new Emgu.CV.Cvb.CvBlobDetector();
-                // Detect blobs.
-                uint state = dtk.Detect(sand, blobs);
-
-                foreach (Emgu.CV.Cvb.CvBlob blob in blobs.Values)
-                {
-                    //Console.WriteLine("Center: X:{0:F3} Y:{1:F3}", blob.Centroid.X, blob.Centroid.Y);
-                    //Console.WriteLine("{0}", blob.Area);
-                    if (blob.Area >= 50 && blob.Area < 700)
-                    {
-                        //Console.WriteLine("{0}", blob.Area);
-                        inpImg.Draw(new CircleF(blob.Centroid, 5), new Bgr(Color.Red), 2);
-                        inpImg.Draw(blob.BoundingBox, new Bgr(Color.Blue), 2);
-                    }
-                }
-            }
-
-            //return;
-            */
-
-
-            //ImageViewer.Show(sand, "Sand Mask");
-            //return;
-
-            if (this.outputImage != null) this.outputImage.Dispose();
-            // Dump the image.
-            this.outputImage = inpImg.ToBitmap();
-
             if (this.pbSand.InvokeRequired)
             {
                 this.pbSand.BeginInvoke((MethodInvoker)delegate ()
                 {
                     // Show the new image.
-                    this.pbSand.Image = this.outputImage;
+                    this.pbSand.Image = inputImage;
                 });
             }
             else
             {
                 // Show the new image.
-                this.pbSand.Image = this.outputImage;
+                this.pbSand.Image = inputImage;
             }
         }
 
@@ -417,25 +377,24 @@ namespace RoombaSharp
 
         #region Tool Strip Menu Items
 
+        #region Function Buttons
+
         private void tsmiConnect_Click(object sender, EventArgs e)
         {
             this.DisconnectFromRobot();
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
-            this.robotSerialPortName = item.Text;
-            this.ConnectToRobot(this.robotSerialPortName);
+            this.ConnectToRobot(item.Text);
         }
 
         private void tsmiBeep_Click(object sender, EventArgs e)
         {
-            if (this.robot == null) return;
-
-            // Creat the melodie thread.
+            // Create the Melodie thread.
             Thread worker = new Thread(
                 new ThreadStart(
                     delegate ()
                     {
-                        this.robot.Start();
-                        this.robot.Control();
+                        if (this.robot == null) return;
+
                         System.Threading.Thread.Sleep(20);
                         for (byte i = 31; i <= 127; i++)
                         {
@@ -445,10 +404,47 @@ namespace RoombaSharp
                     }
                 )
             );
-            
+
             // Start the melodie thread.
             worker.Start();
         }
+
+        private void tsmiClean_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.Clean();
+        }
+
+        private void tsmiSpot_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.Spot();
+        }
+
+        private void tsmiDock_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.ForceSeekingDock();
+        }
+
+        private void tsmiPower_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.Power();
+        }
+
+        private void tsmiMax_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null) return;
+            this.robot.Start();
+            this.robot.Max();
+        }
+
+        #endregion
 
         private void mItCaptureeDevice_Click(object sender, EventArgs e)
         {
@@ -461,7 +457,7 @@ namespace RoombaSharp
             // Get device.
             VideoDevice videoDevice = (VideoDevice)item.Tag;
 
-            foreach(ToolStripMenuItem mItem in this.captureToolStripMenuItem.DropDown.Items)
+            foreach (ToolStripMenuItem mItem in this.captureToolStripMenuItem.DropDown.Items)
             {
                 item.Checked = false;
             }
@@ -471,7 +467,7 @@ namespace RoombaSharp
             try
             {
                 // Create camera.
-                
+
                 this.videoDevice = new VideoCaptureDevice(videoDevice.MonikerString);
                 this.videoDevice.NewFrame += VideoDevice_NewFrame;
 
@@ -490,44 +486,19 @@ namespace RoombaSharp
             }
         }
 
-        #region Function Buttons
-
-        private void cleanToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void tsmiSettings_Click(object sender, EventArgs e)
         {
-            if (this.robot == null) return;
-            this.robot.Start();
-            this.robot.Clean();
+            using (Settings.SettingsForm sf = new Settings.SettingsForm())
+            {
+                sf.ShowDialog();
+            }
         }
 
-        private void spotToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void tsmiExit_Click(object sender, EventArgs e)
         {
-            if (this.robot == null) return;
-            this.robot.Start();
-            this.robot.Spot();
+            Application.Exit();
         }
 
-        private void dockToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Start();
-            this.robot.ForceSeekingDock();
-        }
-
-        private void powerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Start();
-            this.robot.Power();
-        }
-
-        private void maxToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null) return;
-            this.robot.Start();
-            this.robot.Max();
-        }
-
-        #endregion
 
         #endregion
 
@@ -602,6 +573,7 @@ namespace RoombaSharp
         {
             this.lblRadius.Text = String.Format("Radius: {0}", this.trbRadius.Value);
         }
+
 
 
         #endregion

@@ -55,20 +55,22 @@ namespace RoombaSharp
             this.msMain = new System.Windows.Forms.MenuStrip();
             this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiConnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiRobot = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBeep = new System.Windows.Forms.ToolStripMenuItem();
-            this.lEDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.spotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cleanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.maxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dirtDetectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.motorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainBrushToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.vacuumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sideBrushToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buttonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiLEDs = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSpot = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiClean = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiMax = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDirtDetect = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiMotors = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiMainBrush = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiVacuum = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSideBrush = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiButtons = new System.Windows.Forms.ToolStripMenuItem();
             this.cleanToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.spotToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.dockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -121,8 +123,10 @@ namespace RoombaSharp
             // 
             this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiConnect,
+            this.toolStripSeparator2,
+            this.tsmiSettings,
             this.toolStripSeparator1,
-            this.exitToolStripMenuItem});
+            this.tsmiExit});
             this.tsmiFile.Name = "tsmiFile";
             this.tsmiFile.Size = new System.Drawing.Size(37, 20);
             this.tsmiFile.Text = "File";
@@ -133,24 +137,37 @@ namespace RoombaSharp
             this.tsmiConnect.Size = new System.Drawing.Size(119, 22);
             this.tsmiConnect.Text = "Connect";
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(116, 6);
+            // 
+            // tsmiSettings
+            // 
+            this.tsmiSettings.Name = "tsmiSettings";
+            this.tsmiSettings.Size = new System.Drawing.Size(119, 22);
+            this.tsmiSettings.Text = "Settings";
+            this.tsmiSettings.Click += new System.EventHandler(this.tsmiSettings_Click);
+            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(116, 6);
             // 
-            // exitToolStripMenuItem
+            // tsmiExit
             // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
+            this.tsmiExit.Name = "tsmiExit";
+            this.tsmiExit.Size = new System.Drawing.Size(119, 22);
+            this.tsmiExit.Text = "Exit";
+            this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
             // tsmiRobot
             // 
             this.tsmiRobot.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiBeep,
-            this.lEDsToolStripMenuItem,
-            this.motorsToolStripMenuItem,
-            this.buttonsToolStripMenuItem});
+            this.tsmiLEDs,
+            this.tsmiMotors,
+            this.tsmiButtons});
             this.tsmiRobot.Name = "tsmiRobot";
             this.tsmiRobot.Size = new System.Drawing.Size(51, 20);
             this.tsmiRobot.Text = "Robot";
@@ -162,115 +179,117 @@ namespace RoombaSharp
             this.tsmiBeep.Text = "Beep";
             this.tsmiBeep.Click += new System.EventHandler(this.tsmiBeep_Click);
             // 
-            // lEDsToolStripMenuItem
+            // tsmiLEDs
             // 
-            this.lEDsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.spotToolStripMenuItem,
-            this.cleanToolStripMenuItem,
-            this.maxToolStripMenuItem,
-            this.dirtDetectToolStripMenuItem});
-            this.lEDsToolStripMenuItem.Name = "lEDsToolStripMenuItem";
-            this.lEDsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.lEDsToolStripMenuItem.Text = "LEDs";
+            this.tsmiLEDs.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiSpot,
+            this.tsmiClean,
+            this.tsmiMax,
+            this.tsmiDirtDetect});
+            this.tsmiLEDs.Name = "tsmiLEDs";
+            this.tsmiLEDs.Size = new System.Drawing.Size(152, 22);
+            this.tsmiLEDs.Text = "LEDs";
             // 
-            // spotToolStripMenuItem
+            // tsmiSpot
             // 
-            this.spotToolStripMenuItem.Name = "spotToolStripMenuItem";
-            this.spotToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.spotToolStripMenuItem.Text = "Spot";
+            this.tsmiSpot.Name = "tsmiSpot";
+            this.tsmiSpot.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSpot.Text = "Spot";
+            this.tsmiSpot.Click += new System.EventHandler(this.tsmiSpot_Click);
             // 
-            // cleanToolStripMenuItem
+            // tsmiClean
             // 
-            this.cleanToolStripMenuItem.Name = "cleanToolStripMenuItem";
-            this.cleanToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.cleanToolStripMenuItem.Text = "Clean";
+            this.tsmiClean.Name = "tsmiClean";
+            this.tsmiClean.Size = new System.Drawing.Size(152, 22);
+            this.tsmiClean.Text = "Clean";
+            this.tsmiClean.Click += new System.EventHandler(this.tsmiClean_Click_1);
             // 
-            // maxToolStripMenuItem
+            // tsmiMax
             // 
-            this.maxToolStripMenuItem.Name = "maxToolStripMenuItem";
-            this.maxToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.maxToolStripMenuItem.Text = "Max";
+            this.tsmiMax.Name = "tsmiMax";
+            this.tsmiMax.Size = new System.Drawing.Size(152, 22);
+            this.tsmiMax.Text = "Max";
             // 
-            // dirtDetectToolStripMenuItem
+            // tsmiDirtDetect
             // 
-            this.dirtDetectToolStripMenuItem.Name = "dirtDetectToolStripMenuItem";
-            this.dirtDetectToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.dirtDetectToolStripMenuItem.Text = "Dirt Detect";
+            this.tsmiDirtDetect.Name = "tsmiDirtDetect";
+            this.tsmiDirtDetect.Size = new System.Drawing.Size(152, 22);
+            this.tsmiDirtDetect.Text = "Dirt Detect";
             // 
-            // motorsToolStripMenuItem
+            // tsmiMotors
             // 
-            this.motorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mainBrushToolStripMenuItem,
-            this.vacuumToolStripMenuItem,
-            this.sideBrushToolStripMenuItem});
-            this.motorsToolStripMenuItem.Name = "motorsToolStripMenuItem";
-            this.motorsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.motorsToolStripMenuItem.Text = "Motors";
+            this.tsmiMotors.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiMainBrush,
+            this.tsmiVacuum,
+            this.tsmiSideBrush});
+            this.tsmiMotors.Name = "tsmiMotors";
+            this.tsmiMotors.Size = new System.Drawing.Size(152, 22);
+            this.tsmiMotors.Text = "Motors";
             // 
-            // mainBrushToolStripMenuItem
+            // tsmiMainBrush
             // 
-            this.mainBrushToolStripMenuItem.Name = "mainBrushToolStripMenuItem";
-            this.mainBrushToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.mainBrushToolStripMenuItem.Text = "Main Brush";
+            this.tsmiMainBrush.Name = "tsmiMainBrush";
+            this.tsmiMainBrush.Size = new System.Drawing.Size(134, 22);
+            this.tsmiMainBrush.Text = "Main Brush";
             // 
-            // vacuumToolStripMenuItem
+            // tsmiVacuum
             // 
-            this.vacuumToolStripMenuItem.Name = "vacuumToolStripMenuItem";
-            this.vacuumToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.vacuumToolStripMenuItem.Text = "Vacuum";
+            this.tsmiVacuum.Name = "tsmiVacuum";
+            this.tsmiVacuum.Size = new System.Drawing.Size(134, 22);
+            this.tsmiVacuum.Text = "Vacuum";
             // 
-            // sideBrushToolStripMenuItem
+            // tsmiSideBrush
             // 
-            this.sideBrushToolStripMenuItem.Name = "sideBrushToolStripMenuItem";
-            this.sideBrushToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.sideBrushToolStripMenuItem.Text = "Side Brush";
+            this.tsmiSideBrush.Name = "tsmiSideBrush";
+            this.tsmiSideBrush.Size = new System.Drawing.Size(134, 22);
+            this.tsmiSideBrush.Text = "Side Brush";
             // 
-            // buttonsToolStripMenuItem
+            // tsmiButtons
             // 
-            this.buttonsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiButtons.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cleanToolStripMenuItem1,
             this.spotToolStripMenuItem1,
             this.dockToolStripMenuItem,
             this.powerToolStripMenuItem,
             this.maxToolStripMenuItem1});
-            this.buttonsToolStripMenuItem.Name = "buttonsToolStripMenuItem";
-            this.buttonsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.buttonsToolStripMenuItem.Text = "Buttons";
+            this.tsmiButtons.Name = "tsmiButtons";
+            this.tsmiButtons.Size = new System.Drawing.Size(152, 22);
+            this.tsmiButtons.Text = "Buttons";
             // 
             // cleanToolStripMenuItem1
             // 
             this.cleanToolStripMenuItem1.Name = "cleanToolStripMenuItem1";
             this.cleanToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
             this.cleanToolStripMenuItem1.Text = "Clean";
-            this.cleanToolStripMenuItem1.Click += new System.EventHandler(this.cleanToolStripMenuItem1_Click);
+            this.cleanToolStripMenuItem1.Click += new System.EventHandler(this.tsmiClean_Click);
             // 
             // spotToolStripMenuItem1
             // 
             this.spotToolStripMenuItem1.Name = "spotToolStripMenuItem1";
             this.spotToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
             this.spotToolStripMenuItem1.Text = "Spot";
-            this.spotToolStripMenuItem1.Click += new System.EventHandler(this.spotToolStripMenuItem1_Click);
+            this.spotToolStripMenuItem1.Click += new System.EventHandler(this.tsmiSpot_Click);
             // 
             // dockToolStripMenuItem
             // 
             this.dockToolStripMenuItem.Name = "dockToolStripMenuItem";
             this.dockToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.dockToolStripMenuItem.Text = "Dock";
-            this.dockToolStripMenuItem.Click += new System.EventHandler(this.dockToolStripMenuItem_Click);
+            this.dockToolStripMenuItem.Click += new System.EventHandler(this.tsmiDock_Click);
             // 
             // powerToolStripMenuItem
             // 
             this.powerToolStripMenuItem.Name = "powerToolStripMenuItem";
             this.powerToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.powerToolStripMenuItem.Text = "Power";
-            this.powerToolStripMenuItem.Click += new System.EventHandler(this.powerToolStripMenuItem_Click);
+            this.powerToolStripMenuItem.Click += new System.EventHandler(this.tsmiPower_Click);
             // 
             // maxToolStripMenuItem1
             // 
             this.maxToolStripMenuItem1.Name = "maxToolStripMenuItem1";
             this.maxToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
             this.maxToolStripMenuItem1.Text = "Max";
-            this.maxToolStripMenuItem1.Click += new System.EventHandler(this.maxToolStripMenuItem1_Click);
+            this.maxToolStripMenuItem1.Click += new System.EventHandler(this.tsmiMax_Click);
             // 
             // captureToolStripMenuItem
             // 
@@ -470,16 +489,17 @@ namespace RoombaSharp
             this.tbpCamera.Location = new System.Drawing.Point(4, 26);
             this.tbpCamera.Name = "tbpCamera";
             this.tbpCamera.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpCamera.Size = new System.Drawing.Size(1282, 601);
+            this.tbpCamera.Size = new System.Drawing.Size(1282, 605);
             this.tbpCamera.TabIndex = 1;
             this.tbpCamera.Text = "Camera";
             // 
             // pbSand
             // 
             this.pbSand.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbSand.Location = new System.Drawing.Point(29, 19);
+            this.pbSand.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbSand.Location = new System.Drawing.Point(3, 3);
             this.pbSand.Name = "pbSand";
-            this.pbSand.Size = new System.Drawing.Size(640, 480);
+            this.pbSand.Size = new System.Drawing.Size(1276, 599);
             this.pbSand.TabIndex = 34;
             this.pbSand.TabStop = false;
             // 
@@ -519,19 +539,19 @@ namespace RoombaSharp
         private System.Windows.Forms.ToolStripMenuItem tsmiFile;
         private System.Windows.Forms.ToolStripMenuItem tsmiConnect;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiExit;
         private System.Windows.Forms.ToolStripMenuItem tsmiRobot;
         private System.Windows.Forms.ToolStripMenuItem tsmiBeep;
-        private System.Windows.Forms.ToolStripMenuItem lEDsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem motorsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem spotToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cleanToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem maxToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem dirtDetectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mainBrushToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem vacuumToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem sideBrushToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem buttonsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiLEDs;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMotors;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSpot;
+        private System.Windows.Forms.ToolStripMenuItem tsmiClean;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMax;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDirtDetect;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMainBrush;
+        private System.Windows.Forms.ToolStripMenuItem tsmiVacuum;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSideBrush;
+        private System.Windows.Forms.ToolStripMenuItem tsmiButtons;
         private System.Windows.Forms.ToolStripMenuItem cleanToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem spotToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem dockToolStripMenuItem;
@@ -555,6 +575,8 @@ namespace RoombaSharp
         private System.Windows.Forms.Button btnUp;
         private System.Windows.Forms.TabPage tbpCamera;
         private System.Windows.Forms.PictureBox pbSand;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
     }
 }
 

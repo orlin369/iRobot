@@ -27,7 +27,7 @@ namespace iRobot.Data
     /// <summary>
     /// Roomba operation codes.
     /// </summary>
-    public enum RoombaOpCode : byte
+    public enum RoombaOpcodes : byte
     {
         INVALID = 0,
         START = 128,          //0x80
@@ -48,7 +48,5 @@ namespace iRobot.Data
         DOCK = 143,           //0x8F
         DRIVE_DIRECT = 145,   //0X91
         DIGITAL_OUTPUT = 147, //0X93
-
-
     }
 }
