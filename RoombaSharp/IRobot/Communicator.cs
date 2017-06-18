@@ -36,19 +36,14 @@ namespace iRobot.RoombaSharp
         #region Variables
 
         /// <summary>
-        /// Comunication port.
+        /// Communication port.
         /// </summary>
         protected SerialPort SerialPort;
 
         /// <summary>
-        /// Comunication lock object.
+        /// Communication lock object.
         /// </summary>
         private Object requestLock = new Object();
-
-        /// <summary>
-        /// When is connected to the robot.
-        /// </summary>
-        private bool isConnected = false;
 
         /// <summary>
         /// Serial port name.
@@ -66,7 +61,11 @@ namespace iRobot.RoombaSharp
         {
             get
             {
-                return this.isConnected;
+                bool state = false;
+
+                state = (this.SerialPort != null) && (this.SerialPort.IsOpen);
+
+                return state;
             }
         }
         
@@ -81,12 +80,17 @@ namespace iRobot.RoombaSharp
             }
         }
 
+        public bool Reconnect
+        {
+            get; set;
+        }
+
         #endregion
 
         #region Events
 
         /// <summary>
-        /// Recieved command message.
+        /// Received command message.
         /// </summary>
         public event EventHandler<MessageString> OnMesage;
 
@@ -102,7 +106,7 @@ namespace iRobot.RoombaSharp
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="port">Comunication port.</param>
+        /// <param name="port">Communication port.</param>
         public Communicator(string portName)
         {
             // Save the port name.
@@ -144,7 +148,7 @@ namespace iRobot.RoombaSharp
         #region Protected Methods
 
         /// <summary>
-        /// Data recievce handler.
+        /// Data receiver handler.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -162,40 +166,13 @@ namespace iRobot.RoombaSharp
                 {
                     string inData = serialPort.ReadExisting();
 
-                    if (this.OnMesage != null)
-                    {
-                        this.OnMesage(this, new MessageString(inData));
-                    }
+                    this.OnMesage?.Invoke(this, new MessageString(inData));
 
-                    // Discart the duffer.
+                    // Discard the duffer.
                     serialPort.DiscardInBuffer();
                 }
                 catch
                 { }
-            }
-        }
-
-        /// <summary>
-        /// Send request to the device.
-        /// </summary>
-        /// <param name="command"></param>
-        protected void SendRequest(string command)
-        {
-            lock (this.requestLock)
-            {
-                try
-                {
-                    if (this.isConnected)
-                    {
-                        this.SerialPort.Write(command);
-                    }
-                }
-                catch
-                {
-                    this.isConnected = false;
-                    // Reconnect.
-                    this.Connect();
-                }
             }
         }
 
@@ -204,13 +181,13 @@ namespace iRobot.RoombaSharp
         #region Public Methods
 
         /// <summary>
-        /// Connetc to the serial port.
+        /// Connect to the serial port.
         /// </summary>
         public void Connect()
         {
             try
             {
-                if (!this.isConnected)
+                if (!this.IsConnected)
                 {
                     this.SerialPort = new SerialPort(this.portName);
                     this.SerialPort.BaudRate = 115200;
@@ -220,14 +197,12 @@ namespace iRobot.RoombaSharp
                     this.SerialPort.DataReceived += new SerialDataReceivedEventHandler(this.DataReceivedHandler);
                     this.SerialPort.Open();
 
-                    this.isConnected = true;
-
-                    this.OnConnect?.Invoke(this, new MessageString(""));
+                    this.OnConnect?.Invoke(this, null);
                 }
             }
-            catch
+            catch(Exception exception)
             {
-                this.isConnected = false;
+                this.OnDisconnect?.Invoke(this, new MessageString(exception.ToString()));
             }
         }
 
@@ -236,38 +211,61 @@ namespace iRobot.RoombaSharp
         /// </summary>
         public void Disconnect()
         {
-            if (this.isConnected)
+            try
             {
-                this.SerialPort.Close();
-                this.isConnected = false;
-                this.OnDisconnect?.Invoke(this, null);
+                if (this.IsConnected)
+                {
+                    this.SerialPort.Close();
+                    this.OnDisconnect?.Invoke(this, new MessageString(""));
+                }
+            }
+            catch (Exception exception)
+            {
+                this.OnDisconnect?.Invoke(this, new MessageString(exception.ToString()));
             }
         }
 
-        void SendRawRequest(string command)
+        /// <summary>
+        /// Write command.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        public void Write(byte[] buffer, int offset, int count)
         {
             lock (this.requestLock)
             {
                 try
                 {
-                    if (this.isConnected)
+                    if (this.IsConnected)
                     {
-                        this.SerialPort.Write(command);
-
-                        if (this.OnMesage != null)
-                        {
-                            this.OnMesage(this, null);
-                        }
-
+                        this.SerialPort.Write(buffer, offset, count);
                     }
                 }
-                catch
+                catch (Exception exception)
                 {
-                    this.isConnected = false;
-                    // Reconnect.
-                    this.Connect();
+                    this.OnDisconnect?.Invoke(this, new MessageString(exception.ToString()));
+
+                    if (this.Reconnect)
+                    {
+                        // Reconnect.
+                        this.Connect();
+                    }
                 }
             }
+        }
+
+        /// <summary>
+        /// Knock-Knock - function.
+        /// </summary>
+        public void KnockKnock()
+        {
+            if (!SerialPort.IsOpen) return;
+            // If Create's power is off, turn it on
+            this.SerialPort.DtrEnable = false;
+            System.Threading.Thread.Sleep(100);  // Delay in this state
+            this.SerialPort.DtrEnable = true;
+            System.Threading.Thread.Sleep(750);  // Delay in this state
         }
 
         #endregion

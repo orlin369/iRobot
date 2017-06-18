@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Communicator.cs" />
+    <Compile Include="Create.cs" />
     <Compile Include="Data\BoudRates.cs" />
     <Compile Include="Data\RoombaOpCode.cs" />
     <Compile Include="Data\SensorsPackageType.cs" />

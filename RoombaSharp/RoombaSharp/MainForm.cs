@@ -30,15 +30,11 @@ using System.Drawing;
 using iRobot.RoombaSharp;
 using iRobot.Events;
 
-using Leap;
-
-using Emgu.CV;
-
 using AForge.Video.DirectShow;
 
 using Video;
+
 using Emgu.CV.Structure;
-using Emgu.CV.UI;
 
 namespace RoombaSharp
 {
@@ -49,20 +45,16 @@ namespace RoombaSharp
 
         private string robotSerialPortName;
 
+        private Communicator communicator;
+
         private Roomba robot;
 
-        private Controller controller;
-
-        private SampleListener listener = new SampleListener();
-
         private object syncLock = new object();
-
-        private int motionDebonceCounter = 0;
 
         /// <summary>
         /// Camera 1.
         /// </summary>
-        VideoCaptureDevice videoDevice = null;
+        private VideoCaptureDevice videoDevice = null;
 
         private VideoDevice[] videoDevices;
 
@@ -89,38 +81,13 @@ namespace RoombaSharp
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.SearchForPorts();
-
-            // Check to see what video inputs we have available.
-            this.videoDevices = this.GetDevices();
-
-            if (videoDevices.Length == 0)
-            {
-                DialogResult res = MessageBox.Show("A camera device was not detected. Do you want to exit?", "",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (res == System.Windows.Forms.DialogResult.Yes)
-                {
-                    Application.Exit();
-                }
-            }
-
-            // Add cameras to the menus.
-            this.AddCameras(this.videoDevices, this.captureToolStripMenuItem, this.mItCaptureeDevice_Click);
+            this.SearchForCameras();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.DisconnectFromRobot();
-            this.DisconnectFromLeapMotion();
-
-            // Stop if other stream was displaying.
-            if (this.videoDevice.IsRunning)
-            {
-                this.videoDevice.Stop();
-            }
-
-            this.videoDevice.NewFrame -= VideoDevice_NewFrame;
-
-            this.videoDevice = null;
+            this.DisconnectFromCamera();
         }
 
         #endregion
@@ -128,7 +95,7 @@ namespace RoombaSharp
         #region Private Methods
 
         /// <summary>
-        /// Searc for serial port.
+        /// Search for serial port.
         /// </summary>
         private void SearchForPorts()
         {
@@ -178,34 +145,28 @@ namespace RoombaSharp
         }
 
         /// <summary>
-        /// Connect to Leapmotion.
+        /// Fit image from one size to input size.
         /// </summary>
-        private void ConnectToLeapMotion()
+        /// <param name="image">Input image.</param>
+        /// <param name="size">New size.</param>
+        /// <returns>Resized image.</returns>
+        public Bitmap FitImage(Bitmap image, Size size)
         {
-            this.controller = new Controller();
-            // Have the sample listener receive events from the controller
-            this.listener.FrameGrabed += this.listener_FrameGrabed;
-            this.controller.AddListener(this.listener);
+            var ratioX = (double)size.Width / image.Width;
+            var ratioY = (double)size.Height / image.Height;
+            var ratio = Math.Min(ratioX, ratioY);
 
-            // Log.
-            this.LogMessage("Leap connection state: " + this.controller.IsConnected);
-        }
+            var newWidth = (int)(image.Width * ratio);
+            var newHeight = (int)(image.Height * ratio);
 
-        /// <summary>
-        /// Disconnect from Leapmotion.
-        /// </summary>
-        private void DisconnectFromLeapMotion()
-        {
-            try
+            var newImage = new Bitmap(newWidth, newHeight);
+
+            using (var graphics = Graphics.FromImage(newImage))
             {
-                // Remove the sample listener when done
-                this.controller.RemoveListener(this.listener);
-                this.controller.Dispose();
+                graphics.DrawImage(image, 0, 0, newWidth, newHeight);
             }
-            catch
-            { }
-            // Log.
-            //this.LogMessage("Leap connection state: " + this.controller.IsConnected);
+
+            return newImage;
         }
 
         /// <summary>
@@ -218,79 +179,95 @@ namespace RoombaSharp
             return radians * 180.0f / (float)Math.PI;
         }
 
-        private void OnFrame(Controller controller)
+        #endregion
+
+        #region Robot
+
+        /// <summary>
+        /// Connect to the robot.
+        /// </summary>
+        /// <param name="portName"></param>
+        private void ConnectToRobot(string portName)
         {
-            if (this.robot == null || this.controller == null) return;
+            this.communicator = new Communicator(portName);
+            this.communicator.OnMesage += this.robot_OnMesage;
+            this.communicator.OnConnect += Robot_OnConnect;
+            this.communicator.OnDisconnect += Robot_OnDisconnect;
+            
+            this.robot = new Roomba(communicator);
+            this.robot.Connect();
+            this.robot.Start();
+            this.robot.Start();
+            this.robot.Safe();
+            this.robot.Start();
+            this.robot.Safe();
+        }
 
-            string message = "";
+        /// <summary>
+        /// Disconnect from the robot.
+        /// </summary>
+        private void DisconnectFromRobot()
+        {
+            if (this.communicator == null || !this.communicator.IsConnected) return;
 
-            // Get the most recent frame and report some basic information
-            Frame frame = controller.Frame();
+            this.communicator.OnMesage -= this.robot_OnMesage;
+            this.communicator.OnConnect -= Robot_OnConnect;
+            this.communicator.OnDisconnect -= Robot_OnDisconnect;
+            this.robot.Disconnect();
+        }
 
-            //message += "Frame id: " + frame.Id
-            //            + ", timestamp: " + frame.Timestamp
-            //            + ", hands: " + frame.Hands.Count
-            //            + ", fingers: " + frame.Fingers.Count
-            //            + ", tools: " + frame.Tools.Count
-            //            + ", gestures: " + frame.Gestures().Count;
-            //message += Environment.NewLine;
+        private void Robot_OnDisconnect(object sender, EventArgs e)
+        {
+            this.LogMessage("Disconnected from robot robot.");
+        }
 
+        private void Robot_OnConnect(object sender, EventArgs e)
+        {
+            Communicator communicator = (Communicator)sender;
+            this.LogMessage("Connected to robot port: " + communicator.PortName);
+        }
 
+        private void robot_OnMesage(object sender, MessageString e)
+        {
+            this.LogMessage("Robot: " + e.Message);
+        }
 
-            foreach (Hand hand in frame.Hands)
+        #endregion
+
+        #region Camera
+
+        private void SearchForCameras()
+        {
+            // Check to see what video inputs we have available.
+            this.videoDevices = this.GetDevices();
+
+            if (videoDevices.Length == 0)
             {
-                message += "Hand id: " + hand.Id + "\r\n";
-                //            + ", palm position: " + hand.PalmPosition;
-                //message += Environment.NewLine;
-
-                // Get the hand's normal vector and direction
-                Vector normal = hand.PalmNormal;
-                Vector direction = hand.Direction;
-
-                // Convert to degree.
-                float pitch = -((this.ToDegree(normal.Pitch) + 90) * 1.5F);
-                float roll = this.ToDegree(normal.Roll);
-                float yaw = this.ToDegree(normal.Yaw);
-                
-                // Calculate the hand's pitch, roll, and yaw angles
-                message += String.Format("P: {0}\r\nR: {1}\r\nY: {2}\r\n",
-                    (int)pitch,
-                    (int)roll,
-                    (int)yaw);
-                
-                // Band filter.
-                if (roll < 20 && roll > -20) roll = 0;
-
-
-                this.motionDebonceCounter++;
-                if ((this.motionDebonceCounter % 8) == 0)
+                DialogResult res = MessageBox.Show("A camera device was not detected. Do you want to exit?", "",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (res == System.Windows.Forms.DialogResult.Yes)
                 {
-                    // Move my dorabal vacuum cleaner robot maaaaan!
-                    this.robot.Drive((short)pitch, (short)roll);
-                    this.motionDebonceCounter = 0;
+                    Application.Exit();
                 }
             }
 
-            if (!frame.Hands.IsEmpty && !frame.Gestures().IsEmpty)
+            // Add cameras to the menus.
+            this.AddCameras(this.videoDevices, this.captureToolStripMenuItem, this.mItCaptureeDevice_Click);
+        }
+
+        private void DisconnectFromCamera()
+        {
+            if (this.videoDevice == null) return;
+
+            // Stop if other stream was displaying.
+            if (this.videoDevice.IsRunning)
             {
-                message += "";
-                if (this.robot != null && this.robot.IsConnected)
-                {
-                    this.robot.Drive(0, 0);
-                }
+                this.videoDevice.Stop();
             }
 
-            if (this.lblHandPosition.InvokeRequired)
-            {
-                this.lblHandPosition.BeginInvoke((MethodInvoker)delegate ()
-                {
-                    this.lblHandPosition.Text = message;
-                });
-            }
-            else
-            {
-                this.lblHandPosition.Text = message;
-            }
+            this.videoDevice.NewFrame -= VideoDevice_NewFrame;
+
+            this.videoDevice = null;
         }
 
         /// <summary>
@@ -348,34 +325,23 @@ namespace RoombaSharp
             }
         }
 
-        /// <summary>
-        /// Fit image from one size to input size.
-        /// </summary>
-        /// <param name="image">Input image.</param>
-        /// <param name="size">New size.</param>
-        /// <returns>Resized image.</returns>
-        public Bitmap FitImage(Bitmap image, Size size)
+        private void VideoDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
-            var ratioX = (double)size.Width / image.Width;
-            var ratioY = (double)size.Height / image.Height;
-            var ratio = Math.Min(ratioX, ratioY);
-
-            var newWidth = (int)(image.Width * ratio);
-            var newHeight = (int)(image.Height * ratio);
-
-            var newImage = new Bitmap(newWidth, newHeight);
-
-            using (var graphics = Graphics.FromImage(newImage))
+            try
             {
-                graphics.DrawImage(image, 0, 0, newWidth, newHeight);
+                if (this.inputImage != null) this.inputImage.Dispose();
+
+                this.inputImage = (Bitmap)eventArgs.Frame.Clone();// clone the bitmap
+
+                if (this.inputImage == null) return;
+
+                this.ProcessSand((Bitmap)this.inputImage.Clone());
             }
-
-            return newImage;
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.ToString());
+            }
         }
-
-        #endregion
-
-        #region Image Processing
 
         /// <summary>
         /// Process rocks in the image.
@@ -391,7 +357,7 @@ namespace RoombaSharp
             //water = water.Add(mask); 
             //water._Dilate(1);
 
-
+            /*
             using (Image<Hsv, byte> hsv = inpImg.Convert<Hsv, byte>())
             {
                 // 2. Obtain the 3 channels (hue, saturation and value) that compose the HSV image
@@ -422,7 +388,7 @@ namespace RoombaSharp
             }
 
             //return;
-
+            */
 
 
             //ImageViewer.Show(sand, "Sand Mask");
@@ -431,53 +397,20 @@ namespace RoombaSharp
             if (this.outputImage != null) this.outputImage.Dispose();
             // Dump the image.
             this.outputImage = inpImg.ToBitmap();
-            // Show the new image.
-        }
 
-        #endregion
-
-        #region Robot
-
-        /// <summary>
-        /// Connect to the robot.
-        /// </summary>
-        /// <param name="portName"></param>
-        private void ConnectToRobot(string portName)
-        {
-            this.robot = new Roomba(portName);
-            this.robot.OnMesage += this.robot_OnMesage;
-            this.robot.OnConnect += Robot_OnConnect;
-            this.robot.OnDisconnect += Robot_OnDisconnect;
-            this.robot.Connect();
-        }
-
-        /// <summary>
-        /// Disconnect from the robot.
-        /// </summary>
-        private void DisconnectFromRobot()
-        {
-            if (this.robot == null) return;
-            this.robot.OnMesage -= this.robot_OnMesage;
-            this.robot.OnConnect -= Robot_OnConnect;
-            this.robot.OnDisconnect -= Robot_OnDisconnect;
-
-            this.robot.Disconnect();
-        }
-
-        private void Robot_OnDisconnect(object sender, EventArgs e)
-        {
-            this.LogMessage("Disconnected from robot robot.");
-        }
-
-        private void Robot_OnConnect(object sender, EventArgs e)
-        {
-            Roomba robot = (Roomba)sender;
-            this.LogMessage("Connected to robot port: " + robot.PortName);
-        }
-
-        private void robot_OnMesage(object sender, MessageString e)
-        {
-            this.LogMessage("Robot: " + e.Message);
+            if (this.pbSand.InvokeRequired)
+            {
+                this.pbSand.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    // Show the new image.
+                    this.pbSand.Image = this.outputImage;
+                });
+            }
+            else
+            {
+                // Show the new image.
+                this.pbSand.Image = this.outputImage;
+            }
         }
 
         #endregion
@@ -555,16 +488,6 @@ namespace RoombaSharp
             {
                 Console.WriteLine(exception.ToString());
             }
-        }
-
-        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.ConnectToLeapMotion();
-        }
-
-        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.DisconnectFromLeapMotion();
         }
 
         #region Function Buttons
@@ -682,37 +605,6 @@ namespace RoombaSharp
 
 
         #endregion
-        
-        #region Leapmotion frame grabber
 
-        private void listener_FrameGrabed(object sender, ControlerArg e)
-        {
-            //e.Controller.
-            this.OnFrame(e.Controller);
-        }
-
-        #endregion
-
-        #region Camera
-
-        private void VideoDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
-        {
-            try
-            {
-                if (this.inputImage != null) this.inputImage.Dispose();
-
-                this.inputImage = (Bitmap)eventArgs.Frame.Clone();// clone the bitmap
-
-                if (this.inputImage == null) return;
-
-                this.ProcessSand((Bitmap)this.inputImage.Clone());
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.ToString());
-            }
-        }
-
-        #endregion
     }
 }

@@ -29,43 +29,37 @@ using iRobot.Data;
 
 namespace iRobot.RoombaSharp
 {
+
     /// <summary>
-    /// This API class is imeplemented by this documemtation:
+    /// This API class is implemented by this documentation:
     /// http://www.ecsl.cs.sunysb.edu/mint/Roomba_SCI_Spec_Manual.pdf
     /// </summary>
-    public class Roomba : Communicator
+    public class Roomba
     {
 
-        #region Construcotr
+        #region Variables
 
         /// <summary>
-        /// Construcotr
+        /// Communicator
+        /// </summary>
+        private Communicator communicator;
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
         /// </summary>
         /// <param name="portName">Serial port name.</param>
-        public Roomba (string portName) : base(portName)
+        public Roomba (Communicator communicator)
         {
-
+            this.communicator = communicator;
         }
 
         #endregion
 
         #region API
-
-        public void powerOnRobot()
-        {
-            if (!SerialPort.IsOpen) return;
-            // If Create's power is off, turn it on
-            for (int times = 0; times < 3; times++)
-            {
-                this.SerialPort.DtrEnable = false;
-                System.Threading.Thread.Sleep(500);  // Delay in this state
-                this.SerialPort.DtrEnable = true;
-                System.Threading.Thread.Sleep(100);  // Delay in this state
-            }
-            this.SerialPort.DtrEnable = false;
-            System.Threading.Thread.Sleep(3500);  // Delay for startup
-        }
-
 
         /// <summary>
         /// Starts the SCI.The Start command must be sent before any
@@ -74,9 +68,9 @@ namespace iRobot.RoombaSharp
         /// </summary>
         public void Start()
         {
-            if (!SerialPort.IsOpen) return;
-            this.SerialPort.Write(new byte[] { (byte)RoombaOpCode.START }, 0, 1);
-            this.SerialPort.BaseStream.Flush();
+            
+            if (!communicator.IsConnected) return;
+            this.communicator.Write(new byte[] { (byte)RoombaOpCode.START }, 0, 1);
         }
 
         /// <summary>
@@ -94,9 +88,8 @@ namespace iRobot.RoombaSharp
         /// </summary>
         public void Baud(BoudRates baudRate)
         {
-            if (!SerialPort.IsOpen) return;
-            this.SerialPort.Write(new byte[] { (byte)RoombaOpCode.BAUD, (byte)baudRate }, 0, 2);
-            this.SerialPort.BaseStream.Flush();
+            if (this.communicator == null || !communicator.IsConnected) return;
+            this.communicator.Write(new byte[] { (byte)RoombaOpCode.BAUD, (byte)baudRate }, 0, 2);
         }
         
         /// <summary>
@@ -107,9 +100,8 @@ namespace iRobot.RoombaSharp
         /// </summary>
         public void Control()
         {
-            if (!SerialPort.IsOpen) return;
-            this.SerialPort.Write(new byte[] { (byte)RoombaOpCode.CONTROL }, 0, 1);
-            this.SerialPort.BaseStream.Flush();
+            if (this.communicator == null || !communicator.IsConnected) return;
+            this.communicator.Write(new byte[] { (byte)RoombaOpCode.CONTROL }, 0, 1);
         }
         
         /// <summary>
@@ -122,10 +114,10 @@ namespace iRobot.RoombaSharp
         /// <param name="max">Max</param>
         public void LEDs(bool spot, bool clean, bool max, bool dirtDetect)
         {
-            if (!SerialPort.IsOpen) return;
+            if (this.communicator == null || !communicator.IsConnected) return;
             byte leds = Convert(new bool[] { false, false, false, false, spot, clean, max, dirtDetect });
             byte[] command = { (byte)RoombaOpCode.LEDS,  leds};
-            this.SerialPort.Write(command, 0, command.Length);
+            this.communicator.Write(command, 0, command.Length);
         }
         
         /// <summary>
@@ -134,8 +126,8 @@ namespace iRobot.RoombaSharp
         /// </summary>
         public void Safe()
         {
-            if (!SerialPort.IsOpen) return;
-            this.SerialPort.Write(new byte[] { (byte)RoombaOpCode.SAFE }, 0, 1);
+            if (this.communicator == null || !communicator.IsConnected) return;
+            this.communicator.Write(new byte[] { (byte)RoombaOpCode.SAFE }, 0, 1);
         }
 
         /// <summary>
@@ -145,8 +137,8 @@ namespace iRobot.RoombaSharp
         /// </summary>
         public void Full()
         {
-            if (!SerialPort.IsOpen) return;
-            this.SerialPort.Write(new byte[] { (byte)RoombaOpCode.FULL }, 0, 1);
+            if (this.communicator == null || !communicator.IsConnected) return;
+            this.communicator.Write(new byte[] { (byte)RoombaOpCode.FULL }, 0, 1);
         }
 
         /// <summary>
@@ -158,8 +150,14 @@ namespace iRobot.RoombaSharp
         /// </summary>
         public void Power()
         {
-            if (!SerialPort.IsOpen) return;
-            this.SerialPort.Write(new byte[] { (byte)RoombaOpCode.POWER }, 0, 1);
+            if (this.communicator == null || !communicator.IsConnected) return;
+            this.communicator.Write(new byte[] { (byte)RoombaOpCode.POWER }, 0, 1);
+        }
+
+        public void Connect()
+        {
+            if (this.communicator == null) return;
+            this.communicator.Connect();
         }
 
         /// <summary>
@@ -169,8 +167,14 @@ namespace iRobot.RoombaSharp
         /// </summary>
         public void Spot()
         {
-            if (!SerialPort.IsOpen) return;
-            this.SerialPort.Write(new byte[] { (byte)RoombaOpCode.SPOT }, 0, 1);
+            if (this.communicator == null || !communicator.IsConnected) return;
+            this.communicator.Write(new byte[] { (byte)RoombaOpCode.SPOT }, 0, 1);
+        }
+
+        public void Disconnect()
+        {
+            if (this.communicator == null || !communicator.IsConnected) return;
+            this.communicator.Disconnect();
         }
 
         /// <summary>
@@ -180,8 +184,8 @@ namespace iRobot.RoombaSharp
         /// </summary>
         public void Clean()
         {
-            if (!SerialPort.IsOpen) return;
-            this.SerialPort.Write(new byte[] { (byte)RoombaOpCode.CLEAN }, 0, 1);
+            if (this.communicator == null || !communicator.IsConnected) return;
+            this.communicator.Write(new byte[] { (byte)RoombaOpCode.CLEAN }, 0, 1);
         }
 
         /// <summary>
@@ -192,8 +196,8 @@ namespace iRobot.RoombaSharp
         /// </summary>
         public void Max()
         {
-            if (!SerialPort.IsOpen) return;
-            this.SerialPort.Write(new byte[] { (byte)RoombaOpCode.MAX }, 0, 1);
+            if (this.communicator == null || !communicator.IsConnected) return;
+            this.communicator.Write(new byte[] { (byte)RoombaOpCode.MAX }, 0, 1);
         }
 
         /// <summary>
@@ -207,10 +211,10 @@ namespace iRobot.RoombaSharp
         /// <param name="sideBrush">Brush</param>
         public void Motors(bool mainBrush, bool vacuum, bool sideBrush)
         {
-            if (!SerialPort.IsOpen) return;
+            if (this.communicator == null || !communicator.IsConnected) return;
             byte motors = Convert(new bool[] { false, false, false, false, false, mainBrush, vacuum, sideBrush });
             byte[] command = { (byte)RoombaOpCode.MOTORS, motors };
-            this.SerialPort.Write(command, 0, command.Length);
+            this.communicator.Write(command, 0, command.Length);
         }
 
         /// <summary>
@@ -232,7 +236,7 @@ namespace iRobot.RoombaSharp
         /// <param name="radius"></param>
         public void Drive(short velocity, short radius)
         {
-            if (!SerialPort.IsOpen) return;
+            if (this.communicator == null || !communicator.IsConnected) return;
 
             // Convert values to bytes.
             byte[] bVelocity = BitConverter.GetBytes(velocity);
@@ -242,7 +246,7 @@ namespace iRobot.RoombaSharp
             byte[] command = { (byte)RoombaOpCode.DRIVE, bVelocity[1], bVelocity[0], bRadius[1], bRadius[0] };
 
             // Send command package.
-            this.SerialPort.Write(command, 0, command.Length);
+            this.communicator.Write(command, 0, command.Length);
         }
 
         /// <summary>
@@ -262,7 +266,7 @@ namespace iRobot.RoombaSharp
         public void Song(byte[] song)
         {
             //TODO: Test
-            if (!SerialPort.IsOpen) return;
+            if (this.communicator == null || !communicator.IsConnected) return;
             if (song.Length > 255) return;
 
             // Command
@@ -274,7 +278,7 @@ namespace iRobot.RoombaSharp
             System.Buffer.BlockCopy(song,                                   0, command, 2, song.Length);
 
             // Send command package.
-            this.SerialPort.Write(command, 0, command.Length);
+            this.communicator.Write(command, 0, command.Length);
         }
 
         /// <summary>
@@ -287,9 +291,9 @@ namespace iRobot.RoombaSharp
         /// <param name="songNumber">Song Numbe</param>
         public void Play(byte songNumber)
         {
-            if (!SerialPort.IsOpen) return;
+            if (this.communicator == null || !communicator.IsConnected) return;
             byte[] command = { (byte)RoombaOpCode.PLAY, songNumber };
-            this.SerialPort.Write(command, 0, command.Length);
+            this.communicator.Write(command, 0, command.Length);
         }
 
         /// <summary>
@@ -302,9 +306,9 @@ namespace iRobot.RoombaSharp
         /// <param name="packageCode">Packet Code</param>
         public void Sensors(SensorsPackageCode packageCode)
         {
-            if (!SerialPort.IsOpen) return;
+            if (this.communicator == null || !communicator.IsConnected) return;
             byte[] command = { (byte)RoombaOpCode.SENSORS, (byte)packageCode };
-            this.SerialPort.Write(command, 0, command.Length);
+            this.communicator.Write(command, 0, command.Length);
         }
 
         /// <summary>
@@ -320,8 +324,8 @@ namespace iRobot.RoombaSharp
         /// </summary>
         public void ForceSeekingDock()
         {
-            if (!SerialPort.IsOpen) return;
-            this.SerialPort.Write(new byte[] { (byte)RoombaOpCode.DOCK }, 0, 1);
+            if (this.communicator == null || !communicator.IsConnected) return;
+            this.communicator.Write(new byte[] { (byte)RoombaOpCode.DOCK }, 0, 1);
         }
 
         #endregion
