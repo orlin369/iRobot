@@ -95,6 +95,12 @@ namespace RoombaSharp
             this.btnUp = new System.Windows.Forms.Button();
             this.tbpCamera = new System.Windows.Forms.TabPage();
             this.pbSand = new System.Windows.Forms.PictureBox();
+            this.ssMain = new System.Windows.Forms.StatusStrip();
+            this.tsslRobotConnection = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslMQTTConnection = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsmiMqtt = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiMqttConnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiMqttDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tbcMain.SuspendLayout();
             this.tbpMotion.SuspendLayout();
@@ -104,6 +110,7 @@ namespace RoombaSharp
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).BeginInit();
             this.tbpCamera.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSand)).BeginInit();
+            this.ssMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // msMain
@@ -112,11 +119,12 @@ namespace RoombaSharp
             this.msMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
             this.tsmiRobot,
-            this.tsmiCapture});
+            this.tsmiCapture,
+            this.tsmiMqtt});
             this.msMain.Location = new System.Drawing.Point(0, 0);
             this.msMain.Name = "msMain";
             this.msMain.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.msMain.Size = new System.Drawing.Size(1290, 24);
+            this.msMain.Size = new System.Drawing.Size(835, 24);
             this.msMain.TabIndex = 16;
             this.msMain.Text = "menuStrip1";
             // 
@@ -135,30 +143,30 @@ namespace RoombaSharp
             // tsmiConnect
             // 
             this.tsmiConnect.Name = "tsmiConnect";
-            this.tsmiConnect.Size = new System.Drawing.Size(119, 22);
+            this.tsmiConnect.Size = new System.Drawing.Size(152, 22);
             this.tsmiConnect.Text = "Connect";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(116, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // tsmiSettings
             // 
             this.tsmiSettings.Name = "tsmiSettings";
-            this.tsmiSettings.Size = new System.Drawing.Size(119, 22);
+            this.tsmiSettings.Size = new System.Drawing.Size(152, 22);
             this.tsmiSettings.Text = "Settings";
             this.tsmiSettings.Click += new System.EventHandler(this.tsmiSettings_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(116, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // tsmiExit
             // 
             this.tsmiExit.Name = "tsmiExit";
-            this.tsmiExit.Size = new System.Drawing.Size(119, 22);
+            this.tsmiExit.Size = new System.Drawing.Size(152, 22);
             this.tsmiExit.Text = "Exit";
             this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
@@ -301,7 +309,7 @@ namespace RoombaSharp
             // stopToolStripMenuItem
             // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.stopToolStripMenuItem.Text = "Stop";
             // 
             // tbcMain
@@ -312,7 +320,7 @@ namespace RoombaSharp
             this.tbcMain.Location = new System.Drawing.Point(0, 24);
             this.tbcMain.Name = "tbcMain";
             this.tbcMain.SelectedIndex = 0;
-            this.tbcMain.Size = new System.Drawing.Size(1290, 635);
+            this.tbcMain.Size = new System.Drawing.Size(835, 663);
             this.tbcMain.TabIndex = 34;
             // 
             // tbpMotion
@@ -322,7 +330,7 @@ namespace RoombaSharp
             this.tbpMotion.Location = new System.Drawing.Point(4, 26);
             this.tbpMotion.Name = "tbpMotion";
             this.tbpMotion.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpMotion.Size = new System.Drawing.Size(1282, 605);
+            this.tbpMotion.Size = new System.Drawing.Size(827, 633);
             this.tbpMotion.TabIndex = 0;
             this.tbpMotion.Text = "Motion";
             // 
@@ -338,18 +346,18 @@ namespace RoombaSharp
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 71.79054F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 28.20946F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1276, 599);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(821, 627);
             this.tableLayoutPanel1.TabIndex = 42;
             // 
             // tbConsole
             // 
             this.tbConsole.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbConsole.Location = new System.Drawing.Point(4, 434);
+            this.tbConsole.Location = new System.Drawing.Point(4, 454);
             this.tbConsole.Margin = new System.Windows.Forms.Padding(4);
             this.tbConsole.Multiline = true;
             this.tbConsole.Name = "tbConsole";
             this.tbConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbConsole.Size = new System.Drawing.Size(1268, 161);
+            this.tbConsole.Size = new System.Drawing.Size(813, 169);
             this.tbConsole.TabIndex = 41;
             // 
             // pnlManualControl
@@ -367,7 +375,7 @@ namespace RoombaSharp
             this.pnlManualControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlManualControl.Location = new System.Drawing.Point(3, 3);
             this.pnlManualControl.Name = "pnlManualControl";
-            this.pnlManualControl.Size = new System.Drawing.Size(1270, 424);
+            this.pnlManualControl.Size = new System.Drawing.Size(815, 444);
             this.pnlManualControl.TabIndex = 42;
             // 
             // lblHandPosition
@@ -511,11 +519,58 @@ namespace RoombaSharp
             this.pbSand.TabIndex = 34;
             this.pbSand.TabStop = false;
             // 
+            // ssMain
+            // 
+            this.ssMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsslRobotConnection,
+            this.tsslMQTTConnection});
+            this.ssMain.Location = new System.Drawing.Point(0, 665);
+            this.ssMain.Name = "ssMain";
+            this.ssMain.Size = new System.Drawing.Size(835, 22);
+            this.ssMain.TabIndex = 35;
+            this.ssMain.Text = "statusStrip1";
+            // 
+            // tsslRobotConnection
+            // 
+            this.tsslRobotConnection.Name = "tsslRobotConnection";
+            this.tsslRobotConnection.Size = new System.Drawing.Size(110, 17);
+            this.tsslRobotConnection.Text = "Robot Connection: ";
+            // 
+            // tsslMQTTConnection
+            // 
+            this.tsslMQTTConnection.Name = "tsslMQTTConnection";
+            this.tsslMQTTConnection.Size = new System.Drawing.Size(111, 17);
+            this.tsslMQTTConnection.Text = "MQTT Connection: ";
+            // 
+            // tsmiMqtt
+            // 
+            this.tsmiMqtt.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiMqttConnect,
+            this.tsmiMqttDisconnect});
+            this.tsmiMqtt.Name = "tsmiMqtt";
+            this.tsmiMqtt.Size = new System.Drawing.Size(52, 20);
+            this.tsmiMqtt.Text = "MQTT";
+            // 
+            // tsmiMqttConnect
+            // 
+            this.tsmiMqttConnect.Name = "tsmiMqttConnect";
+            this.tsmiMqttConnect.Size = new System.Drawing.Size(152, 22);
+            this.tsmiMqttConnect.Text = "Connect";
+            this.tsmiMqttConnect.Click += new System.EventHandler(this.tsmiMqttConnect_Click);
+            // 
+            // tsmiMqttDisconnect
+            // 
+            this.tsmiMqttDisconnect.Name = "tsmiMqttDisconnect";
+            this.tsmiMqttDisconnect.Size = new System.Drawing.Size(152, 22);
+            this.tsmiMqttDisconnect.Text = "Disconnect";
+            this.tsmiMqttDisconnect.Click += new System.EventHandler(this.tsmiMqttDisconnect_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1290, 659);
+            this.ClientSize = new System.Drawing.Size(835, 687);
+            this.Controls.Add(this.ssMain);
             this.Controls.Add(this.tbcMain);
             this.Controls.Add(this.msMain);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -537,6 +592,8 @@ namespace RoombaSharp
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).EndInit();
             this.tbpCamera.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbSand)).EndInit();
+            this.ssMain.ResumeLayout(false);
+            this.ssMain.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -586,6 +643,12 @@ namespace RoombaSharp
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip ssMain;
+        private System.Windows.Forms.ToolStripStatusLabel tsslRobotConnection;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMqtt;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMqttConnect;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMqttDisconnect;
+        private System.Windows.Forms.ToolStripStatusLabel tsslMQTTConnection;
     }
 }
 

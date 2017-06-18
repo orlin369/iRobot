@@ -210,6 +210,8 @@ namespace RoombaSharp
             this.robot.Safe();
             this.robot.Start();
             this.robot.Safe();
+
+            this.tsslRobotConnection.Text = "Robot Connection: Connected@" + portName;
         }
 
         /// <summary>
@@ -224,6 +226,8 @@ namespace RoombaSharp
             this.communicator.OnConnect -= Robot_OnConnect;
             this.communicator.OnDisconnect -= Robot_OnDisconnect;
             this.robot.Disconnect();
+
+            this.tsslRobotConnection.Text = "Robot Connection: Disconnected";
         }
 
         private void Robot_OnDisconnect(object sender, EventArgs e)
@@ -520,6 +524,20 @@ namespace RoombaSharp
             {
                 Console.WriteLine(exception.ToString());
             }
+        }
+
+        #endregion
+
+        #region MQTT
+
+        private void tsmiMqttConnect_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tsmiMqttDisconnect_Click(object sender, EventArgs e)
+        {
+
         }
 
         #endregion
