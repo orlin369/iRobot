@@ -202,7 +202,7 @@ namespace RoombaSharp
             this.tsmiClean.Name = "tsmiClean";
             this.tsmiClean.Size = new System.Drawing.Size(152, 22);
             this.tsmiClean.Text = "Clean";
-            this.tsmiClean.Click += new System.EventHandler(this.tsmiClean_Click_1);
+            this.tsmiClean.Click += new System.EventHandler(this.tsmiClean_Click);
             // 
             // tsmiMax
             // 
