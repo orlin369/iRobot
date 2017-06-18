@@ -386,7 +386,7 @@ namespace RoombaSharp
 
         #region Tool Strip Menu Items
 
-        #region Function Buttons
+        #region Robot
 
         private void tsmiConnect_Click(object sender, EventArgs e)
         {
@@ -418,40 +418,41 @@ namespace RoombaSharp
             worker.Start();
         }
 
-        private void tsmiClean_Click(object sender, EventArgs e)
+        #region Buttons
+
+        private void tsmiBtnClean_Click(object sender, EventArgs e)
         {
             if (this.robot == null) return;
-            this.robot.Start();
             this.robot.Clean();
         }
 
-        private void tsmiSpot_Click(object sender, EventArgs e)
+        private void tsmiBtnSpot_Click(object sender, EventArgs e)
         {
             if (this.robot == null) return;
-            this.robot.Start();
             this.robot.Spot();
         }
 
-        private void tsmiDock_Click(object sender, EventArgs e)
+        private void tsmiBtnDock_Click(object sender, EventArgs e)
         {
             if (this.robot == null) return;
             this.robot.Start();
             this.robot.ForceSeekingDock();
         }
 
-        private void tsmiPower_Click(object sender, EventArgs e)
+        private void tsmiBtnPower_Click(object sender, EventArgs e)
         {
             if (this.robot == null) return;
             this.robot.Start();
             this.robot.Power();
         }
 
-        private void tsmiMax_Click(object sender, EventArgs e)
+        private void tsmiBtnMax_Click(object sender, EventArgs e)
         {
             if (this.robot == null) return;
-            this.robot.Start();
             this.robot.Max();
         }
+
+        #endregion
 
         #endregion
 
