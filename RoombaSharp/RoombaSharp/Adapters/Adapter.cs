@@ -36,9 +36,7 @@ namespace RoombaSharp.Adapters
         /// Connect
         /// </summary>
         public abstract void Connect();
-
-
-
+        
         /// <summary>
         /// Disconnect
         /// </summary>

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RoombaSharp.Adapters;
+using RoombaSharp.Events;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -19,6 +20,12 @@ namespace RoombaSharp.Connectors
         /// Connection adapter.
         /// </summary>
         private Adapter adapter;
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler<StringEventArgs> OnMessage;
 
         #endregion
 
@@ -48,6 +55,12 @@ namespace RoombaSharp.Connectors
         public DataConnector(Adapter adapter)
         {
             this.adapter = adapter;
+            this.adapter.OnMessage += Adapter_OnMessage;
+        }
+
+        private void Adapter_OnMessage(object sender, Events.StringEventArgs e)
+        {
+            this.OnMessage?.Invoke(this, e);
         }
 
         #endregion
