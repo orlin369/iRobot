@@ -228,7 +228,7 @@ namespace RoombaSharp
 
         private void Robot_OnDisconnect(object sender, EventArgs e)
         {
-            this.LogMessage("Disconnected from robot robot.");
+            this.LogMessage("Disconnected from robot.");
         }
 
         private void Robot_OnConnect(object sender, EventArgs e)
@@ -262,7 +262,7 @@ namespace RoombaSharp
             }
 
             // Add cameras to the menus.
-            this.AddCameras(this.videoDevices, this.captureToolStripMenuItem, this.mItCaptureeDevice_Click);
+            this.AddCameras(this.videoDevices, this.tsmiCapture, this.tsmiCaptureeDevice_Click);
         }
 
         private void DisconnectFromCamera()
@@ -287,7 +287,7 @@ namespace RoombaSharp
         private VideoDevice[] GetDevices()
         {
             //Set up the capture method 
-            //-> Find systems cameras with DirectShow.Net dll, thanks to Charles Lorette.
+            //-> Find systems cameras with DirectShow.Net DLL, thanks to Charles Lorette.
             //DsDevice[] systemCamereas = DsDevice.GetDevicesOfCat(AForge.Video.DirectShow.FilterCategory.VideoInputDevice);
 
             // Enumerate video devices
@@ -316,23 +316,32 @@ namespace RoombaSharp
                 return;
             }
 
+            // Clear the list.
             menu.DropDown.Items.Clear();
 
+            //
+            ToolStripMenuItem stopItem = new ToolStripMenuItem();
+            stopItem.Text = "Stop";
+            stopItem.Enabled = true;
+            stopItem.Checked = false;
+            stopItem.Click += this.tsmiStopCaptureeDevice_Click;
+            menu.DropDown.Items.Add(stopItem);
+
+            // Add cameras.
             foreach (VideoDevice device in videoDevices)
             {
                 // Store the each retrieved available capture device into the MenuItems.
-                ToolStripMenuItem mItem = new ToolStripMenuItem();
+                ToolStripMenuItem cameraItem = new ToolStripMenuItem();
 
-                mItem.Text = String.Format("{0:D2} / {1}", device.Index, device.Name);
-                mItem.Tag = device;
-                mItem.Enabled = true;
-                mItem.Checked = false;
+                cameraItem.Text = String.Format("{0:D2} / {1}", device.Index, device.Name);
+                cameraItem.Tag = device;
+                cameraItem.Enabled = true;
+                cameraItem.Checked = false;
+                cameraItem.Click += callback;
 
-                //TODO: Grozno
-                mItem.Click += callback;
-
-                menu.DropDown.Items.Add(mItem);
+                menu.DropDown.Items.Add(cameraItem);
             }
+
         }
 
         private void VideoDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
@@ -345,7 +354,7 @@ namespace RoombaSharp
 
                 if (this.dumpImage == null) return;
 
-                this.ProcessSand((Bitmap)this.dumpImage.Clone());
+                this.ShowImage((Bitmap)this.dumpImage.Clone());
             }
             catch (Exception exception)
             {
@@ -356,20 +365,20 @@ namespace RoombaSharp
         /// <summary>
         /// Process rocks in the image.
         /// </summary>
-        private void ProcessSand(Bitmap inputImage)
+        private void ShowImage(Bitmap inputImage)
         {
             if (this.pbSand.InvokeRequired)
             {
                 this.pbSand.BeginInvoke((MethodInvoker)delegate ()
                 {
                     // Show the new image.
-                    this.pbSand.Image = inputImage;
+                    this.pbSand.Image = this.FitImage(inputImage, this.pbSand.Size);
                 });
             }
             else
             {
                 // Show the new image.
-                this.pbSand.Image = inputImage;
+                this.pbSand.Image = this.FitImage(inputImage, this.pbSand.Size);
             }
         }
 
@@ -405,7 +414,7 @@ namespace RoombaSharp
                 )
             );
 
-            // Start the melodie thread.
+            // Start the Melodie thread.
             worker.Start();
         }
 
@@ -446,7 +455,33 @@ namespace RoombaSharp
 
         #endregion
 
-        private void mItCaptureeDevice_Click(object sender, EventArgs e)
+        private void tsmiSettings_Click(object sender, EventArgs e)
+        {
+            using (Settings.SettingsForm sf = new Settings.SettingsForm())
+            {
+                sf.ShowDialog();
+            }
+        }
+
+        private void tsmiExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        #region Camera
+
+        private void tsmiStopCaptureeDevice_Click(object sender, EventArgs e)
+        {
+            this.DisconnectFromCamera();
+
+            foreach (ToolStripMenuItem cameraItem in this.tsmiCapture.DropDown.Items)
+            {
+                cameraItem.Enabled = true;
+                cameraItem.Checked = false;
+            }
+        }
+
+        private void tsmiCaptureeDevice_Click(object sender, EventArgs e)
         {
             // Create instance of caller.
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
@@ -457,7 +492,7 @@ namespace RoombaSharp
             // Get device.
             VideoDevice videoDevice = (VideoDevice)item.Tag;
 
-            foreach (ToolStripMenuItem mItem in this.captureToolStripMenuItem.DropDown.Items)
+            foreach (ToolStripMenuItem mItem in this.tsmiCapture.DropDown.Items)
             {
                 item.Checked = false;
             }
@@ -486,19 +521,7 @@ namespace RoombaSharp
             }
         }
 
-        private void tsmiSettings_Click(object sender, EventArgs e)
-        {
-            using (Settings.SettingsForm sf = new Settings.SettingsForm())
-            {
-                sf.ShowDialog();
-            }
-        }
-
-        private void tsmiExit_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
+        #endregion
 
         #endregion
 
