@@ -159,13 +159,14 @@ namespace RoombaSharp
         /// <returns>Resized image.</returns>
         public Bitmap FitImage(Bitmap image, Size size)
         {
-            var ratioX = (double)size.Width / image.Width;
-            var ratioY = (double)size.Height / image.Height;
+            var ratioX = (double)(size.Width  / image.Width);
+            var ratioY = (double)(size.Height / image.Height);
+
             var ratio = Math.Min(ratioX, ratioY);
 
-            var newWidth = (int)(image.Width * ratio);
+            var newWidth  = (int)(image.Width  * ratio);
             var newHeight = (int)(image.Height * ratio);
-
+            
             var newImage = new Bitmap(newWidth, newHeight);
 
             using (var graphics = Graphics.FromImage(newImage))
@@ -827,7 +828,6 @@ namespace RoombaSharp
         }
 
         #endregion
-
 
     }
 }

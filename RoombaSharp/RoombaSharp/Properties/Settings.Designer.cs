@@ -25,7 +25,7 @@ namespace RoombaSharp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("iot.eclipse.org")]
         public string BrokerHost {
             get {
                 return ((string)(this["BrokerHost"]));
@@ -37,7 +37,7 @@ namespace RoombaSharp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1883")]
         public int BrokerPort {
             get {
                 return ((int)(this["BrokerPort"]));
@@ -49,7 +49,7 @@ namespace RoombaSharp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("pt/str/i/robot/2")]
         public string MqttInputTopic {
             get {
                 return ((string)(this["MqttInputTopic"]));
@@ -61,7 +61,7 @@ namespace RoombaSharp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("pt/str/o/robot/2")]
         public string MqttOutputTopic {
             get {
                 return ((string)(this["MqttOutputTopic"]));
@@ -73,7 +73,7 @@ namespace RoombaSharp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("pt/img/o/robot/2")]
         public string MqttImageTopic {
             get {
                 return ((string)(this["MqttImageTopic"]));
@@ -85,7 +85,7 @@ namespace RoombaSharp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("300, 300")]
         public global::System.Drawing.Size ImageSize {
             get {
                 return ((global::System.Drawing.Size)(this["ImageSize"]));
