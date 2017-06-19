@@ -46,6 +46,23 @@ namespace iRobot.RoombaSharp
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Is connected.
+        /// </summary>
+        public bool IsConnected
+        {
+            get
+            {
+                if (this.communicator == null) return false;
+
+                return this.communicator.IsConnected;
+            }
+        }
+
+        #endregion
+
         #region Constructor
 
         /// <summary>
@@ -62,14 +79,31 @@ namespace iRobot.RoombaSharp
         #region API
 
         /// <summary>
+        /// Connect to the robot.
+        /// </summary>
+        public void Connect()
+        {
+            if (this.communicator == null) return;
+            this.communicator.Connect();
+        }
+
+        /// <summary>
+        /// Disconnect from the robot.
+        /// </summary>
+        public void Disconnect()
+        {
+            if (this.communicator == null || !communicator.IsConnected) return;
+            this.communicator.Disconnect();
+        }
+
+        /// <summary>
         /// Starts the SCI.The Start command must be sent before any
         /// other SCI commands.This command puts the SCI in passive
         /// mode.
         /// </summary>
         public void Start()
         {
-            
-            if (!communicator.IsConnected) return;
+            if (this.communicator == null || !communicator.IsConnected) return;
             this.communicator.Write(new byte[] { (byte)RoombaOpcodes.START }, 0, 1);
         }
 
@@ -154,12 +188,6 @@ namespace iRobot.RoombaSharp
             this.communicator.Write(new byte[] { (byte)RoombaOpcodes.POWER }, 0, 1);
         }
 
-        public void Connect()
-        {
-            if (this.communicator == null) return;
-            this.communicator.Connect();
-        }
-
         /// <summary>
         /// Starts a spot cleaning cycle, the same as a normal “spot” 
         /// button press.The SCI must be in safe or full mode to accept this
@@ -169,12 +197,6 @@ namespace iRobot.RoombaSharp
         {
             if (this.communicator == null || !communicator.IsConnected) return;
             this.communicator.Write(new byte[] { (byte)RoombaOpcodes.SPOT }, 0, 1);
-        }
-
-        public void Disconnect()
-        {
-            if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Disconnect();
         }
 
         /// <summary>
@@ -232,8 +254,8 @@ namespace iRobot.RoombaSharp
         /// below. The SCI must be in safe or full mode to accept this
         /// command.This command does change the mode.
         /// </summary>
-        /// <param name="velocity"></param>
-        /// <param name="radius"></param>
+        /// <param name="velocity">Velocity (-500 – 500 mm/s)</param>
+        /// <param name="radius">Radius (-2000 – 2000 mm)</param>
         public void Drive(short velocity, short radius)
         {
             if (this.communicator == null || !communicator.IsConnected) return;
@@ -244,6 +266,55 @@ namespace iRobot.RoombaSharp
 
             // Build command package.
             byte[] command = { (byte)RoombaOpcodes.DRIVE, bVelocity[1], bVelocity[0], bRadius[1], bRadius[0] };
+
+            // Send command package.
+            this.communicator.Write(command, 0, command.Length);
+        }
+
+        /// <summary>
+        ///This command lets you control the forward and backward motion of Roomba’s drive wheels
+        ///independently.It takes four data bytes, which are interpreted as two 16-bit signed values using two’s
+        ///complement.The first two bytes specify the velocity of the right wheel in millimeters per second (mm/s),
+        ///with the high byte sent first.The next two bytes specify the velocity of the left wheel, in the same
+        ///format.A positive velocity makes that wheel drive forward, while a negative velocity makes it drive
+        ///backward.
+        /// </summary>
+        /// <param name="leftWheel">Left wheel velocity (-500 – 500 mm/s)</param>
+        /// <param name="rightWheel">Right wheel velocity (-500 – 500 mm/s)</param>
+        public void DirectDrive(short leftWheel, short rightWheel)
+        {
+            if (this.communicator == null || !communicator.IsConnected) return;
+
+            // Convert values to bytes.
+            byte[] bLeftWheel = BitConverter.GetBytes(leftWheel);
+            byte[] bRightWheel = BitConverter.GetBytes(rightWheel);
+
+            // Build command package.
+            byte[] command = { (byte)RoombaOpcodes.DRIVE_DIRECT, bRightWheel[1], bRightWheel[0], bLeftWheel[1], bLeftWheel[0] };
+
+            // Send command package.
+            this.communicator.Write(command, 0, command.Length);
+        }
+
+        /// <summary>
+        ///This command lets you control the raw forward and backward motion of Roomba’s drive wheels
+        ///independently.It takes four data bytes, which are interpreted as two 16-bit signed values using two’s
+        ///complement.The first two bytes specify the PWM of the right wheel, with the high byte sent first.The
+        ///next two bytes specify the PWM of the left wheel, in the same format.A positive PWM makes that wheel
+        ///drive forward, while a negative PWM makes it drive backward.
+        /// </summary>
+        /// <param name="leftPWM">Left wheel PWM (-255 – 255)</param>
+        /// <param name="rightPWM">Right wheel PWM (-255 – 255)</param>
+        public void DrivePWM(short leftPWM, short rightPWM)
+        {
+            if (this.communicator == null || !communicator.IsConnected) return;
+
+            // Convert values to bytes.
+            byte[] bLeftWheel = BitConverter.GetBytes(leftPWM);
+            byte[] bRightWheel = BitConverter.GetBytes(rightPWM);
+
+            // Build command package.
+            byte[] command = { (byte)RoombaOpcodes.DRIVE_DIRECT, bRightWheel[1], bRightWheel[0], bLeftWheel[1], bLeftWheel[0] };
 
             // Send command package.
             this.communicator.Write(command, 0, command.Length);
@@ -273,9 +344,9 @@ namespace iRobot.RoombaSharp
             byte[] command = new byte[1 + 1 + song.Length];
 
             // Build command package.
-            System.Buffer.BlockCopy(new byte[] { (byte)RoombaOpcodes.SONG }, 0, command, 0, 1);
-            System.Buffer.BlockCopy(new byte[] { (byte)song.Length },       0, command, 1, 1);
-            System.Buffer.BlockCopy(song,                                   0, command, 2, song.Length);
+            Buffer.BlockCopy(new byte[] { (byte)RoombaOpcodes.SONG }, 0, command, 0, 1);
+            Buffer.BlockCopy(new byte[] { (byte)song.Length },        0, command, 1, 1);
+            Buffer.BlockCopy(song,                                    0, command, 2, song.Length);
 
             // Send command package.
             this.communicator.Write(command, 0, command.Length);
@@ -334,14 +405,17 @@ namespace iRobot.RoombaSharp
 
         private static byte Convert(bool[] bits)
         {
-            byte data = 0;
+            byte result = 0;
 
-            for (int bitIndex = bits.Length - 1; bitIndex >= 0; bitIndex--)
+            for(int index = 0; index < bits.Length; index++)
             {
-                data |= (byte)((bits[bitIndex] ? 1 : 0) << bitIndex);
+                if(bits[index])
+                {
+                    result |= (byte)(1 << (7 - index));
+                }
             }
 
-            return data;
+            return result;
         }
 
         #endregion

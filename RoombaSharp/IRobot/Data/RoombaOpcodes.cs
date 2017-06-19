@@ -46,7 +46,8 @@ namespace iRobot.Data
         PLAY = 141,           //0x8D
         SENSORS = 142,        //0x8E
         DOCK = 143,           //0x8F
-        DRIVE_DIRECT = 145,   //0X91
-        DIGITAL_OUTPUT = 147, //0X93
+        DRIVE_DIRECT = 145,   //0x91
+        DRIVE_PWN = 146,      //0x92
+        DIGITAL_OUTPUT = 147, //0x93
     }
 }

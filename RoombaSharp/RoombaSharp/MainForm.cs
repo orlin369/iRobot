@@ -224,13 +224,13 @@ namespace RoombaSharp
                 new ThreadStart(
                     delegate ()
                     {
-                        if (this.robot == null) return;
+                        if (this.robot == null || !this.robot.IsConnected) return;
 
-                        System.Threading.Thread.Sleep(20);
+                        Thread.Sleep(20);
                         for (byte i = 31; i <= 127; i++)
                         {
                             this.robot.Play(i);
-                            System.Threading.Thread.Sleep(100);
+                            Thread.Sleep(100);
                         }
                     }
                 )
@@ -240,37 +240,106 @@ namespace RoombaSharp
             worker.Start();
         }
 
+        #region LED
+
+        private void tsmiLedSpot_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            this.tsmiLedSpot.Checked = !this.tsmiLedSpot.Checked;
+
+            this.robot.LEDs(this.tsmiLedSpot.Checked, this.tsmiLedClean.Checked, this.tsmiLedMax.Checked, this.tsmiLedDirtDetect.Checked);
+        }
+
+        private void tsmiLedClean_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            this.tsmiLedClean.Checked = !this.tsmiLedClean.Checked;
+
+            this.robot.LEDs(this.tsmiLedSpot.Checked, this.tsmiLedClean.Checked, this.tsmiLedMax.Checked, this.tsmiLedDirtDetect.Checked);
+        }
+
+        private void tsmiLedMax_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            this.tsmiLedMax.Checked = !this.tsmiLedMax.Checked;
+
+            this.robot.LEDs(this.tsmiLedSpot.Checked, this.tsmiLedClean.Checked, this.tsmiLedMax.Checked, this.tsmiLedDirtDetect.Checked);
+        }
+
+        private void tsmiLedDirtDetect_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            this.tsmiLedDirtDetect.Checked = !this.tsmiLedDirtDetect.Checked;
+
+            this.robot.LEDs(this.tsmiLedSpot.Checked, this.tsmiLedClean.Checked, this.tsmiLedMax.Checked, this.tsmiLedDirtDetect.Checked);
+        }
+
+        #endregion
+
+        #region Motors
+
+        private void tsmiMainBrush_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            this.tsmiMainBrush.Checked = !this.tsmiMainBrush.Checked;
+
+            this.robot.Motors(this.tsmiMainBrush.Checked, this.tsmiVacuum.Checked, this.tsmiSideBrush.Checked);
+        }
+
+        private void tsmiVacuum_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            this.tsmiVacuum.Checked = !this.tsmiVacuum.Checked;
+
+            this.robot.Motors(this.tsmiMainBrush.Checked, this.tsmiVacuum.Checked, this.tsmiSideBrush.Checked);
+        }
+
+        private void tsmiSideBrush_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            this.tsmiSideBrush.Checked = !this.tsmiSideBrush.Checked;
+
+            this.robot.Motors(this.tsmiMainBrush.Checked, this.tsmiVacuum.Checked, this.tsmiSideBrush.Checked);
+        }
+
+        #endregion
+
         #region Buttons
 
         private void tsmiBtnClean_Click(object sender, EventArgs e)
         {
-            if (this.robot == null) return;
+            if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Clean();
         }
 
         private void tsmiBtnSpot_Click(object sender, EventArgs e)
         {
-            if (this.robot == null) return;
+            if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Spot();
         }
 
         private void tsmiBtnDock_Click(object sender, EventArgs e)
         {
-            if (this.robot == null) return;
-            this.robot.Start();
+            if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.ForceSeekingDock();
         }
 
         private void tsmiBtnPower_Click(object sender, EventArgs e)
         {
-            if (this.robot == null) return;
-            this.robot.Start();
+            if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Power();
         }
 
         private void tsmiBtnMax_Click(object sender, EventArgs e)
         {
-            if (this.robot == null) return;
+                        if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Max();
         }
 
@@ -381,25 +450,25 @@ namespace RoombaSharp
 
         private void btnRight_MouseDown(object sender, MouseEventArgs e)
         {
-            if (this.robot == null) return;
+                        if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive((short)this.trbSpeed.Value, (short)-this.trbRadius.Value);
         }
 
         private void btnLeft_MouseDown(object sender, MouseEventArgs e)
         {
-            if (this.robot == null) return;
+                        if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive((short)this.trbSpeed.Value, (short)this.trbRadius.Value);
         }
 
         private void btnUp_MouseDown(object sender, MouseEventArgs e)
         {
-            if (this.robot == null) return;
+                        if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive((short)this.trbSpeed.Value, 0);
         }
 
         private void btnDown_MouseDown(object sender, MouseEventArgs e)
         {
-            if (this.robot == null) return;
+                        if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive((short)-this.trbSpeed.Value, 0);
         }
 
@@ -407,31 +476,31 @@ namespace RoombaSharp
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            if (this.robot == null) return;
+                        if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
         }
 
         private void btnUp_MouseUp(object sender, MouseEventArgs e)
         {
-            if (this.robot == null) return;
+                        if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
         }
 
         private void btnRight_MouseUp(object sender, MouseEventArgs e)
         {
-            if (this.robot == null) return;
+                        if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
         }
 
         private void btnDown_MouseUp(object sender, MouseEventArgs e)
         {
-            if (this.robot == null) return;
+                        if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
         }
 
         private void btnLeft_MouseUp(object sender, MouseEventArgs e)
         {
-            if (this.robot == null) return;
+                        if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
         }
 
@@ -758,6 +827,7 @@ namespace RoombaSharp
         }
 
         #endregion
+
 
     }
 }
