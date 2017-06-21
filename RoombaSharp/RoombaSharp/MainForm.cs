@@ -54,6 +54,16 @@ namespace RoombaSharp
         private Roomba robot;
 
         /// <summary>
+        /// Clean LED intensity.
+        /// </summary>
+        private byte cleanLedIntensity = 0;
+
+        /// <summary>
+        /// Clean LED color.
+        /// </summary>
+        private byte cleanLedColor = 0;
+
+        /// <summary>
         /// Log messages sync lock object.
         /// </summary>
         private object syncLockLogs = new object();
@@ -82,6 +92,7 @@ namespace RoombaSharp
         /// Connector
         /// </summary>
         private DataConnector mqttCommunicator;
+
 
         #endregion
 
@@ -159,14 +170,13 @@ namespace RoombaSharp
         /// <returns>Resized image.</returns>
         public Bitmap FitImage(Bitmap image, Size size)
         {
-            var ratioX = (double)(size.Width  / image.Width);
-            var ratioY = (double)(size.Height / image.Height);
-
+            var ratioX = (double)size.Width / image.Width;
+            var ratioY = (double)size.Height / image.Height;
             var ratio = Math.Min(ratioX, ratioY);
 
-            var newWidth  = (int)(image.Width  * ratio);
+            var newWidth = (int)(image.Width * ratio);
             var newHeight = (int)(image.Height * ratio);
-            
+
             var newImage = new Bitmap(newWidth, newHeight);
 
             using (var graphics = Graphics.FromImage(newImage))
@@ -243,31 +253,32 @@ namespace RoombaSharp
 
         #region LED
 
+        private void tsmiLedCheckRobot_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            this.tsmiLedCheckRobot.Checked = !this.tsmiLedCheckRobot.Checked;
+
+            this.robot.LEDs(this.tsmiLedCheckRobot.Checked, this.tsmiLedDock.Checked, this.tsmiLedSpot.Checked, this.tsmiLedDirtDetect.Checked, this.cleanLedColor, this.cleanLedIntensity);
+        }
+
+
         private void tsmiLedSpot_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
 
             this.tsmiLedSpot.Checked = !this.tsmiLedSpot.Checked;
 
-            this.robot.LEDs(this.tsmiLedSpot.Checked, this.tsmiLedClean.Checked, this.tsmiLedMax.Checked, this.tsmiLedDirtDetect.Checked);
+            this.robot.LEDs(this.tsmiLedCheckRobot.Checked, this.tsmiLedDock.Checked, this.tsmiLedSpot.Checked, this.tsmiLedDirtDetect.Checked, this.cleanLedColor, this.cleanLedIntensity);
         }
 
-        private void tsmiLedClean_Click(object sender, EventArgs e)
+        private void tsmiLedDock_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
 
-            this.tsmiLedClean.Checked = !this.tsmiLedClean.Checked;
+            this.tsmiLedDock.Checked = !this.tsmiLedDock.Checked;
 
-            this.robot.LEDs(this.tsmiLedSpot.Checked, this.tsmiLedClean.Checked, this.tsmiLedMax.Checked, this.tsmiLedDirtDetect.Checked);
-        }
-
-        private void tsmiLedMax_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null || !this.robot.IsConnected) return;
-
-            this.tsmiLedMax.Checked = !this.tsmiLedMax.Checked;
-
-            this.robot.LEDs(this.tsmiLedSpot.Checked, this.tsmiLedClean.Checked, this.tsmiLedMax.Checked, this.tsmiLedDirtDetect.Checked);
+            this.robot.LEDs(this.tsmiLedCheckRobot.Checked, this.tsmiLedDock.Checked, this.tsmiLedSpot.Checked, this.tsmiLedDirtDetect.Checked, this.cleanLedColor, this.cleanLedIntensity);
         }
 
         private void tsmiLedDirtDetect_Click(object sender, EventArgs e)
@@ -276,8 +287,68 @@ namespace RoombaSharp
 
             this.tsmiLedDirtDetect.Checked = !this.tsmiLedDirtDetect.Checked;
 
-            this.robot.LEDs(this.tsmiLedSpot.Checked, this.tsmiLedClean.Checked, this.tsmiLedMax.Checked, this.tsmiLedDirtDetect.Checked);
+            this.robot.LEDs(this.tsmiLedCheckRobot.Checked, this.tsmiLedDock.Checked, this.tsmiLedSpot.Checked, this.tsmiLedDirtDetect.Checked, this.cleanLedColor, this.cleanLedIntensity);
         }
+
+        private void tsmiLedCleanOff_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            this.tsmiLedCleanOff.Checked = true;
+
+            if (this.tsmiLedCleanOff.Checked)
+            {
+                this.tsmiLedCleanGreen.Checked = false;
+                this.tsmiLedCleanRed.Checked = false;
+            }
+
+            this.robot.LEDs(this.tsmiLedCheckRobot.Checked, this.tsmiLedDock.Checked, this.tsmiLedSpot.Checked, this.tsmiLedDirtDetect.Checked, this.cleanLedColor, this.cleanLedIntensity);
+        }
+
+        private void tsmiLedCleanGreen_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            this.tsmiLedCleanGreen.Checked = true;
+
+            if (this.tsmiLedCleanGreen.Checked)
+            {
+                this.tsmiLedCleanOff.Checked = false;
+                this.tsmiLedCleanRed.Checked = false;
+            }
+            
+            if (this.tsmiLedCleanGreen.Checked || this.tsmiLedCleanRed.Checked)
+            {
+                this.cleanLedIntensity = 255;
+            }
+
+            this.cleanLedColor = 0;
+
+            this.robot.LEDs(this.tsmiLedCheckRobot.Checked, this.tsmiLedDock.Checked, this.tsmiLedSpot.Checked, this.tsmiLedDirtDetect.Checked, this.cleanLedColor, this.cleanLedIntensity);
+        }
+
+        private void tsmiLedCleanRed_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            this.tsmiLedCleanRed.Checked = false;
+
+            if (this.tsmiLedCleanRed.Checked)
+            {
+                this.tsmiLedCleanOff.Checked = false;
+                this.tsmiLedCleanGreen.Checked = false;
+            }
+
+            if (this.tsmiLedCleanGreen.Checked || this.tsmiLedCleanRed.Checked)
+            {
+                this.cleanLedIntensity = 255;
+            }
+
+            this.cleanLedColor = 255;
+
+            this.robot.LEDs(this.tsmiLedCheckRobot.Checked, this.tsmiLedDock.Checked, this.tsmiLedSpot.Checked, this.tsmiLedDirtDetect.Checked, this.cleanLedColor, this.cleanLedIntensity);
+        }
+
 
         #endregion
 

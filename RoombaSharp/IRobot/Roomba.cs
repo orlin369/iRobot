@@ -137,7 +137,7 @@ namespace iRobot.RoombaSharp
             if (this.communicator == null || !communicator.IsConnected) return;
             this.communicator.Write(new byte[] { (byte)RoombaOpcodes.CONTROL }, 0, 1);
         }
-        
+
         /// <summary>
         /// Starts the SCI. The Start command must be sent before any 
         /// other SCI commands.This command puts the SCI in passive
@@ -146,11 +146,13 @@ namespace iRobot.RoombaSharp
         /// <param name="spot">Spot</param>
         /// <param name="clean">Clean</param>
         /// <param name="max">Max</param>
-        public void LEDs(bool spot, bool clean, bool max, bool dirtDetect)
+        /// <param name="color">0 = green, 255 = red. Intermediate values are intermediate colors (orange, yellow, etc).</param>
+        /// <param name="intensity">0 = off, 255 = full intensity. Intermediate values are intermediate intensities.</param>
+        public void LEDs(bool spot, bool clean, bool max, bool dirtDetect, byte color, byte intensity)
         {
             if (this.communicator == null || !communicator.IsConnected) return;
             byte leds = Convert(new bool[] { false, false, false, false, spot, clean, max, dirtDetect });
-            byte[] command = { (byte)RoombaOpcodes.LEDS,  leds};
+            byte[] command = { (byte)RoombaOpcodes.LEDS,  leds, color, intensity };
             this.communicator.Write(command, 0, command.Length);
         }
         
