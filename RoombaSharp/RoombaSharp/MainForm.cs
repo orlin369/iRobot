@@ -26,6 +26,7 @@ using System;
 using System.Windows.Forms;
 using System.Threading;
 using System.Drawing;
+using System.Collections.Generic;
 
 using AForge.Video.DirectShow;
 
@@ -235,14 +236,25 @@ namespace RoombaSharp
                 new ThreadStart(
                     delegate ()
                     {
+                        // Check the robot.
                         if (this.robot == null || !this.robot.IsConnected) return;
 
-                        Thread.Sleep(20);
-                        for (byte i = 31; i <= 127; i++)
+                        // Song number.
+                        byte songNumber = 0;
+
+                        // Song data.
+                        List<byte> notes = new List<byte>();
+                        for (byte i = 0; i <= 5; i++)
                         {
-                            this.robot.Play(i);
-                            Thread.Sleep(100);
+                            notes.Add(80);
+                            notes.Add(32);
                         }
+
+                        // Set song.
+                        this.robot.Song(songNumber, notes.ToArray());
+
+                        // Play song.
+                        this.robot.Play(songNumber);
                     }
                 )
             );
@@ -414,6 +426,12 @@ namespace RoombaSharp
                         if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Max();
         }
+
+        #endregion
+
+        #region LED Display
+
+        // TODO: put some methods.
 
         #endregion
 

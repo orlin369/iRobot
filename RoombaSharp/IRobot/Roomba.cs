@@ -336,19 +336,20 @@ namespace iRobot.RoombaSharp
         /// the mode
         /// </summary>
         /// <param name="song"></param>
-        public void Song(byte[] song)
+        public void Song(byte songNumber, byte[] song)
         {
             //TODO: Test
             if (this.communicator == null || !communicator.IsConnected) return;
             if (song.Length > 255) return;
 
             // Command
-            byte[] command = new byte[1 + 1 + song.Length];
+            byte[] command = new byte[1 + 1 + 1 + song.Length];
 
             // Build command package.
             Buffer.BlockCopy(new byte[] { (byte)RoombaOpcodes.SONG }, 0, command, 0, 1);
-            Buffer.BlockCopy(new byte[] { (byte)song.Length },        0, command, 1, 1);
-            Buffer.BlockCopy(song,                                    0, command, 2, song.Length);
+            Buffer.BlockCopy(new byte[] { songNumber               }, 0, command, 1, 1);
+            Buffer.BlockCopy(new byte[] { (byte)(song.Length / 2)  }, 0, command, 2, 1);
+            Buffer.BlockCopy(song,                                    0, command, 3, song.Length);
 
             // Send command package.
             this.communicator.Write(command, 0, command.Length);

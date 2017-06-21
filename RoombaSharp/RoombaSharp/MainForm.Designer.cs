@@ -52,6 +52,7 @@ namespace RoombaSharp
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.msMain = new System.Windows.Forms.MenuStrip();
             this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -66,6 +67,10 @@ namespace RoombaSharp
             this.tsmiLedDock = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiLedSpot = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiLedDirtDetect = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiLedClean = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiLedCleanOff = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiLedCleanGreen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiLedCleanRed = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMotors = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMainBrush = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiVacuum = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,10 +106,6 @@ namespace RoombaSharp
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.tsslRobotConnection = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslMQTTConnection = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tsmiLedClean = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiLedCleanOff = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiLedCleanGreen = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiLedCleanRed = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tbcMain.SuspendLayout();
             this.tbpMotion.SuspendLayout();
@@ -233,6 +234,37 @@ namespace RoombaSharp
             this.tsmiLedDirtDetect.Text = "Dirt Detect";
             this.tsmiLedDirtDetect.Click += new System.EventHandler(this.tsmiLedDirtDetect_Click);
             // 
+            // tsmiLedClean
+            // 
+            this.tsmiLedClean.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiLedCleanOff,
+            this.tsmiLedCleanGreen,
+            this.tsmiLedCleanRed});
+            this.tsmiLedClean.Name = "tsmiLedClean";
+            this.tsmiLedClean.Size = new System.Drawing.Size(152, 22);
+            this.tsmiLedClean.Text = "Clean";
+            // 
+            // tsmiLedCleanOff
+            // 
+            this.tsmiLedCleanOff.Name = "tsmiLedCleanOff";
+            this.tsmiLedCleanOff.Size = new System.Drawing.Size(152, 22);
+            this.tsmiLedCleanOff.Text = "OFF";
+            this.tsmiLedCleanOff.Click += new System.EventHandler(this.tsmiLedCleanOff_Click);
+            // 
+            // tsmiLedCleanGreen
+            // 
+            this.tsmiLedCleanGreen.Name = "tsmiLedCleanGreen";
+            this.tsmiLedCleanGreen.Size = new System.Drawing.Size(152, 22);
+            this.tsmiLedCleanGreen.Text = "Green";
+            this.tsmiLedCleanGreen.Click += new System.EventHandler(this.tsmiLedCleanGreen_Click);
+            // 
+            // tsmiLedCleanRed
+            // 
+            this.tsmiLedCleanRed.Name = "tsmiLedCleanRed";
+            this.tsmiLedCleanRed.Size = new System.Drawing.Size(152, 22);
+            this.tsmiLedCleanRed.Text = "Red";
+            this.tsmiLedCleanRed.Click += new System.EventHandler(this.tsmiLedCleanRed_Click);
+            // 
             // tsmiMotors
             // 
             this.tsmiMotors.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -279,35 +311,35 @@ namespace RoombaSharp
             // tsmiBtnClean
             // 
             this.tsmiBtnClean.Name = "tsmiBtnClean";
-            this.tsmiBtnClean.Size = new System.Drawing.Size(152, 22);
+            this.tsmiBtnClean.Size = new System.Drawing.Size(107, 22);
             this.tsmiBtnClean.Text = "Clean";
             this.tsmiBtnClean.Click += new System.EventHandler(this.tsmiBtnClean_Click);
             // 
             // tsmiSpot
             // 
             this.tsmiSpot.Name = "tsmiSpot";
-            this.tsmiSpot.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSpot.Size = new System.Drawing.Size(107, 22);
             this.tsmiSpot.Text = "Spot";
             this.tsmiSpot.Click += new System.EventHandler(this.tsmiBtnSpot_Click);
             // 
             // tsmiBtnDock
             // 
             this.tsmiBtnDock.Name = "tsmiBtnDock";
-            this.tsmiBtnDock.Size = new System.Drawing.Size(152, 22);
+            this.tsmiBtnDock.Size = new System.Drawing.Size(107, 22);
             this.tsmiBtnDock.Text = "Dock";
             this.tsmiBtnDock.Click += new System.EventHandler(this.tsmiBtnDock_Click);
             // 
             // tsmiBtnPower
             // 
             this.tsmiBtnPower.Name = "tsmiBtnPower";
-            this.tsmiBtnPower.Size = new System.Drawing.Size(152, 22);
+            this.tsmiBtnPower.Size = new System.Drawing.Size(107, 22);
             this.tsmiBtnPower.Text = "Power";
             this.tsmiBtnPower.Click += new System.EventHandler(this.tsmiBtnPower_Click);
             // 
             // tsmiBtnMax
             // 
             this.tsmiBtnMax.Name = "tsmiBtnMax";
-            this.tsmiBtnMax.Size = new System.Drawing.Size(152, 22);
+            this.tsmiBtnMax.Size = new System.Drawing.Size(107, 22);
             this.tsmiBtnMax.Text = "Max";
             this.tsmiBtnMax.Click += new System.EventHandler(this.tsmiBtnMax_Click);
             // 
@@ -578,37 +610,6 @@ namespace RoombaSharp
             this.tsslMQTTConnection.Size = new System.Drawing.Size(111, 17);
             this.tsslMQTTConnection.Text = "MQTT Connection: ";
             // 
-            // tsmiLedClean
-            // 
-            this.tsmiLedClean.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiLedCleanOff,
-            this.tsmiLedCleanGreen,
-            this.tsmiLedCleanRed});
-            this.tsmiLedClean.Name = "tsmiLedClean";
-            this.tsmiLedClean.Size = new System.Drawing.Size(152, 22);
-            this.tsmiLedClean.Text = "Clean";
-            // 
-            // tsmiLedCleanOff
-            // 
-            this.tsmiLedCleanOff.Name = "tsmiLedCleanOff";
-            this.tsmiLedCleanOff.Size = new System.Drawing.Size(152, 22);
-            this.tsmiLedCleanOff.Text = "OFF";
-            this.tsmiLedCleanOff.Click += new System.EventHandler(this.tsmiLedCleanOff_Click);
-            // 
-            // tsmiLedCleanGreen
-            // 
-            this.tsmiLedCleanGreen.Name = "tsmiLedCleanGreen";
-            this.tsmiLedCleanGreen.Size = new System.Drawing.Size(152, 22);
-            this.tsmiLedCleanGreen.Text = "Green";
-            this.tsmiLedCleanGreen.Click += new System.EventHandler(this.tsmiLedCleanGreen_Click);
-            // 
-            // tsmiLedCleanRed
-            // 
-            this.tsmiLedCleanRed.Name = "tsmiLedCleanRed";
-            this.tsmiLedCleanRed.Size = new System.Drawing.Size(152, 22);
-            this.tsmiLedCleanRed.Text = "Red";
-            this.tsmiLedCleanRed.Click += new System.EventHandler(this.tsmiLedCleanRed_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 17F);
@@ -618,6 +619,7 @@ namespace RoombaSharp
             this.Controls.Add(this.tbcMain);
             this.Controls.Add(this.msMain);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.msMain;
             this.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.Name = "MainForm";
