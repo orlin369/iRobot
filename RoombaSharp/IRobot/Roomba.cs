@@ -410,7 +410,7 @@ namespace iRobot.RoombaSharp
             byte[] command = new byte[1 + 1 + package.Length];
 
             // Build command package.
-            Buffer.BlockCopy(new byte[] { (byte)RoombaOpcodes.SONG    }, 0, command, 0, 1);
+            Buffer.BlockCopy(new byte[] { (byte)RoombaOpcodes.QUERY_LIST    }, 0, command, 0, 1);
             Buffer.BlockCopy(new byte[] { (byte)(package.Length)      }, 0, command, 1, 1);
             Buffer.BlockCopy(package,                                    0, command, 2, package.Length);
 

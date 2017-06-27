@@ -620,7 +620,8 @@ namespace RoombaSharp
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.QueryList(new byte[] { 0x1B, 0x08, 0x2B, 0x2C, 0x1C, 0x1D, 0x1E, 0x1F, 0x0F, 0x07 });
-            this.robot.Sensors(iRobot.Data.SensorsPackageCode.B10_1);
+            this.robot.QueryList(new byte[] { 0x13, 0x14 });
+            this.robot.Start();
         }
 
 
