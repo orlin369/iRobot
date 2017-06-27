@@ -338,7 +338,6 @@ namespace iRobot.RoombaSharp
         /// <param name="song"></param>
         public void Song(byte songNumber, byte[] song)
         {
-            //TODO: Test
             if (this.communicator == null || !communicator.IsConnected) return;
             if (song.Length > 255) return;
 
@@ -402,10 +401,70 @@ namespace iRobot.RoombaSharp
             this.communicator.Write(new byte[] { (byte)RoombaOpcodes.DOCK }, 0, 1);
         }
 
+        public void QueryList(byte[] package)
+        {
+            if (this.communicator == null || !communicator.IsConnected) return;
+            if (package.Length > 255) return;
+
+            // Command
+            byte[] command = new byte[1 + 1 + package.Length];
+
+            // Build command package.
+            Buffer.BlockCopy(new byte[] { (byte)RoombaOpcodes.SONG    }, 0, command, 0, 1);
+            Buffer.BlockCopy(new byte[] { (byte)(package.Length)      }, 0, command, 1, 1);
+            Buffer.BlockCopy(package,                                    0, command, 2, package.Length);
+
+            // Send command package.
+            this.communicator.Write(command, 0, command.Length);
+        }
+
+        /// <summary>
+        /// Show HEX digits on the Roomba's screen.
+        /// </summary>
+        /// <param name="d3">Digit 3</param>
+        /// <param name="d2">Digit 2</param>
+        /// <param name="d1">Digit 1</param>
+        /// <param name="d0">Digit 0</param>
+        public void DigitLEDsRaw(int d3, int d2, int d1, int d0)
+        {
+            if (this.communicator == null || !communicator.IsConnected) return;
+
+            byte[] message = new byte[]
+            {
+                (byte)RoombaOpcodes.DIGIT_LEDs_RAW,
+                SevenSegment(d3),
+                SevenSegment(d2),
+                SevenSegment(d1),
+                SevenSegment(d0)
+            };
+
+            this.communicator.Write(message, 0, message.Length);
+        }
+
+        /// <summary>
+        /// Shutdown the LED display.
+        /// </summary>
+        public void DigitLEDsRawOff()
+        {
+            if (this.communicator == null || !communicator.IsConnected) return;
+
+            byte[] message = new byte[]
+            {
+                (byte)RoombaOpcodes.DIGIT_LEDs_RAW, 0, 0, 0, 0
+            };
+
+            this.communicator.Write(message, 0, message.Length);
+        }
+
         #endregion
 
         #region Private Methods
 
+        /// <summary>
+        /// Bits to byte.
+        /// </summary>
+        /// <param name="bits">Array of bits.</param>
+        /// <returns>Byte</returns>
         private static byte Convert(bool[] bits)
         {
             byte result = 0;
@@ -419,6 +478,21 @@ namespace iRobot.RoombaSharp
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Seven segment encoder.
+        /// </summary>
+        /// <param name="number">Number [0 - 15]</param>
+        /// <returns>7 segment data.</returns>
+        private static byte SevenSegment(int number)
+        {
+            if (number < 0) number = 0;
+            if (number > 15) number = 15;
+
+            byte[] segmentData = new byte[16] { 0x3F/*0*/, 0x06/*1*/, 0x5B/*2*/, 0x4F/*3*/, 0xE6/*4*/, 0x6D/*5*/, 0x7D/*6*/, 0x07/*7*/, 0xFF/*8*/, 0xEF/*9*/, 0x77/*A*/, 0x7C/*b*/, 0x58/*c*/, 0x5E/*d*/, 0x79/*E*/, 0x71/*F*/, };
+
+            return segmentData[number];
         }
 
         #endregion

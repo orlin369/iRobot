@@ -229,6 +229,8 @@ namespace RoombaSharp
             this.ConnectToRobot(item.Text);
         }
 
+        #region Beep
+
         private void tsmiBeep_Click(object sender, EventArgs e)
         {
             // Create the Melodie thread.
@@ -262,6 +264,8 @@ namespace RoombaSharp
             // Start the Melodie thread.
             worker.Start();
         }
+
+        #endregion
 
         #region LED
 
@@ -423,7 +427,7 @@ namespace RoombaSharp
 
         private void tsmiBtnMax_Click(object sender, EventArgs e)
         {
-                        if (this.robot == null || !this.robot.IsConnected) return;
+            if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Max();
         }
 
@@ -431,7 +435,27 @@ namespace RoombaSharp
 
         #region LED Display
 
-        // TODO: put some methods.
+        private void tsmiDisplay_Click(object sender, EventArgs e)
+        {
+            Thread worker = new Thread(
+                new ThreadStart(
+                    delegate ()
+                    {
+                        if (this.robot == null || !this.robot.IsConnected) return;
+
+                        // Show all digits on the screen.
+                        for(int index = 0; index < 16; index++)
+                        {
+                            this.robot.DigitLEDsRaw(index, index, index, index);
+                            Thread.Sleep(1000);
+                        }
+
+                        // Shutdown the display.
+                        this.robot.DigitLEDsRawOff();
+                    }));
+
+            worker.Start();
+        }
 
         #endregion
 
@@ -540,59 +564,65 @@ namespace RoombaSharp
 
         private void btnRight_MouseDown(object sender, MouseEventArgs e)
         {
-                        if (this.robot == null || !this.robot.IsConnected) return;
+            if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive((short)this.trbSpeed.Value, (short)-this.trbRadius.Value);
         }
 
         private void btnLeft_MouseDown(object sender, MouseEventArgs e)
         {
-                        if (this.robot == null || !this.robot.IsConnected) return;
+            if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive((short)this.trbSpeed.Value, (short)this.trbRadius.Value);
         }
 
         private void btnUp_MouseDown(object sender, MouseEventArgs e)
         {
-                        if (this.robot == null || !this.robot.IsConnected) return;
+            if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive((short)this.trbSpeed.Value, 0);
         }
 
         private void btnDown_MouseDown(object sender, MouseEventArgs e)
         {
-                        if (this.robot == null || !this.robot.IsConnected) return;
+            if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive((short)-this.trbSpeed.Value, 0);
         }
-
-
-
+        
         private void btnStop_Click(object sender, EventArgs e)
         {
-                        if (this.robot == null || !this.robot.IsConnected) return;
+            if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
         }
 
         private void btnUp_MouseUp(object sender, MouseEventArgs e)
         {
-                        if (this.robot == null || !this.robot.IsConnected) return;
+            if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
         }
 
         private void btnRight_MouseUp(object sender, MouseEventArgs e)
         {
-                        if (this.robot == null || !this.robot.IsConnected) return;
+            if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
         }
 
         private void btnDown_MouseUp(object sender, MouseEventArgs e)
         {
-                        if (this.robot == null || !this.robot.IsConnected) return;
+            if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
         }
 
         private void btnLeft_MouseUp(object sender, MouseEventArgs e)
         {
-                        if (this.robot == null || !this.robot.IsConnected) return;
+            if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
         }
+
+        private void btnSensors_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+            this.robot.QueryList(new byte[] { 0x1B, 0x08, 0x2B, 0x2C, 0x1C, 0x1D, 0x1E, 0x1F, 0x0F, 0x07 });
+            this.robot.Sensors(iRobot.Data.SensorsPackageCode.B10_1);
+        }
+
 
         #endregion
 
