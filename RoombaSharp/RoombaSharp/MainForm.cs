@@ -45,11 +45,6 @@ namespace RoombaSharp
         #region Variables
 
         /// <summary>
-        /// Robot communicator.
-        /// </summary>
-        private Communicator roombaCommunicator;
-
-        /// <summary>
         /// Robot
         /// </summary>
         private Roomba robot;
@@ -93,8 +88,7 @@ namespace RoombaSharp
         /// Connector
         /// </summary>
         private DataConnector mqttCommunicator;
-
-
+        
         #endregion
 
         #region Constructor
@@ -619,11 +613,9 @@ namespace RoombaSharp
         private void btnSensors_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
-            this.robot.QueryList(new byte[] { 0x1B, 0x08, 0x2B, 0x2C, 0x1C, 0x1D, 0x1E, 0x1F, 0x0F, 0x07 });
-            this.robot.QueryList(new byte[] { 0x13, 0x14 });
+            this.robot.QueryList(new byte[] { 9, 10, 11, 12 });
             this.robot.Start();
         }
-
 
         #endregion
 
@@ -651,12 +643,10 @@ namespace RoombaSharp
         /// <param name="portName"></param>
         private void ConnectToRobot(string portName)
         {
-            this.roombaCommunicator = new Communicator(portName);
-            this.roombaCommunicator.OnMesage += this.robot_OnMesage;
-            this.roombaCommunicator.OnConnect += Robot_OnConnect;
-            this.roombaCommunicator.OnDisconnect += Robot_OnDisconnect;
-
-            this.robot = new Roomba(roombaCommunicator);
+            this.robot = new Roomba(new Communicator(portName));
+            this.robot.OnConnect += Robot_OnConnect;
+            this.robot.OnDisconnect += Robot_OnDisconnect;
+            this.robot.OnMesage += this.robot_OnMesage;
             this.robot.Connect();
             this.robot.Start();
             this.robot.Start();
@@ -672,31 +662,55 @@ namespace RoombaSharp
         /// </summary>
         private void DisconnectFromRobot()
         {
-            if (this.roombaCommunicator == null || !this.roombaCommunicator.IsConnected) return;
+            if (this.robot == null || !this.robot.IsConnected) return;
 
             this.robot.Drive(0, 0);
-            this.roombaCommunicator.OnMesage -= this.robot_OnMesage;
-            this.roombaCommunicator.OnConnect -= Robot_OnConnect;
-            this.roombaCommunicator.OnDisconnect -= Robot_OnDisconnect;
+            this.robot.OnMesage -= this.robot_OnMesage;
+            this.robot.OnConnect -= Robot_OnConnect;
+            this.robot.OnDisconnect -= Robot_OnDisconnect;
             this.robot.Disconnect();
 
             this.tsslRobotConnection.Text = "Robot Connection: Disconnected";
         }
 
+        /// <summary>
+        /// Disconnect from robot.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Robot_OnDisconnect(object sender, EventArgs e)
         {
             this.LogMessage("Disconnected from robot.");
         }
 
+        /// <summary>
+        /// Connect to robot.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Robot_OnConnect(object sender, EventArgs e)
         {
-            Communicator communicator = (Communicator)sender;
-            this.LogMessage("Connected to robot port: " + communicator.PortName);
+            Roomba robot = (Roomba)sender;
+            this.LogMessage("Connected to robot port: " + robot.PortName);
         }
 
+        /// <summary>
+        /// On robot message handler.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void robot_OnMesage(object sender, MessageString e)
         {
-            this.LogMessage("Robot: " + e.Message);
+            byte[] byteData = System.Text.Encoding.ASCII.GetBytes(e.Message);
+
+            string text = "";
+
+            foreach (byte b in byteData)
+            {
+                text += b.ToString("X2") + " ";
+            }
+
+            this.LogMessage("Robot: " + text);
         }
 
         #endregion

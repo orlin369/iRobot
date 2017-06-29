@@ -26,6 +26,7 @@ using System;
 using System.IO.Ports;
 
 using iRobot.Data;
+using iRobot.Events;
 
 namespace iRobot.RoombaSharp
 {
@@ -61,8 +62,40 @@ namespace iRobot.RoombaSharp
             }
         }
 
+        /// <summary>
+        /// Port name.
+        /// </summary>
+        public string PortName
+        {
+            get
+            {
+                if (this.communicator == null) return "";
+
+                return this.communicator.PortName;
+            }
+        }
+
         #endregion
 
+        #region Events
+
+        /// <summary>
+        /// Received command message.
+        /// </summary>
+        public event EventHandler<MessageString> OnMesage;
+
+        /// <summary>
+        /// On connect event.
+        /// </summary>
+        public event EventHandler<EventArgs> OnConnect;
+
+        /// <summary>
+        /// On disconnect event.
+        /// </summary>
+        public event EventHandler<EventArgs> OnDisconnect;
+
+        #endregion
+        
         #region Constructor
 
         /// <summary>
@@ -84,6 +117,9 @@ namespace iRobot.RoombaSharp
         public void Connect()
         {
             if (this.communicator == null) return;
+            this.communicator.OnMesage += Communicator_OnMesage;
+            this.communicator.OnConnect += Communicator_OnConnect;
+            this.communicator.OnDisconnect += Communicator_OnDisconnect;
             this.communicator.Connect();
         }
 
@@ -94,6 +130,9 @@ namespace iRobot.RoombaSharp
         {
             if (this.communicator == null || !communicator.IsConnected) return;
             this.communicator.Disconnect();
+            this.communicator.OnMesage -= Communicator_OnMesage;
+            this.communicator.OnConnect -= Communicator_OnConnect;
+            this.communicator.OnDisconnect -= Communicator_OnDisconnect;
         }
 
         /// <summary>
@@ -401,18 +440,23 @@ namespace iRobot.RoombaSharp
             this.communicator.Write(new byte[] { (byte)RoombaOpcodes.DOCK }, 0, 1);
         }
 
-        public void QueryList(byte[] package)
+        /// <summary>
+        /// This command lets you ask for a list of sensor packets. The result is returned once, as in the Sensors
+        /// command. The robot returns the packets in the order you specify.
+        /// </summary>
+        /// <param name="package">Packages IDs</param>
+        public void QueryList(byte[] packagesIDs)
         {
             if (this.communicator == null || !communicator.IsConnected) return;
-            if (package.Length > 255) return;
+            if (packagesIDs.Length > 255) return;
 
             // Command
-            byte[] command = new byte[1 + 1 + package.Length];
+            byte[] command = new byte[1 + 1 + packagesIDs.Length];
 
             // Build command package.
-            Buffer.BlockCopy(new byte[] { (byte)RoombaOpcodes.QUERY_LIST    }, 0, command, 0, 1);
-            Buffer.BlockCopy(new byte[] { (byte)(package.Length)      }, 0, command, 1, 1);
-            Buffer.BlockCopy(package,                                    0, command, 2, package.Length);
+            Buffer.BlockCopy(new byte[] { (byte)RoombaOpcodes.QUERY_LIST }, 0, command, 0,                  1);
+            Buffer.BlockCopy(new byte[] { (byte)(packagesIDs.Length)     }, 0, command, 1,                  1);
+            Buffer.BlockCopy(packagesIDs                                  , 0, command, 2, packagesIDs.Length);
 
             // Send command package.
             this.communicator.Write(command, 0, command.Length);
@@ -495,6 +539,36 @@ namespace iRobot.RoombaSharp
             return segmentData[number];
         }
 
+        /// <summary>
+        /// On message handler.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Communicator_OnMesage(object sender, MessageString e)
+        {
+            this.OnMesage?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// On disconnect handler.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Communicator_OnDisconnect(object sender, EventArgs e)
+        {
+            this.OnDisconnect?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// On connect handler.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Communicator_OnConnect(object sender, EventArgs e)
+        {
+            this.OnConnect?.Invoke(this, e);
+        }
+        
         #endregion
 
     }

@@ -92,11 +92,16 @@ namespace iRobot.RoombaSharp
         /// </summary>
         public event EventHandler<MessageString> OnMesage;
 
+        /// <summary>
+        /// On connect event.
+        /// </summary>
         public event EventHandler<EventArgs> OnConnect;
 
+        /// <summary>
+        /// On disconnect event.
+        /// </summary>
         public event EventHandler<EventArgs> OnDisconnect;
-
-
+        
         #endregion
 
         #region Constructor / Destructor
@@ -162,9 +167,7 @@ namespace iRobot.RoombaSharp
 
                 try
                 {
-                    string inData = serialPort.ReadExisting();
-
-                    this.OnMesage?.Invoke(this, new MessageString(inData));
+                    this.OnMesage?.Invoke(this, new MessageString(serialPort.ReadExisting()));
 
                     // Discard the duffer.
                     serialPort.DiscardInBuffer();
@@ -193,6 +196,7 @@ namespace iRobot.RoombaSharp
                     this.SerialPort.StopBits = StopBits.One;
                     this.SerialPort.Parity = Parity.None;
                     this.SerialPort.DataReceived += new SerialDataReceivedEventHandler(this.DataReceivedHandler);
+                    this.SerialPort.Encoding = System.Text.Encoding.ASCII;
                     this.SerialPort.Open();
 
                     this.OnConnect?.Invoke(this, null);

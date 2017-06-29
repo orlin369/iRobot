@@ -53,8 +53,15 @@ namespace RoombaSharp.Adapters
         /// <param name="command"></param>
         public abstract void SendRequest(string command);
 
+        /// <summary>
+        /// Send image bytes.
+        /// </summary>
+        /// <param name="data"></param>
         public abstract void SendImageBytes(byte[] data);
 
+        /// <summary>
+        /// Dispose
+        /// </summary>
         public abstract void Dispose();
 
     }
