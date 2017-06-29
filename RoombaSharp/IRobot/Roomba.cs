@@ -416,7 +416,7 @@ namespace iRobot.RoombaSharp
         /// command.This command does not change the mode
         /// </summary>
         /// <param name="packageCode">Packet Code</param>
-        public void Sensors(SensorsPackageCode packageCode)
+        public void Sensors(SensorPacketsIDs packageCode)
         {
             if (this.communicator == null || !communicator.IsConnected) return;
             byte[] command = { (byte)RoombaOpcodes.SENSORS, (byte)packageCode };

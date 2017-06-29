@@ -36,6 +36,7 @@ using iRobot.Events;
 using RoombaSharp.Video;
 using RoombaSharp.Connectors;
 using RoombaSharp.Adapters;
+using iRobot.Data;
 
 namespace RoombaSharp
 {
@@ -88,7 +89,7 @@ namespace RoombaSharp
         /// Connector
         /// </summary>
         private DataConnector mqttCommunicator;
-        
+                
         #endregion
 
         #region Constructor
@@ -613,7 +614,7 @@ namespace RoombaSharp
         private void btnSensors_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
-            this.robot.QueryList(new byte[] { 9, 10, 11, 12 });
+            this.robot.QueryList(new byte[] { (byte)SensorPacketsIDs.CliffLeft, (byte)SensorPacketsIDs.CliffFrontLeft, (byte)SensorPacketsIDs.CliffFrontRight, (byte)SensorPacketsIDs.CliffRight });
             this.robot.Start();
         }
 

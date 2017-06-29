@@ -42,7 +42,7 @@
     <Compile Include="Create.cs" />
     <Compile Include="Data\BoudRates.cs" />
     <Compile Include="Data\RoombaOpcodes.cs" />
-    <Compile Include="Data\SensorsPackageType.cs" />
+    <Compile Include="Data\SensorPacketsIDs.cs" />
     <Compile Include="Events\MessageString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Roomba.cs" />
