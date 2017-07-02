@@ -452,6 +452,15 @@ namespace RoombaSharp
             worker.Start();
         }
 
+        private void shutdownToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            // Shutdown the display.
+            this.robot.DigitLEDsRawOff();
+        }
+
+
         #endregion
 
         #region Sensors

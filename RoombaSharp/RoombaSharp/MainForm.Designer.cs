@@ -110,6 +110,8 @@ namespace RoombaSharp
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.tsslRobotConnection = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslMQTTConnection = new System.Windows.Forms.ToolStripStatusLabel();
+            this.setToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDisplayShutdown = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tbcMain.SuspendLayout();
             this.tbpMotion.SuspendLayout();
@@ -352,7 +354,9 @@ namespace RoombaSharp
             // tsmiDisplay
             // 
             this.tsmiDisplay.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiDisplayTest});
+            this.tsmiDisplayTest,
+            this.setToolStripMenuItem,
+            this.tsmiDisplayShutdown});
             this.tsmiDisplay.Name = "tsmiDisplay";
             this.tsmiDisplay.Size = new System.Drawing.Size(152, 22);
             this.tsmiDisplay.Text = "Display";
@@ -646,6 +650,19 @@ namespace RoombaSharp
             this.tsslMQTTConnection.Size = new System.Drawing.Size(111, 17);
             this.tsslMQTTConnection.Text = "MQTT Connection: ";
             // 
+            // setToolStripMenuItem
+            // 
+            this.setToolStripMenuItem.Name = "setToolStripMenuItem";
+            this.setToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.setToolStripMenuItem.Text = "Set";
+            // 
+            // tsmiDisplayShutdown
+            // 
+            this.tsmiDisplayShutdown.Name = "tsmiDisplayShutdown";
+            this.tsmiDisplayShutdown.Size = new System.Drawing.Size(152, 22);
+            this.tsmiDisplayShutdown.Text = "Shutdown";
+            this.tsmiDisplayShutdown.Click += new System.EventHandler(this.shutdownToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 17F);
@@ -739,6 +756,8 @@ namespace RoombaSharp
         private System.Windows.Forms.ToolStripMenuItem tsmiSensors;
         private System.Windows.Forms.ToolStripMenuItem tsmiSensorsTest;
         private System.Windows.Forms.ToolStripMenuItem tsmiDisplayTest;
+        private System.Windows.Forms.ToolStripMenuItem setToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDisplayShutdown;
     }
 }
 
