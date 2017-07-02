@@ -82,6 +82,7 @@ namespace RoombaSharp
             this.tsmiBtnPower = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBtnMax = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDisplay = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDisplayTest = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSensors = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSensorsTest = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCameraCapture = new System.Windows.Forms.ToolStripMenuItem();
@@ -350,10 +351,18 @@ namespace RoombaSharp
             // 
             // tsmiDisplay
             // 
+            this.tsmiDisplay.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiDisplayTest});
             this.tsmiDisplay.Name = "tsmiDisplay";
             this.tsmiDisplay.Size = new System.Drawing.Size(152, 22);
             this.tsmiDisplay.Text = "Display";
-            this.tsmiDisplay.Click += new System.EventHandler(this.tsmiDisplay_Click);
+            // 
+            // tsmiDisplayTest
+            // 
+            this.tsmiDisplayTest.Name = "tsmiDisplayTest";
+            this.tsmiDisplayTest.Size = new System.Drawing.Size(152, 22);
+            this.tsmiDisplayTest.Text = "Test";
+            this.tsmiDisplayTest.Click += new System.EventHandler(this.tsmiDisplayTest_Click);
             // 
             // tsmiSensors
             // 
@@ -366,7 +375,7 @@ namespace RoombaSharp
             // tsmiSensorsTest
             // 
             this.tsmiSensorsTest.Name = "tsmiSensorsTest";
-            this.tsmiSensorsTest.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSensorsTest.Size = new System.Drawing.Size(95, 22);
             this.tsmiSensorsTest.Text = "Test";
             this.tsmiSensorsTest.Click += new System.EventHandler(this.tsmiSensorsTest_Click);
             // 
@@ -729,6 +738,7 @@ namespace RoombaSharp
         private System.Windows.Forms.ToolStripMenuItem tsmiDisplay;
         private System.Windows.Forms.ToolStripMenuItem tsmiSensors;
         private System.Windows.Forms.ToolStripMenuItem tsmiSensorsTest;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDisplayTest;
     }
 }
 

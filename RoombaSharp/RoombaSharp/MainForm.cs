@@ -430,7 +430,7 @@ namespace RoombaSharp
 
         #region LED Display
 
-        private void tsmiDisplay_Click(object sender, EventArgs e)
+        private void tsmiDisplayTest_Click(object sender, EventArgs e)
         {
             Thread worker = new Thread(
                 new ThreadStart(
@@ -439,7 +439,7 @@ namespace RoombaSharp
                         if (this.robot == null || !this.robot.IsConnected) return;
 
                         // Show all digits on the screen.
-                        for(int index = 0; index < 16; index++)
+                        for (int index = 0; index < 16; index++)
                         {
                             this.robot.DigitLEDsRaw(index, index, index, index);
                             Thread.Sleep(1000);
