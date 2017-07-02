@@ -226,7 +226,7 @@ namespace RoombaSharp
 
         #region Beep
 
-        private void tsmiBeep_Click(object sender, EventArgs e)
+        private void tsmiBeepTest_Click(object sender, EventArgs e)
         {
             // Create the Melodie thread.
             Thread worker = new Thread(
