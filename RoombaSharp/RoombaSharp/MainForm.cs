@@ -454,6 +454,129 @@ namespace RoombaSharp
 
         #endregion
 
+        #region Sensors
+
+        private void tsmiSensorsTest_Click(object sender, EventArgs e)
+        {
+            // Create the Melodie thread.
+            Thread worker = new Thread(
+                new ThreadStart(
+                    delegate ()
+                    {
+                        if (this.robot == null || !this.robot.IsConnected) return;
+
+                        int waitTime = 1000;
+
+                        this.LogMessage("Bumper and wheel drops");
+                        this.robot.Sensors(SensorPacketsIDs.BumpsAndWheelDrops);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Wall sensor");
+                        this.robot.Sensors(SensorPacketsIDs.Wall);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Cliff left sensor");
+                        this.robot.Sensors(SensorPacketsIDs.CliffLeft);
+                        Thread.Sleep(waitTime);
+                        this.LogMessage("Cliff front lefts sensor");
+                        this.robot.Sensors(SensorPacketsIDs.CliffFrontLeft);
+                        Thread.Sleep(waitTime);
+                        this.LogMessage("Cliff front right sensor");
+                        this.robot.Sensors(SensorPacketsIDs.CliffFrontRight);
+                        Thread.Sleep(waitTime);
+                        this.LogMessage("Cliff right sensor");
+                        this.robot.Sensors(SensorPacketsIDs.CliffRight);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Virtual wall sensor");
+                        this.robot.Sensors(SensorPacketsIDs.VirtualWall);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Wheel over currents");
+                        this.robot.Sensors(SensorPacketsIDs.WheelOvercurrents);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Infrared omni sensor");
+                        this.robot.Sensors(SensorPacketsIDs.InfraredCharacterOmni);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Infrared left sensor");
+                        this.robot.Sensors(SensorPacketsIDs.InfraredCharacterLeft);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Infrared right sensor");
+                        this.robot.Sensors(SensorPacketsIDs.InfraredCharacterRight);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Distance");
+                        this.robot.Sensors(SensorPacketsIDs.Distance);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Angle");
+                        this.robot.Sensors(SensorPacketsIDs.Angle);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Charging state");
+                        this.robot.Sensors(SensorPacketsIDs.ChargingState);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Voltage");
+                        this.robot.Sensors(SensorPacketsIDs.Voltage);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Current");
+                        this.robot.Sensors(SensorPacketsIDs.Current);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Temperature");
+                        this.robot.Sensors(SensorPacketsIDs.Temperature);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Battery charge");
+                        this.robot.Sensors(SensorPacketsIDs.BatteryCharge);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Battery capacity");
+                        this.robot.Sensors(SensorPacketsIDs.BatteryCapacity);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Dirt detect sensor");
+                        this.robot.Sensors(SensorPacketsIDs.DirtDetect);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Charging source available");
+                        this.robot.Sensors(SensorPacketsIDs.ChargingSourcesAvailable);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Left motor current");
+                        this.robot.Sensors(SensorPacketsIDs.LeftMotorCurrent);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Right motor current");
+                        this.robot.Sensors(SensorPacketsIDs.RightMotorCurrent);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Main brush motor current");
+                        this.robot.Sensors(SensorPacketsIDs.MainBrushMotorCurrent);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Side brush motor current");
+                        this.robot.Sensors(SensorPacketsIDs.SideBrushMotorCurrent);
+                        Thread.Sleep(waitTime);
+
+                        this.LogMessage("Stasis");
+                        this.robot.Sensors(SensorPacketsIDs.Stasis);
+                        Thread.Sleep(waitTime);
+                    }
+                )
+            );
+
+            // Start the Melodie thread.
+            worker.Start();
+        }
+
+        #endregion
+
         #endregion
 
         private void tsmiSettings_Click(object sender, EventArgs e)
@@ -609,13 +732,6 @@ namespace RoombaSharp
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
-        }
-
-        private void btnSensors_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null || !this.robot.IsConnected) return;
-            this.robot.QueryList(new byte[] { (byte)SensorPacketsIDs.CliffLeft, (byte)SensorPacketsIDs.CliffFrontLeft, (byte)SensorPacketsIDs.CliffFrontRight, (byte)SensorPacketsIDs.CliffRight });
-            this.robot.Start();
         }
 
         #endregion
