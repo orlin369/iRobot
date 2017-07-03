@@ -37,6 +37,7 @@ using RoombaSharp.Video;
 using RoombaSharp.Connectors;
 using RoombaSharp.Adapters;
 using iRobot.Data;
+using AForge.Video;
 
 namespace RoombaSharp
 {
@@ -76,9 +77,14 @@ namespace RoombaSharp
         private VideoDevice[] videoDevices;
 
         /// <summary>
-        /// Dump image.
+        ///Captured image.
         /// </summary>
-        private Bitmap dumpImage;
+        private Bitmap capturedImage;
+
+        /// <summary>
+        /// Sync object for video.
+        /// </summary>
+        private object syncLockVideo = new object();
 
         /// <summary>
         /// Send image timer.
@@ -117,6 +123,9 @@ namespace RoombaSharp
 
             if (portNames.Length == 0)
             {
+                string message = "A serial port device was not detected.";
+                this.LogMessage(message);
+                MessageBox.Show(message, "",  MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 return;
             }
 
@@ -156,41 +165,6 @@ namespace RoombaSharp
                     this.tbConsole.AppendText(dataTime + " -> " + message + Environment.NewLine);
                 }
             }
-        }
-
-        /// <summary>
-        /// Fit image from one size to input size.
-        /// </summary>
-        /// <param name="image">Input image.</param>
-        /// <param name="size">New size.</param>
-        /// <returns>Resized image.</returns>
-        public Bitmap FitImage(Bitmap image, Size size)
-        {
-            var ratioX = (double)size.Width / image.Width;
-            var ratioY = (double)size.Height / image.Height;
-            var ratio = Math.Min(ratioX, ratioY);
-
-            var newWidth = (int)(image.Width * ratio);
-            var newHeight = (int)(image.Height * ratio);
-
-            var newImage = new Bitmap(newWidth, newHeight);
-
-            using (var graphics = Graphics.FromImage(newImage))
-            {
-                graphics.DrawImage(image, 0, 0, newWidth, newHeight);
-            }
-
-            return newImage;
-        }
-
-        /// <summary>
-        /// Transform radians to degree.
-        /// </summary>
-        /// <param name="radians">Value</param>
-        /// <returns>Transformed value.</returns>
-        private float ToDegree(float radians)
-        {
-            return radians * 180.0f / (float)Math.PI;
         }
 
         #endregion
@@ -737,17 +711,21 @@ namespace RoombaSharp
 
         private void tsmiStopCaptureeDevice_Click(object sender, EventArgs e)
         {
+            // Disconnect from the camera.
             this.DisconnectFromCamera();
+
+            // Stop the image timer.
             this.StopSendImageTimer();
 
+            // Uncheck all cameras.
             foreach (ToolStripMenuItem cameraItem in this.tsmiCameraCapture.DropDown.Items)
             {
                 cameraItem.Enabled = true;
                 cameraItem.Checked = false;
             }
 
-            string message = "Video Capture: Stoped";
-            this.LogMessage(message);
+            // Log this event.
+            this.LogMessage("Video Capture: Stopped");
         }
 
         private void tsmiCaptureeDevice_Click(object sender, EventArgs e)
@@ -758,37 +736,26 @@ namespace RoombaSharp
             // Get device.
             VideoDevice videoDevice = (VideoDevice)item.Tag;
 
+            // Uncheck all cameras.
             foreach (ToolStripMenuItem mItem in this.tsmiCameraCapture.DropDown.Items)
             {
                 item.Checked = false;
             }
 
+            // Check only this camera.
             item.Checked = true;
 
-            try
-            {
-               
-                // Create camera.
-                this.videoDevice = new VideoCaptureDevice(videoDevice.MonikerString);
-                this.videoDevice.NewFrame += VideoDevice_NewFrame;
+            // Disconnect from the camera.
+            this.DisconnectFromCamera();
 
-                // Stop if other stream was displaying.
-                if (this.videoDevice.IsRunning)
-                {
-                    this.videoDevice.Stop();
-                }
+            // Stop the image timer.
+            this.StopSendImageTimer();
 
-                // Start the new stream.
-                this.videoDevice.Start();
-            }
-            catch (Exception exception)
-            {
-                this.LogMessage(exception.ToString());
-                return;
-            }
+            // Connect to camera.
+            this.ConnecToCamera(videoDevice.MonikerString);            
 
-            string message = "Video Capture: Started";
-            this.LogMessage(message);
+            // Log this event.
+            this.LogMessage("Video Capture: Started");
         }
 
         #endregion
@@ -982,16 +949,29 @@ namespace RoombaSharp
 
             if (videoDevices.Length == 0)
             {
-                DialogResult res = MessageBox.Show("A camera device was not detected. Do you want to exit?", "",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (res == System.Windows.Forms.DialogResult.Yes)
-                {
-                    Application.Exit();
-                }
+                string message = "A camera device was not detected.";
+                this.LogMessage(message);
+                MessageBox.Show(message, "",  MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             }
 
             // Add cameras to the menus.
             this.AddCameras(this.videoDevices, this.tsmiCameraCapture, this.tsmiCaptureeDevice_Click);
+        }
+
+        private void ConnecToCamera(string monikerString)
+        {
+            // Create camera.
+            this.videoDevice = new VideoCaptureDevice(monikerString);
+            this.videoDevice.NewFrame += new NewFrameEventHandler(this.videoDevice_NewFrame);
+
+            // Stop if other stream was displaying.
+            if (this.videoDevice.IsRunning)
+            {
+                this.videoDevice.Stop();
+            }
+
+            // Start the new stream.
+            this.videoDevice.Start();
         }
 
         private void DisconnectFromCamera()
@@ -1004,8 +984,7 @@ namespace RoombaSharp
                 this.videoDevice.Stop();
             }
 
-            this.videoDevice.NewFrame -= VideoDevice_NewFrame;
-
+            this.videoDevice.NewFrame -= new NewFrameEventHandler(this.videoDevice_NewFrame);
             this.videoDevice = null;
         }
 
@@ -1073,41 +1052,49 @@ namespace RoombaSharp
 
         }
 
-        private void VideoDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
+        private void videoDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
-            try
+            lock (this.syncLockVideo)
             {
-                if (this.dumpImage != null) this.dumpImage.Dispose();
+                // Dispose last frame.
+                if (this.capturedImage != null)
+                {
+                    this.capturedImage.Dispose();
+                    this.capturedImage = null;
+                }
 
-                this.dumpImage = (Bitmap)eventArgs.Frame.Clone();// clone the bitmap
+                // Clone the content.
+                this.capturedImage = (Bitmap)eventArgs.Frame.Clone();
 
-                if (this.dumpImage == null) return;
+                // Exit there is a problem with data cloning.
+                if (this.capturedImage == null)
+                {
+                    return;
+                }
 
-                this.ShowImage((Bitmap)this.dumpImage.Clone());
-            }
-            catch (Exception exception)
-            {
-                this.LogMessage(exception.ToString());
+                if ((this.pbMain.Size.Width > 1 && this.pbMain.Size.Height > 1) && this.WindowState != FormWindowState.Minimized)
+                {
+                    this.ShowImage(Utils.ResizeImage(this.capturedImage, this.pbMain.Size));
+                }
             }
         }
 
         /// <summary>
         /// Process rocks in the image.
         /// </summary>
-        private void ShowImage(Bitmap inputImage)
+        private void ShowImage(Bitmap image)
         {
-            if (this.pbSand.InvokeRequired)
+            // Display image.
+            if (this.pbMain.InvokeRequired)
             {
-                this.pbSand.BeginInvoke((MethodInvoker)delegate ()
+                this.pbMain.BeginInvoke((MethodInvoker)delegate ()
                 {
-                    // Show the new image.
-                    this.pbSand.Image = this.FitImage(inputImage, this.pbSand.Size);
+                    this.pbMain.Image = image;
                 });
             }
             else
             {
-                // Show the new image.
-                this.pbSand.Image = this.FitImage(inputImage, this.pbSand.Size);
+                this.pbMain.Image = image;
             }
         }
 
@@ -1145,8 +1132,8 @@ namespace RoombaSharp
 
         private void SendImageTimer_Tick(object sender, EventArgs e)
         {
-            if (this.dumpImage == null) return;
-            this.SendImageData(this.dumpImage);
+            if (this.capturedImage == null) return;
+            this.SendImageData(this.capturedImage);
         }
 
         #endregion
@@ -1208,7 +1195,7 @@ namespace RoombaSharp
             if (image == null) return;
             try
             {
-                this.mqttCommunicator.SendImage(this.FitImage(image, Properties.Settings.Default.ImageSize));
+                this.mqttCommunicator.SendImage(Utils.ResizeImage(image, Properties.Settings.Default.ImageSize));
             }
             catch
             { }

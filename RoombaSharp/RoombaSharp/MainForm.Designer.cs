@@ -87,13 +87,13 @@ namespace RoombaSharp
             this.tsmiDisplayShutdown = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDisplayTest = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSensors = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiSensorsTest = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiParamettersGroup0 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiParamettersGroup1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiParamettersGroup2 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiParamettersGroup3 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiParamettersGroup4 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiParamettersGroup5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSensorsTest = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCameraCapture = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiStopCapture = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMqttServer = new System.Windows.Forms.ToolStripMenuItem();
@@ -115,7 +115,7 @@ namespace RoombaSharp
             this.btnLeft = new System.Windows.Forms.Button();
             this.btnUp = new System.Windows.Forms.Button();
             this.tbpCamera = new System.Windows.Forms.TabPage();
-            this.pbSand = new System.Windows.Forms.PictureBox();
+            this.pbMain = new System.Windows.Forms.PictureBox();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.tsslRobotConnection = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslMQTTConnection = new System.Windows.Forms.ToolStripStatusLabel();
@@ -127,7 +127,7 @@ namespace RoombaSharp
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).BeginInit();
             this.tbpCamera.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbSand)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
             this.ssMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -213,7 +213,7 @@ namespace RoombaSharp
             // tsmiBeepTest
             // 
             this.tsmiBeepTest.Name = "tsmiBeepTest";
-            this.tsmiBeepTest.Size = new System.Drawing.Size(95, 22);
+            this.tsmiBeepTest.Size = new System.Drawing.Size(152, 22);
             this.tsmiBeepTest.Text = "Test";
             this.tsmiBeepTest.Click += new System.EventHandler(this.tsmiBeepTest_Click);
             // 
@@ -379,20 +379,20 @@ namespace RoombaSharp
             // setToolStripMenuItem
             // 
             this.setToolStripMenuItem.Name = "setToolStripMenuItem";
-            this.setToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.setToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.setToolStripMenuItem.Text = "Set";
             // 
             // tsmiDisplayShutdown
             // 
             this.tsmiDisplayShutdown.Name = "tsmiDisplayShutdown";
-            this.tsmiDisplayShutdown.Size = new System.Drawing.Size(152, 22);
+            this.tsmiDisplayShutdown.Size = new System.Drawing.Size(128, 22);
             this.tsmiDisplayShutdown.Text = "Shutdown";
             this.tsmiDisplayShutdown.Click += new System.EventHandler(this.shutdownToolStripMenuItem_Click);
             // 
             // tsmiDisplayTest
             // 
             this.tsmiDisplayTest.Name = "tsmiDisplayTest";
-            this.tsmiDisplayTest.Size = new System.Drawing.Size(152, 22);
+            this.tsmiDisplayTest.Size = new System.Drawing.Size(128, 22);
             this.tsmiDisplayTest.Text = "Test";
             this.tsmiDisplayTest.Click += new System.EventHandler(this.tsmiDisplayTest_Click);
             // 
@@ -409,13 +409,6 @@ namespace RoombaSharp
             this.tsmiSensors.Name = "tsmiSensors";
             this.tsmiSensors.Size = new System.Drawing.Size(152, 22);
             this.tsmiSensors.Text = "Sensors";
-            // 
-            // tsmiSensorsTest
-            // 
-            this.tsmiSensorsTest.Name = "tsmiSensorsTest";
-            this.tsmiSensorsTest.Size = new System.Drawing.Size(194, 22);
-            this.tsmiSensorsTest.Text = "Test";
-            this.tsmiSensorsTest.Click += new System.EventHandler(this.tsmiSensorsTest_Click);
             // 
             // tsmiParamettersGroup0
             // 
@@ -461,6 +454,13 @@ namespace RoombaSharp
             this.tsmiParamettersGroup5.Text = "Group 5";
             this.tsmiParamettersGroup5.Click += new System.EventHandler(this.tsmiParamettersGroup5_Click);
             // 
+            // tsmiSensorsTest
+            // 
+            this.tsmiSensorsTest.Name = "tsmiSensorsTest";
+            this.tsmiSensorsTest.Size = new System.Drawing.Size(194, 22);
+            this.tsmiSensorsTest.Text = "Test";
+            this.tsmiSensorsTest.Click += new System.EventHandler(this.tsmiSensorsTest_Click);
+            // 
             // tsmiCameraCapture
             // 
             this.tsmiCameraCapture.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -472,7 +472,7 @@ namespace RoombaSharp
             // tsmiStopCapture
             // 
             this.tsmiStopCapture.Name = "tsmiStopCapture";
-            this.tsmiStopCapture.Size = new System.Drawing.Size(152, 22);
+            this.tsmiStopCapture.Size = new System.Drawing.Size(98, 22);
             this.tsmiStopCapture.Text = "Stop";
             this.tsmiStopCapture.Click += new System.EventHandler(this.tsmiStopCaptureeDevice_Click);
             // 
@@ -687,7 +687,7 @@ namespace RoombaSharp
             // tbpCamera
             // 
             this.tbpCamera.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.tbpCamera.Controls.Add(this.pbSand);
+            this.tbpCamera.Controls.Add(this.pbMain);
             this.tbpCamera.Location = new System.Drawing.Point(4, 26);
             this.tbpCamera.Name = "tbpCamera";
             this.tbpCamera.Padding = new System.Windows.Forms.Padding(3);
@@ -695,15 +695,15 @@ namespace RoombaSharp
             this.tbpCamera.TabIndex = 1;
             this.tbpCamera.Text = "Camera";
             // 
-            // pbSand
+            // pbMain
             // 
-            this.pbSand.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbSand.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbSand.Location = new System.Drawing.Point(3, 3);
-            this.pbSand.Name = "pbSand";
-            this.pbSand.Size = new System.Drawing.Size(1042, 627);
-            this.pbSand.TabIndex = 34;
-            this.pbSand.TabStop = false;
+            this.pbMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbMain.Location = new System.Drawing.Point(3, 3);
+            this.pbMain.Name = "pbMain";
+            this.pbMain.Size = new System.Drawing.Size(1042, 627);
+            this.pbMain.TabIndex = 34;
+            this.pbMain.TabStop = false;
             // 
             // ssMain
             // 
@@ -755,7 +755,7 @@ namespace RoombaSharp
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).EndInit();
             this.tbpCamera.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbSand)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMain)).EndInit();
             this.ssMain.ResumeLayout(false);
             this.ssMain.PerformLayout();
             this.ResumeLayout(false);
@@ -802,7 +802,7 @@ namespace RoombaSharp
         private System.Windows.Forms.Button btnLeft;
         private System.Windows.Forms.Button btnUp;
         private System.Windows.Forms.TabPage tbpCamera;
-        private System.Windows.Forms.PictureBox pbSand;
+        private System.Windows.Forms.PictureBox pbMain;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
         private System.Windows.Forms.ToolStripMenuItem tsmiStopCapture;
