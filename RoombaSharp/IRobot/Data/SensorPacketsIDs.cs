@@ -40,6 +40,49 @@ namespace iRobot.Data
     /// </summary>
     public enum SensorPacketsIDs : byte
     {
+
+        /// <summary>
+        /// Address: 7 - 26
+        /// Size: 26
+        /// </summary>
+        Group0 = 0,
+
+        /// <summary>
+        /// Address: 7 - 16
+        /// Size: 10
+        /// </summary>
+        Group1 = 1,
+
+        /// <summary>
+        /// Address: 17 - 20
+        /// Size: 6
+        /// </summary>
+        Group2 = 2,
+
+        /// <summary>
+        /// Address: 21 - 26
+        /// Size: 10
+        /// </summary>
+        Group3 = 3,
+
+        /// <summary>
+        /// Address: 27 - 34
+        /// Size: 14
+        /// </summary>
+        Group4 = 4,
+
+        /// <summary>
+        /// Address: 35 - 42
+        /// Size: 12
+        /// </summary>
+        Group5 = 5,
+
+        /// <summary>
+        /// Address: 7 - 42
+        /// Size: 52
+        /// </summary>
+        Group6 = 6,
+
         BumpsAndWheelDrops = 7,
         Wall = 8,
         CliffLeft = 9,

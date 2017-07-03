@@ -228,7 +228,7 @@ namespace RoombaSharp
 
         private void tsmiBeepTest_Click(object sender, EventArgs e)
         {
-            // Create the Melodie thread.
+            // Create the worker thread.
             Thread worker = new Thread(
                 new ThreadStart(
                     delegate ()
@@ -432,6 +432,7 @@ namespace RoombaSharp
 
         private void tsmiDisplayTest_Click(object sender, EventArgs e)
         {
+            // Create worker thread.
             Thread worker = new Thread(
                 new ThreadStart(
                     delegate ()
@@ -460,14 +461,13 @@ namespace RoombaSharp
             this.robot.DigitLEDsRawOff();
         }
 
-
         #endregion
 
         #region Sensors
 
         private void tsmiSensorsTest_Click(object sender, EventArgs e)
         {
-            // Create the Melodie thread.
+            // Create the worker thread.
             Thread worker = new Thread(
                 new ThreadStart(
                     delegate ()
@@ -575,6 +575,138 @@ namespace RoombaSharp
 
                         this.LogMessage("Stasis");
                         this.robot.Sensors(SensorPacketsIDs.Stasis);
+                        Thread.Sleep(waitTime);
+                    }
+                )
+            );
+
+            // Start the Melodie thread.
+            worker.Start();
+        }
+
+        private void tsmiParamettersGroup0_Click(object sender, EventArgs e)
+        {
+            // Create the worker thread.
+            Thread worker = new Thread(
+                new ThreadStart(
+                    delegate ()
+                    {
+                        if (this.robot == null || !this.robot.IsConnected) return;
+
+                        int waitTime = 1000;
+
+                        this.LogMessage("Group 0");
+                        this.robot.Sensors(SensorPacketsIDs.Group0);
+                        Thread.Sleep(waitTime);
+                    }
+                )
+            );
+
+            // Start the Melodie thread.
+            worker.Start();
+        }
+
+        private void tsmiParamettersGroup1_Click(object sender, EventArgs e)
+        {
+            // Create the worker thread.
+            Thread worker = new Thread(
+                new ThreadStart(
+                    delegate ()
+                    {
+                        if (this.robot == null || !this.robot.IsConnected) return;
+
+                        int waitTime = 1000;
+
+                        this.LogMessage("Group 1");
+                        this.robot.Sensors(SensorPacketsIDs.Group1);
+                        Thread.Sleep(waitTime);
+                    }
+                )
+            );
+
+            // Start the Melodie thread.
+            worker.Start();
+        }
+
+        private void tsmiParamettersGroup2_Click(object sender, EventArgs e)
+        {
+            // Create the worker thread.
+            Thread worker = new Thread(
+                new ThreadStart(
+                    delegate ()
+                    {
+                        if (this.robot == null || !this.robot.IsConnected) return;
+
+                        int waitTime = 1000;
+
+                        this.LogMessage("Group 2");
+                        this.robot.Sensors(SensorPacketsIDs.Group2);
+                        Thread.Sleep(waitTime);
+                    }
+                )
+            );
+
+            // Start the Melodie thread.
+            worker.Start();
+        }
+
+        private void tsmiParamettersGroup3_Click(object sender, EventArgs e)
+        {
+            // Create the worker thread.
+            Thread worker = new Thread(
+                new ThreadStart(
+                    delegate ()
+                    {
+                        if (this.robot == null || !this.robot.IsConnected) return;
+
+                        int waitTime = 1000;
+
+                        this.LogMessage("Group 3");
+                        this.robot.Sensors(SensorPacketsIDs.Group3);
+                        Thread.Sleep(waitTime);
+                    }
+                )
+            );
+
+            // Start the Melodie thread.
+            worker.Start();
+        }
+
+        private void tsmiParamettersGroup4_Click(object sender, EventArgs e)
+        {
+            // Create the worker thread.
+            Thread worker = new Thread(
+                new ThreadStart(
+                    delegate ()
+                    {
+                        if (this.robot == null || !this.robot.IsConnected) return;
+
+                        int waitTime = 1000;
+
+                        this.LogMessage("Group 4");
+                        this.robot.Sensors(SensorPacketsIDs.Group4);
+                        Thread.Sleep(waitTime);
+                    }
+                )
+            );
+
+            // Start the Melodie thread.
+            worker.Start();
+        }
+
+        private void tsmiParamettersGroup5_Click(object sender, EventArgs e)
+        {
+            // Create the worker thread.
+            Thread worker = new Thread(
+                new ThreadStart(
+                    delegate ()
+                    {
+                        if (this.robot == null || !this.robot.IsConnected) return;
+
+                        int waitTime = 1000;
+
+                        this.LogMessage("Group 5");
+                        this.robot.Sensors(SensorPacketsIDs.Group5);
                         Thread.Sleep(waitTime);
                     }
                 )
