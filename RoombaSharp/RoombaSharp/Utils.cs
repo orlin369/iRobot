@@ -10,6 +10,7 @@ namespace RoombaSharp
 {
     class Utils
     {
+
         /// <summary>
         /// Resize bitmap images.
         /// </summary>

@@ -113,37 +113,6 @@ namespace RoombaSharp
         #region Private Methods
 
         /// <summary>
-        /// Search for serial port.
-        /// </summary>
-        private void SearchForPorts()
-        {
-            this.tsmiConnect.DropDown.Items.Clear();
-
-            string[] portNames = System.IO.Ports.SerialPort.GetPortNames();
-
-            if (portNames.Length == 0)
-            {
-                string message = "A serial port device was not detected.";
-                this.LogMessage(message);
-                MessageBox.Show(message, "",  MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                return;
-            }
-
-            foreach (string item in portNames)
-            {
-                //store the each retrieved available prot names into the MenuItems...
-                this.tsmiConnect.DropDown.Items.Add(item);
-            }
-
-            foreach (ToolStripMenuItem item in this.tsmiConnect.DropDown.Items)
-            {
-                item.Click += tsmiConnect_Click;
-                item.Enabled = true;
-                item.Checked = false;
-            }
-        }
-
-        /// <summary>
         /// Log Message
         /// </summary>
         /// <param name="message">The message.</param>
@@ -723,9 +692,6 @@ namespace RoombaSharp
                 cameraItem.Enabled = true;
                 cameraItem.Checked = false;
             }
-
-            // Log this event.
-            this.LogMessage("Video Capture: Stopped");
         }
 
         private void tsmiCaptureeDevice_Click(object sender, EventArgs e)
@@ -753,9 +719,6 @@ namespace RoombaSharp
 
             // Connect to camera.
             this.ConnecToCamera(videoDevice.MonikerString);            
-
-            // Log this event.
-            this.LogMessage("Video Capture: Started");
         }
 
         #endregion
@@ -766,20 +729,12 @@ namespace RoombaSharp
         {
             this.ConnectVisionSystemViaMqtt();
             this.StartSendImageTimer();
-
-            string message = "MQTT Connection: " + this.mqttCommunicator.IsConnected.ToString();
-            this.LogMessage(message);
-            this.tsslMQTTConnection.Text = message;
         }
 
         private void tsmiMqttDisconnect_Click(object sender, EventArgs e)
         {
             this.StopSendImageTimer();
             this.DisconnectVisionSystemFromMqtt();
-
-            string message = "MQTT Connection: " + this.mqttCommunicator.IsConnected.ToString();
-            this.LogMessage(message);
-            this.tsslMQTTConnection.Text = message;
         }
 
         #endregion
@@ -861,6 +816,37 @@ namespace RoombaSharp
         #endregion
 
         #region Robot
+
+        /// <summary>
+        /// Search for serial port.
+        /// </summary>
+        private void SearchForPorts()
+        {
+            this.tsmiConnect.DropDown.Items.Clear();
+
+            string[] portNames = System.IO.Ports.SerialPort.GetPortNames();
+
+            if (portNames.Length == 0)
+            {
+                string message = "A serial port device was not detected.";
+                this.LogMessage(message);
+                MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                return;
+            }
+
+            foreach (string item in portNames)
+            {
+                //store the each retrieved available prot names into the MenuItems...
+                this.tsmiConnect.DropDown.Items.Add(item);
+            }
+
+            foreach (ToolStripMenuItem item in this.tsmiConnect.DropDown.Items)
+            {
+                item.Click += tsmiConnect_Click;
+                item.Enabled = true;
+                item.Checked = false;
+            }
+        }
 
         /// <summary>
         /// Connect to the robot.
@@ -972,6 +958,9 @@ namespace RoombaSharp
 
             // Start the new stream.
             this.videoDevice.Start();
+
+            // Log this event.
+            this.LogMessage("Video Capture: Started");
         }
 
         private void DisconnectFromCamera()
@@ -986,6 +975,9 @@ namespace RoombaSharp
 
             this.videoDevice.NewFrame -= new NewFrameEventHandler(this.videoDevice_NewFrame);
             this.videoDevice = null;
+
+            // Log this event.
+            this.LogMessage("Video Capture: Stopped");
         }
 
         /// <summary>
@@ -1116,6 +1108,7 @@ namespace RoombaSharp
             {
                 this.sendImageTimer.Start();
             }
+
         }
 
         private void StopSendImageTimer()
@@ -1132,8 +1125,11 @@ namespace RoombaSharp
 
         private void SendImageTimer_Tick(object sender, EventArgs e)
         {
-            if (this.capturedImage == null) return;
-            this.SendImageData(this.capturedImage);
+            lock (this.syncLockVideo)
+            {
+                if (this.capturedImage == null) return;
+                this.SendImageData(this.capturedImage);
+            }
         }
 
         #endregion
@@ -1154,15 +1150,12 @@ namespace RoombaSharp
                     Properties.Settings.Default.MqttOutputTopic,
                     Properties.Settings.Default.MqttImageTopic));
 
-                //this.robot.OnMessage += myRobot_OnMessage;
-                //this.robot.OnSensors += myRobot_OnSensors;
-                //this.robot.OnDistanceSensors += myRobot_OnDistanceSensors;
-                //this.robot.OnGreatingsMessage += myRobot_OnGreatingsMessage;
-                //this.robot.OnStoped += myRobot_OnStoped;
-                //this.robot.OnPosition += myRobot_OnPosition;
                 this.mqttCommunicator.OnMessage += Connector_OnMessage;
                 this.mqttCommunicator.Connect();
-                //this.robot.Reset();
+
+                string message = "MQTT Connection: " + this.mqttCommunicator.IsConnected.ToString();
+                this.LogMessage(message);
+                this.tsslMQTTConnection.Text = message;
             }
             catch (Exception exception)
             {
@@ -1181,6 +1174,10 @@ namespace RoombaSharp
                 {
                     this.mqttCommunicator.OnMessage -= Connector_OnMessage;
                     this.mqttCommunicator.Disconnect();
+
+                    string message = "MQTT Connection: " + this.mqttCommunicator.IsConnected.ToString();
+                    this.LogMessage(message);
+                    this.tsslMQTTConnection.Text = message;
                 }
             }
             catch (Exception exception)
