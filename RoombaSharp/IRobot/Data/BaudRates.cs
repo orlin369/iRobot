@@ -22,17 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System;
-
-namespace iRobot.Events
+namespace iRobot.Data
 {
-    public class MessageString : EventArgs
+    /// <summary>
+    /// Baud rate of the serial port.
+    /// </summary>
+    public enum BaudRates : byte
     {
-        public string Message { get; private set; }
-    
-        public MessageString(string message)
-        {
-            this.Message = message;
-        }
+        B300    = 0,
+        B600    = 1,
+        B1200   = 2,
+        B2400   = 3,
+        B4800   = 4,
+        B9600   = 5,
+        B14400  = 6,
+        B19200  = 7,
+        B28800  = 8,
+        B38400  = 9,
+        B57600  = 10,
+        B115200 = 11,
     }
 }

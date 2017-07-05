@@ -106,7 +106,6 @@ namespace RoombaSharp
             this.tbConsole = new System.Windows.Forms.TextBox();
             this.tbcMain = new System.Windows.Forms.TabControl();
             this.tbpMotion = new System.Windows.Forms.TabPage();
-            this.lblHandPosition = new System.Windows.Forms.Label();
             this.lblRadius = new System.Windows.Forms.Label();
             this.trbRadius = new System.Windows.Forms.TrackBar();
             this.btnStop = new System.Windows.Forms.Button();
@@ -196,7 +195,7 @@ namespace RoombaSharp
             // tsmiConnect
             // 
             this.tsmiConnect.Name = "tsmiConnect";
-            this.tsmiConnect.Size = new System.Drawing.Size(119, 22);
+            this.tsmiConnect.Size = new System.Drawing.Size(152, 22);
             this.tsmiConnect.Text = "Connect";
             this.tsmiConnect.Click += new System.EventHandler(this.tsmiConnect_Click);
             // 
@@ -205,7 +204,7 @@ namespace RoombaSharp
             this.tsmiBeep.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiBeepTest});
             this.tsmiBeep.Name = "tsmiBeep";
-            this.tsmiBeep.Size = new System.Drawing.Size(119, 22);
+            this.tsmiBeep.Size = new System.Drawing.Size(152, 22);
             this.tsmiBeep.Text = "Beep";
             // 
             // tsmiBeepTest
@@ -224,7 +223,7 @@ namespace RoombaSharp
             this.tsmiLedDirtDetect,
             this.tsmiLedClean});
             this.tsmiLEDs.Name = "tsmiLEDs";
-            this.tsmiLEDs.Size = new System.Drawing.Size(119, 22);
+            this.tsmiLEDs.Size = new System.Drawing.Size(152, 22);
             this.tsmiLEDs.Text = "LEDs";
             // 
             // tsmiLedCheckRobot
@@ -293,7 +292,7 @@ namespace RoombaSharp
             this.tsmiVacuum,
             this.tsmiSideBrush});
             this.tsmiMotors.Name = "tsmiMotors";
-            this.tsmiMotors.Size = new System.Drawing.Size(119, 22);
+            this.tsmiMotors.Size = new System.Drawing.Size(152, 22);
             this.tsmiMotors.Text = "Motors";
             // 
             // tsmiMainBrush
@@ -326,7 +325,7 @@ namespace RoombaSharp
             this.tsmiBtnPower,
             this.tsmiBtnMax});
             this.tsmiButtons.Name = "tsmiButtons";
-            this.tsmiButtons.Size = new System.Drawing.Size(119, 22);
+            this.tsmiButtons.Size = new System.Drawing.Size(152, 22);
             this.tsmiButtons.Text = "Buttons";
             // 
             // tsmiBtnClean
@@ -371,7 +370,7 @@ namespace RoombaSharp
             this.tsmiDisplayShutdown,
             this.tsmiDisplayTest});
             this.tsmiDisplay.Name = "tsmiDisplay";
-            this.tsmiDisplay.Size = new System.Drawing.Size(119, 22);
+            this.tsmiDisplay.Size = new System.Drawing.Size(152, 22);
             this.tsmiDisplay.Text = "Display";
             // 
             // setToolStripMenuItem
@@ -405,7 +404,7 @@ namespace RoombaSharp
             this.tsmiParamettersGroup5,
             this.tsmiSensorsTest});
             this.tsmiSensors.Name = "tsmiSensors";
-            this.tsmiSensors.Size = new System.Drawing.Size(119, 22);
+            this.tsmiSensors.Size = new System.Drawing.Size(152, 22);
             this.tsmiSensors.Text = "Sensors";
             // 
             // tsmiParamettersGroup0
@@ -560,7 +559,6 @@ namespace RoombaSharp
             // tbpMotion
             // 
             this.tbpMotion.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.tbpMotion.Controls.Add(this.lblHandPosition);
             this.tbpMotion.Controls.Add(this.lblRadius);
             this.tbpMotion.Controls.Add(this.trbRadius);
             this.tbpMotion.Controls.Add(this.btnStop);
@@ -576,15 +574,6 @@ namespace RoombaSharp
             this.tbpMotion.Size = new System.Drawing.Size(1042, 444);
             this.tbpMotion.TabIndex = 0;
             this.tbpMotion.Text = "Motion";
-            // 
-            // lblHandPosition
-            // 
-            this.lblHandPosition.AutoSize = true;
-            this.lblHandPosition.Location = new System.Drawing.Point(17, 376);
-            this.lblHandPosition.Name = "lblHandPosition";
-            this.lblHandPosition.Size = new System.Drawing.Size(40, 17);
-            this.lblHandPosition.TabIndex = 61;
-            this.lblHandPosition.Text = "Pos:";
             // 
             // lblRadius
             // 
@@ -804,7 +793,6 @@ namespace RoombaSharp
         private System.Windows.Forms.TextBox tbConsole;
         private System.Windows.Forms.TabControl tbcMain;
         private System.Windows.Forms.TabPage tbpMotion;
-        private System.Windows.Forms.Label lblHandPosition;
         private System.Windows.Forms.Label lblRadius;
         private System.Windows.Forms.TrackBar trbRadius;
         private System.Windows.Forms.Button btnStop;

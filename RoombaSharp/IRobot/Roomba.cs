@@ -82,7 +82,7 @@ namespace iRobot.RoombaSharp
         /// <summary>
         /// Received command message.
         /// </summary>
-        public event EventHandler<MessageString> OnMesage;
+        public event EventHandler<StringEventArgs> OnMesage;
 
         /// <summary>
         /// On connect event.
@@ -159,7 +159,7 @@ namespace iRobot.RoombaSharp
         /// mode to accept this command.This command puts the SCI in 
         /// passive mode.
         /// </summary>
-        public void Baud(BoudRates baudRate)
+        public void Baud(BaudRates baudRate)
         {
             if (this.communicator == null || !communicator.IsConnected) return;
             this.communicator.Write(new byte[] { (byte)RoombaOpcodes.BAUD, (byte)baudRate }, 0, 2);
@@ -544,7 +544,7 @@ namespace iRobot.RoombaSharp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Communicator_OnMesage(object sender, MessageString e)
+        private void Communicator_OnMesage(object sender, StringEventArgs e)
         {
             this.OnMesage?.Invoke(this, e);
         }

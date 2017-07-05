@@ -90,7 +90,7 @@ namespace iRobot.RoombaSharp
         /// <summary>
         /// Received command message.
         /// </summary>
-        public event EventHandler<MessageString> OnMesage;
+        public event EventHandler<StringEventArgs> OnMesage;
 
         /// <summary>
         /// On connect event.
@@ -167,7 +167,7 @@ namespace iRobot.RoombaSharp
 
                 try
                 {
-                    this.OnMesage?.Invoke(this, new MessageString(serialPort.ReadExisting()));
+                    this.OnMesage?.Invoke(this, new StringEventArgs(serialPort.ReadExisting()));
 
                     // Discard the duffer.
                     serialPort.DiscardInBuffer();
@@ -204,7 +204,7 @@ namespace iRobot.RoombaSharp
             }
             catch(Exception exception)
             {
-                this.OnDisconnect?.Invoke(this, new MessageString(exception.ToString()));
+                this.OnDisconnect?.Invoke(this, new StringEventArgs(exception.ToString()));
             }
         }
 
@@ -218,12 +218,12 @@ namespace iRobot.RoombaSharp
                 if (this.IsConnected)
                 {
                     this.SerialPort.Close();
-                    this.OnDisconnect?.Invoke(this, new MessageString(""));
+                    this.OnDisconnect?.Invoke(this, new StringEventArgs(""));
                 }
             }
             catch (Exception exception)
             {
-                this.OnDisconnect?.Invoke(this, new MessageString(exception.ToString()));
+                this.OnDisconnect?.Invoke(this, new StringEventArgs(exception.ToString()));
             }
         }
 
@@ -246,7 +246,7 @@ namespace iRobot.RoombaSharp
                 }
                 catch (Exception exception)
                 {
-                    this.OnDisconnect?.Invoke(this, new MessageString(exception.ToString()));
+                    this.OnDisconnect?.Invoke(this, new StringEventArgs(exception.ToString()));
 
                     if (this.Reconnect)
                     {
