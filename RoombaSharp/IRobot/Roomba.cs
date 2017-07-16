@@ -82,7 +82,7 @@ namespace iRobot.RoombaSharp
         /// <summary>
         /// Received command message.
         /// </summary>
-        public event EventHandler<StringEventArgs> OnMesage;
+        public event EventHandler<BytesEventArgs> OnMesage;
 
         /// <summary>
         /// On connect event.
@@ -544,7 +544,7 @@ namespace iRobot.RoombaSharp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Communicator_OnMesage(object sender, StringEventArgs e)
+        private void Communicator_OnMesage(object sender, BytesEventArgs e)
         {
             this.OnMesage?.Invoke(this, e);
         }

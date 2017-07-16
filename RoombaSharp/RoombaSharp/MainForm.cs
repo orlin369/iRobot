@@ -910,9 +910,9 @@ namespace RoombaSharp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void robot_OnMesage(object sender, StringEventArgs e)
+        private void robot_OnMesage(object sender, BytesEventArgs e)
         {
-            byte[] byteData = System.Text.Encoding.ASCII.GetBytes(e.Message);
+            byte[] byteData = e.Message;
 
             string text = "";
 
