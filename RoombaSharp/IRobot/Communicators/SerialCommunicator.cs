@@ -28,9 +28,9 @@ using System.Threading;
 
 using iRobot.Events;
 
-namespace iRobot.RoombaSharp
+namespace iRobot.Communicators
 {
-    public class Communicator : IDisposable
+    public class SerialCommunicator : ICommunicationAddapter, IDisposable
     {
 
         #region Variables
@@ -110,7 +110,7 @@ namespace iRobot.RoombaSharp
         /// Constructor
         /// </summary>
         /// <param name="port">Communication port.</param>
-        public Communicator(string portName)
+        public SerialCommunicator(string portName)
         {
             // Save the port name.
             this.portName = portName;
@@ -119,10 +119,14 @@ namespace iRobot.RoombaSharp
         /// <summary>
         /// Destructor
         /// </summary>
-        ~Communicator()
+        ~SerialCommunicator()
         {
             this.Dispose(false);
         }
+
+        #endregion
+
+        #region IDisposible Interface Implementation
 
         /// <summary>
         /// Dispose

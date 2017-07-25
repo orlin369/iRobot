@@ -22,83 +22,235 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using System;
 using System.Runtime.InteropServices;
 
-namespace IRobot.Data
+namespace iRobot.Data
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Serializable]
     [StructLayout(LayoutKind.Explicit)]
-    public struct Struct7
+    public struct Struct6
     {
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(0)]
         public byte BumpersAndWheelDrops;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(1)]
         public byte Wall;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(2)]
         public byte CliffLeft;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(3)]
         public byte CliffFrontLeft;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(4)]
         public byte CliffFrontRight;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(5)]
-        public byte VirtualWall;
+        public byte CliffRight;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(6)]
-        public byte OverCurrents;
+        public byte VirtualWall;
+        
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(7)]
-        public byte US1;
+        public byte OverCurrents;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(8)]
-        public byte US2;
+        public byte DirtDetect;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(9)]
-        public byte IRByte;
+        public byte US1;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(10)]
-        public byte Buttons;
+        public byte IRByte;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(11)]
-        public short Distance;
-        [FieldOffset(13)]
+        public byte Buttons;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(12)]
         public short Angle;
-        [FieldOffset(15)]
-        public byte ChargeState;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(14)]
+        public short Distance;
+        
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(16)]
+        public ChargingState ChargeState;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(17)]
         public ushort Voltage;
-        [FieldOffset(18)]
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(19)]
         public ushort Current;
-        [FieldOffset(20)]
-        public byte BatteryTemperature;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(21)]
+        public byte BatteryTemperature;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(22)]
         public ushort BatteryCharge;
-        [FieldOffset(23)]
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(24)]
         public ushort BatteryCapacity;
-        [FieldOffset(25)]
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(26)]
         public ushort WallSignal;
-        [FieldOffset(27)]
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(28)]
         public ushort CliffLeftSignal;
-        [FieldOffset(29)]
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(30)]
         public ushort CliffFrontLeftSignal;
-        [FieldOffset(31)]
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(32)]
         public ushort CliffFrontRightSignal;
-        [FieldOffset(33)]
-        public ushort CliffRightSignal;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(34)]
+        public ushort CliffRightSignal;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(36)]
         public byte UserDigitalInputs;
-        [FieldOffset(35)]
-        public ushort UserAnalogInput;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(37)]
-        public byte ChargingSourceAvailable;
-        [FieldOffset(38)]
-        public byte OIMode;
+        public ushort UserAnalogInput;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(39)]
-        public byte SongNumber;
+        public byte ChargingSourceAvailable;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(40)]
-        public byte SongPlaing;
+        public OIMode OIMode;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(41)]
-        public byte NumberOfStreamPackets;
+        public byte SongNumber;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(42)]
-        public byte Velocity;
+        public byte SongPlaing;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(43)]
+        public byte NumberOfStreamPackets;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(44)]
-        public byte Radius;
+        public short Velocity;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(46)]
-        public byte RightVelocity;
+        public short Radius;
+
+        /// <summary>
+        /// 
+        /// </summary>
         [FieldOffset(48)]
-        public byte LeftVelocity;
+        public short RightVelocity;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(50)]
+        public short LeftVelocity;
 
     }
 }

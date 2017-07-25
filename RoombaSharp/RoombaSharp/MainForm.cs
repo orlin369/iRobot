@@ -28,16 +28,18 @@ using System.Threading;
 using System.Drawing;
 using System.Collections.Generic;
 
+using AForge.Video;
 using AForge.Video.DirectShow;
 
-using iRobot.RoombaSharp;
+using iRobot;
+using iRobot.Data;
 using iRobot.Events;
+using iRobot.Communicators;
 
 using RoombaSharp.Video;
 using RoombaSharp.Connectors;
 using RoombaSharp.Adapters;
-using iRobot.Data;
-using AForge.Video;
+using Newtonsoft.Json;
 
 namespace RoombaSharp
 {
@@ -72,7 +74,7 @@ namespace RoombaSharp
         private VideoCaptureDevice videoDevice = null;
 
         /// <summary>
-        /// 
+        /// Video devices.
         /// </summary>
         private VideoDevice[] videoDevices;
 
@@ -94,7 +96,7 @@ namespace RoombaSharp
         /// <summary>
         /// Connector
         /// </summary>
-        private DataConnector mqttCommunicator;
+        private DataConnector mqttDataConnector;
                 
         #endregion
 
@@ -408,7 +410,7 @@ namespace RoombaSharp
 
         #region Sensors
 
-        private void tsmiSensorsTest_Click(object sender, EventArgs e)
+        private void tsmiParamettersGroup6_Click(object sender, EventArgs e)
         {
             // Create the worker thread.
             Thread worker = new Thread(
@@ -419,237 +421,8 @@ namespace RoombaSharp
 
                         int waitTime = 1000;
 
-                        this.LogMessage("Bumper and wheel drops");
-                        this.robot.Sensors(SensorPacketsIDs.BumpsAndWheelDrops);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Wall sensor");
-                        this.robot.Sensors(SensorPacketsIDs.Wall);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Cliff left sensor");
-                        this.robot.Sensors(SensorPacketsIDs.CliffLeft);
-                        Thread.Sleep(waitTime);
-                        this.LogMessage("Cliff front lefts sensor");
-                        this.robot.Sensors(SensorPacketsIDs.CliffFrontLeft);
-                        Thread.Sleep(waitTime);
-                        this.LogMessage("Cliff front right sensor");
-                        this.robot.Sensors(SensorPacketsIDs.CliffFrontRight);
-                        Thread.Sleep(waitTime);
-                        this.LogMessage("Cliff right sensor");
-                        this.robot.Sensors(SensorPacketsIDs.CliffRight);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Virtual wall sensor");
-                        this.robot.Sensors(SensorPacketsIDs.VirtualWall);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Wheel over currents");
-                        this.robot.Sensors(SensorPacketsIDs.WheelOvercurrents);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Infrared omni sensor");
-                        this.robot.Sensors(SensorPacketsIDs.InfraredCharacterOmni);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Infrared left sensor");
-                        this.robot.Sensors(SensorPacketsIDs.InfraredCharacterLeft);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Infrared right sensor");
-                        this.robot.Sensors(SensorPacketsIDs.InfraredCharacterRight);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Distance");
-                        this.robot.Sensors(SensorPacketsIDs.Distance);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Angle");
-                        this.robot.Sensors(SensorPacketsIDs.Angle);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Charging state");
-                        this.robot.Sensors(SensorPacketsIDs.ChargingState);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Voltage");
-                        this.robot.Sensors(SensorPacketsIDs.Voltage);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Current");
-                        this.robot.Sensors(SensorPacketsIDs.Current);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Temperature");
-                        this.robot.Sensors(SensorPacketsIDs.Temperature);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Battery charge");
-                        this.robot.Sensors(SensorPacketsIDs.BatteryCharge);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Battery capacity");
-                        this.robot.Sensors(SensorPacketsIDs.BatteryCapacity);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Dirt detect sensor");
-                        this.robot.Sensors(SensorPacketsIDs.DirtDetect);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Charging source available");
-                        this.robot.Sensors(SensorPacketsIDs.ChargingSourcesAvailable);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Left motor current");
-                        this.robot.Sensors(SensorPacketsIDs.LeftMotorCurrent);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Right motor current");
-                        this.robot.Sensors(SensorPacketsIDs.RightMotorCurrent);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Main brush motor current");
-                        this.robot.Sensors(SensorPacketsIDs.MainBrushMotorCurrent);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Side brush motor current");
-                        this.robot.Sensors(SensorPacketsIDs.SideBrushMotorCurrent);
-                        Thread.Sleep(waitTime);
-
-                        this.LogMessage("Stasis");
-                        this.robot.Sensors(SensorPacketsIDs.Stasis);
-                        Thread.Sleep(waitTime);
-                    }
-                )
-            );
-
-            // Start the Melodie thread.
-            worker.Start();
-        }
-
-        private void tsmiParamettersGroup0_Click(object sender, EventArgs e)
-        {
-            // Create the worker thread.
-            Thread worker = new Thread(
-                new ThreadStart(
-                    delegate ()
-                    {
-                        if (this.robot == null || !this.robot.IsConnected) return;
-
-                        int waitTime = 1000;
-
-                        this.LogMessage("Group 0");
-                        this.robot.Sensors(SensorPacketsIDs.Group0);
-                        Thread.Sleep(waitTime);
-                    }
-                )
-            );
-
-            // Start the Melodie thread.
-            worker.Start();
-        }
-
-        private void tsmiParamettersGroup1_Click(object sender, EventArgs e)
-        {
-            // Create the worker thread.
-            Thread worker = new Thread(
-                new ThreadStart(
-                    delegate ()
-                    {
-                        if (this.robot == null || !this.robot.IsConnected) return;
-
-                        int waitTime = 1000;
-
-                        this.LogMessage("Group 1");
-                        this.robot.Sensors(SensorPacketsIDs.Group1);
-                        Thread.Sleep(waitTime);
-                    }
-                )
-            );
-
-            // Start the Melodie thread.
-            worker.Start();
-        }
-
-        private void tsmiParamettersGroup2_Click(object sender, EventArgs e)
-        {
-            // Create the worker thread.
-            Thread worker = new Thread(
-                new ThreadStart(
-                    delegate ()
-                    {
-                        if (this.robot == null || !this.robot.IsConnected) return;
-
-                        int waitTime = 1000;
-
-                        this.LogMessage("Group 2");
-                        this.robot.Sensors(SensorPacketsIDs.Group2);
-                        Thread.Sleep(waitTime);
-                    }
-                )
-            );
-
-            // Start the Melodie thread.
-            worker.Start();
-        }
-
-        private void tsmiParamettersGroup3_Click(object sender, EventArgs e)
-        {
-            // Create the worker thread.
-            Thread worker = new Thread(
-                new ThreadStart(
-                    delegate ()
-                    {
-                        if (this.robot == null || !this.robot.IsConnected) return;
-
-                        int waitTime = 1000;
-
-                        this.LogMessage("Group 3");
-                        this.robot.Sensors(SensorPacketsIDs.Group3);
-                        Thread.Sleep(waitTime);
-                    }
-                )
-            );
-
-            // Start the Melodie thread.
-            worker.Start();
-        }
-
-        private void tsmiParamettersGroup4_Click(object sender, EventArgs e)
-        {
-            // Create the worker thread.
-            Thread worker = new Thread(
-                new ThreadStart(
-                    delegate ()
-                    {
-                        if (this.robot == null || !this.robot.IsConnected) return;
-
-                        int waitTime = 1000;
-
-                        this.LogMessage("Group 4");
-                        this.robot.Sensors(SensorPacketsIDs.Group4);
-                        Thread.Sleep(waitTime);
-                    }
-                )
-            );
-
-            // Start the Melodie thread.
-            worker.Start();
-        }
-
-        private void tsmiParamettersGroup5_Click(object sender, EventArgs e)
-        {
-            // Create the worker thread.
-            Thread worker = new Thread(
-                new ThreadStart(
-                    delegate ()
-                    {
-                        if (this.robot == null || !this.robot.IsConnected) return;
-
-                        int waitTime = 1000;
-
-                        this.LogMessage("Group 5");
-                        this.robot.Sensors(SensorPacketsIDs.Group5);
+                        this.LogMessage("Group 6");
+                        this.robot.Sensors(SensorPacketsIDs.Group6);
                         Thread.Sleep(waitTime);
                     }
                 )
@@ -854,18 +627,29 @@ namespace RoombaSharp
         /// <param name="portName"></param>
         private void ConnectToRobot(string portName)
         {
-            this.robot = new Roomba(new Communicator(portName));
-            this.robot.OnConnect += Robot_OnConnect;
-            this.robot.OnDisconnect += Robot_OnDisconnect;
+            // Create robot.
+            this.robot = new Roomba(new SerialCommunicator(portName));
+
+            // Attach events.
             this.robot.OnMesage += this.robot_OnMesage;
+
+            // Connect to robot.
             this.robot.Connect();
+
+            // Wakeup procedure.
             this.robot.Start();
             this.robot.Start();
             this.robot.Safe();
             this.robot.Start();
             this.robot.Safe();
 
-            this.tsslRobotConnection.Text = "Robot Connection: Connected@" + portName;
+            // Show connect message.
+            if(robot.IsConnected)
+            {
+                string message = "Robot Connection: Connected@" + portName;
+                this.tsslRobotConnection.Text = message;
+                this.LogMessage(message);
+            }
         }
 
         /// <summary>
@@ -877,32 +661,15 @@ namespace RoombaSharp
 
             this.robot.Drive(0, 0);
             this.robot.OnMesage -= this.robot_OnMesage;
-            this.robot.OnConnect -= Robot_OnConnect;
-            this.robot.OnDisconnect -= Robot_OnDisconnect;
             this.robot.Disconnect();
 
-            this.tsslRobotConnection.Text = "Robot Connection: Disconnected";
-        }
-
-        /// <summary>
-        /// Disconnect from robot.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Robot_OnDisconnect(object sender, EventArgs e)
-        {
-            this.LogMessage("Disconnected from robot.");
-        }
-
-        /// <summary>
-        /// Connect to robot.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Robot_OnConnect(object sender, EventArgs e)
-        {
-            Roomba robot = (Roomba)sender;
-            this.LogMessage("Connected to robot port: " + robot.PortName);
+            // Show connect message.
+            if (!robot.IsConnected)
+            {
+                string message = "Robot Connection: Disconnected";
+                this.tsslRobotConnection.Text = message;
+                this.LogMessage(message);
+            }
         }
 
         /// <summary>
@@ -912,16 +679,28 @@ namespace RoombaSharp
         /// <param name="e"></param>
         private void robot_OnMesage(object sender, BytesEventArgs e)
         {
+            // Get the data.
             byte[] byteData = e.Message;
 
-            string text = "";
+            // Convert it to sensor structure.
+            Struct6 sensros = Utils.ByteArrayToStructure<Struct6>(byteData);
 
-            foreach (byte b in byteData)
-            {
-                text += b.ToString("X2") + " ";
-            }
+            // 
+            string wheelDrops = sensros.BumpersAndWheelDrops.ToString("X2");
+            // Log it.
+            this.LogMessage("Robot: " + wheelDrops);
 
-            this.LogMessage("Robot: " + text);
+            // Convert it to hex text.
+            //string text = Utils.ToHexText(byteData);
+            //// Log it.
+            //this.LogMessage("Robot: " + text);
+
+            //
+            string serialSensors = JsonConvert.SerializeObject(sensros);
+
+            this.SendData(serialSensors);
+            // Log it.
+            //this.LogMessage("Robot: " + serialSensors);
         }
 
         #endregion
@@ -1143,17 +922,17 @@ namespace RoombaSharp
         {
             try
             {
-                this.mqttCommunicator = new DataConnector(new MqttAdapter(
+                this.mqttDataConnector = new DataConnector(new MqttAdapter(
                     Properties.Settings.Default.BrokerHost,
                     Properties.Settings.Default.BrokerPort,
                     Properties.Settings.Default.MqttInputTopic,
                     Properties.Settings.Default.MqttOutputTopic,
                     Properties.Settings.Default.MqttImageTopic));
 
-                this.mqttCommunicator.OnMessage += Connector_OnMessage;
-                this.mqttCommunicator.Connect();
+                this.mqttDataConnector.OnMessage += mqttCommunicator_OnMessage;
+                this.mqttDataConnector.Connect();
 
-                string message = "MQTT Connection: " + this.mqttCommunicator.IsConnected.ToString();
+                string message = "MQTT Connection: " + this.mqttDataConnector.IsConnected.ToString();
                 this.LogMessage(message);
                 this.tsslMQTTConnection.Text = message;
             }
@@ -1170,12 +949,12 @@ namespace RoombaSharp
         {
             try
             {
-                if (this.mqttCommunicator != null && this.mqttCommunicator.IsConnected)
+                if (this.mqttDataConnector != null && this.mqttDataConnector.IsConnected)
                 {
-                    this.mqttCommunicator.OnMessage -= Connector_OnMessage;
-                    this.mqttCommunicator.Disconnect();
+                    this.mqttDataConnector.OnMessage -= mqttCommunicator_OnMessage;
+                    this.mqttDataConnector.Disconnect();
 
-                    string message = "MQTT Connection: " + this.mqttCommunicator.IsConnected.ToString();
+                    string message = "MQTT Connection: " + this.mqttDataConnector.IsConnected.ToString();
                     this.LogMessage(message);
                     this.tsslMQTTConnection.Text = message;
                 }
@@ -1186,24 +965,78 @@ namespace RoombaSharp
             }
         }
 
+        /// <summary>
+        /// Send image.
+        /// </summary>
+        /// <param name="image"></param>
         private void SendImageData(Bitmap image)
         {
-            if (this.mqttCommunicator == null || !this.mqttCommunicator.IsConnected) return;
+            if (this.mqttDataConnector == null || !this.mqttDataConnector.IsConnected) return;
             if (image == null) return;
             try
             {
-                this.mqttCommunicator.SendImage(Utils.ResizeImage(image, Properties.Settings.Default.ImageSize));
+                this.mqttDataConnector.SendImage(Utils.ResizeImage(image, Properties.Settings.Default.ImageSize));
             }
             catch
             { }
         }
 
-        private void Connector_OnMessage(object sender, Events.StringEventArgs e)
+        /// <summary>
+        /// Send data from robot.
+        /// </summary>
+        /// <param name="image"></param>
+        private void SendData(string data)
+        {
+            if (this.mqttDataConnector == null || !this.mqttDataConnector.IsConnected) return;
+            if (data == null) return;
+            try
+            {
+                this.mqttDataConnector.SendData(data);
+            }
+            catch
+            { }
+        }
+
+        /// <summary>
+        /// MQTT connector message handler.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void mqttCommunicator_OnMessage(object sender, Events.StringEventArgs e)
         {
             this.LogMessage(e.Message);
         }
 
         #endregion
 
+        private void tsmiMqttTest_Click(object sender, EventArgs e)
+        {
+            iRobot.Data.Struct6 testData = new Struct6();
+
+            // Test 1
+            testData.Wall = 1;
+            // Test 2
+            testData.Voltage = 5000;
+            // Test 3
+            testData.Current = 5000;
+            // Test 4
+            testData.CliffLeft = 1;
+            // Test 5
+            testData.CliffFrontLeft = 0;
+            // Test 6
+            testData.CliffRight = 1;
+            // Test 7
+            testData.CliffFrontRight = 0;
+            // Test 8
+            testData.BumpersAndWheelDrops = 1 + 0 + 4 + 0;
+
+
+
+            string stringTestData = Newtonsoft.Json.JsonConvert.SerializeObject(testData);
+
+            this.SendData(stringTestData);
+
+            LogMessage("Send test data to the server.");
+        }
     }
 }

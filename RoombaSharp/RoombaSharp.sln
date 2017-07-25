@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoombaSharp", "RoombaSharp\RoombaSharp.csproj", "{63E92766-74B6-4617-90D4-6F9FE171AE35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRobot", "IRobot\IRobot.csproj", "{C4F5C4E4-7F65-49FC-8244-7554722280CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRobot", "IRobot\iRobot.csproj", "{C4F5C4E4-7F65-49FC-8244-7554722280CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

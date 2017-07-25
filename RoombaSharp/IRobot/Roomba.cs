@@ -23,12 +23,12 @@ SOFTWARE.
 */
 
 using System;
-using System.IO.Ports;
 
 using iRobot.Data;
 using iRobot.Events;
+using iRobot.Communicators;
 
-namespace iRobot.RoombaSharp
+namespace iRobot
 {
 
     /// <summary>
@@ -43,7 +43,7 @@ namespace iRobot.RoombaSharp
         /// <summary>
         /// Communicator
         /// </summary>
-        private Communicator communicator;
+        private ICommunicationAddapter communicator;
 
         #endregion
 
@@ -59,19 +59,6 @@ namespace iRobot.RoombaSharp
                 if (this.communicator == null) return false;
 
                 return this.communicator.IsConnected;
-            }
-        }
-
-        /// <summary>
-        /// Port name.
-        /// </summary>
-        public string PortName
-        {
-            get
-            {
-                if (this.communicator == null) return "";
-
-                return this.communicator.PortName;
             }
         }
 
@@ -102,7 +89,7 @@ namespace iRobot.RoombaSharp
         /// Constructor
         /// </summary>
         /// <param name="portName">Serial port name.</param>
-        public Roomba (Communicator communicator)
+        public Roomba (ICommunicationAddapter communicator)
         {
             this.communicator = communicator;
         }

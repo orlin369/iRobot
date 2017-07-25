@@ -1,14 +1,18 @@
 ﻿/*
  MIT License
+
 Copyright (c) [2016] [Orlin Dimitrov]
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
+
 The above copyright notice and this permission notice shall be included in all
 copies or substantial SerialPortions of the Software.
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -18,73 +22,67 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using RoombaSharp.Events;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace RoombaSharp.Adapters
+using iRobot.Events;
+
+namespace iRobot.Communicators
 {
-    public abstract class Adapter : IDisposable
+    public interface ICommunicationAddapter
     {
-
-        #region Properties
-
-        /// <summary>
-        /// If the board is correctly connected.
-        /// </summary>
-        public abstract bool IsConnected { get; protected set; }
-
-        /// <summary>
-        /// Maximum timeout.
-        /// </summary>
-        public abstract int MaxTimeout { get; set; }
-
-        #endregion
 
         #region Events
 
         /// <summary>
         /// Received command message.
         /// </summary>
-        public abstract event EventHandler<StringEventArgs> OnMessage;
+        event EventHandler<BytesEventArgs> OnMesage;
+
+        /// <summary>
+        /// On connect event.
+        /// </summary>
+        event EventHandler<EventArgs> OnConnect;
+
+        /// <summary>
+        /// On disconnect event.
+        /// </summary>
+        event EventHandler<EventArgs> OnDisconnect;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// If the board is correctly connected.
+        /// </summary>
+        bool IsConnected { get; }
 
         #endregion
 
         #region Public Methods
 
         /// <summary>
-        /// Connect
+        /// Connect to the serial port.
         /// </summary>
-        public abstract void Connect();
+        void Connect();
 
         /// <summary>
         /// Disconnect
         /// </summary>
-        public abstract void Disconnect();
+        void Disconnect();
 
         /// <summary>
-        /// Reset the Robot.
+        /// Write command.
         /// </summary>
-        public abstract void Reset();
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        void Write(byte[] buffer, int offset, int count);
 
         /// <summary>
-        /// Send request to the device.
+        /// Knock-Knock - function.
         /// </summary>
-        /// <param name="command"></param>
-        public abstract void SendRequest(string command);
-
-        /// <summary>
-        /// Send image bytes.
-        /// </summary>
-        /// <param name="data"></param>
-        public abstract void SendImageBytes(byte[] data);
-
-        /// <summary>
-        /// Dispose
-        /// </summary>
-        public abstract void Dispose();
+        void KnockKnock();
 
         #endregion
 

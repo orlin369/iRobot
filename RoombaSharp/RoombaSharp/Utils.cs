@@ -25,10 +25,11 @@ SOFTWARE.
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
 
 namespace RoombaSharp
 {
-    class Utils
+    internal static class Utils
     {
 
         /// <summary>
@@ -77,9 +78,43 @@ namespace RoombaSharp
         /// </summary>
         /// <param name="radians">Value</param>
         /// <returns>Transformed value.</returns>
-        private float ToDegree(float radians)
+        public static float ToDegree(float radians)
         {
             return radians * 180.0f / (float)Math.PI;
+        }
+
+        /// <summary>
+        /// Converts byte aray to structure.
+        /// </summary>
+        /// <typeparam name="T">Type of the structure.</typeparam>
+        /// <param name="bytes">Bytes for the structure.</param>
+        /// <returns>Type of the structure.</returns>
+        public static T ByteArrayToStructure<T>(byte[] bytes) where T : struct
+        {
+            var handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+            var result = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+            handle.Free();
+            return result;
+        }
+
+        /// <summary>
+        /// Converts byte arrays to hex string.
+        /// </summary>
+        /// <param name="bytes">Byte array</param>
+        /// <returns>HEX String</returns>
+        public static string ToHexText(byte[] bytes)
+        {
+            // Text for the log.
+            string text = "";
+
+            // Make it as HEX.
+            foreach (byte b in bytes)
+            {
+                text += b.ToString("X2") + " ";
+            }
+
+            return text;
+
         }
 
     }

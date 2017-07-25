@@ -87,13 +87,7 @@ namespace RoombaSharp
             this.tsmiDisplayShutdown = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDisplayTest = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSensors = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiParamettersGroup0 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiParamettersGroup1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiParamettersGroup2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiParamettersGroup3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiParamettersGroup4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiParamettersGroup5 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiSensorsTest = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiParamettersGroup6 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCameraCapture = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiStopCapture = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMqttServer = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,6 +111,7 @@ namespace RoombaSharp
             this.btnUp = new System.Windows.Forms.Button();
             this.tbpCamera = new System.Windows.Forms.TabPage();
             this.pbMain = new System.Windows.Forms.PictureBox();
+            this.tsmiMqttTest = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.ssMain.SuspendLayout();
             this.tlpMain.SuspendLayout();
@@ -157,24 +152,24 @@ namespace RoombaSharp
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(113, 6);
             // 
             // tsmiSettings
             // 
             this.tsmiSettings.Name = "tsmiSettings";
-            this.tsmiSettings.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSettings.Size = new System.Drawing.Size(116, 22);
             this.tsmiSettings.Text = "Settings";
             this.tsmiSettings.Click += new System.EventHandler(this.tsmiSettings_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(113, 6);
             // 
             // tsmiExit
             // 
             this.tsmiExit.Name = "tsmiExit";
-            this.tsmiExit.Size = new System.Drawing.Size(152, 22);
+            this.tsmiExit.Size = new System.Drawing.Size(116, 22);
             this.tsmiExit.Text = "Exit";
             this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
@@ -195,7 +190,7 @@ namespace RoombaSharp
             // tsmiConnect
             // 
             this.tsmiConnect.Name = "tsmiConnect";
-            this.tsmiConnect.Size = new System.Drawing.Size(152, 22);
+            this.tsmiConnect.Size = new System.Drawing.Size(119, 22);
             this.tsmiConnect.Text = "Connect";
             this.tsmiConnect.Click += new System.EventHandler(this.tsmiConnect_Click);
             // 
@@ -204,7 +199,7 @@ namespace RoombaSharp
             this.tsmiBeep.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiBeepTest});
             this.tsmiBeep.Name = "tsmiBeep";
-            this.tsmiBeep.Size = new System.Drawing.Size(152, 22);
+            this.tsmiBeep.Size = new System.Drawing.Size(119, 22);
             this.tsmiBeep.Text = "Beep";
             // 
             // tsmiBeepTest
@@ -223,7 +218,7 @@ namespace RoombaSharp
             this.tsmiLedDirtDetect,
             this.tsmiLedClean});
             this.tsmiLEDs.Name = "tsmiLEDs";
-            this.tsmiLEDs.Size = new System.Drawing.Size(152, 22);
+            this.tsmiLEDs.Size = new System.Drawing.Size(119, 22);
             this.tsmiLEDs.Text = "LEDs";
             // 
             // tsmiLedCheckRobot
@@ -292,7 +287,7 @@ namespace RoombaSharp
             this.tsmiVacuum,
             this.tsmiSideBrush});
             this.tsmiMotors.Name = "tsmiMotors";
-            this.tsmiMotors.Size = new System.Drawing.Size(152, 22);
+            this.tsmiMotors.Size = new System.Drawing.Size(119, 22);
             this.tsmiMotors.Text = "Motors";
             // 
             // tsmiMainBrush
@@ -325,7 +320,7 @@ namespace RoombaSharp
             this.tsmiBtnPower,
             this.tsmiBtnMax});
             this.tsmiButtons.Name = "tsmiButtons";
-            this.tsmiButtons.Size = new System.Drawing.Size(152, 22);
+            this.tsmiButtons.Size = new System.Drawing.Size(119, 22);
             this.tsmiButtons.Text = "Buttons";
             // 
             // tsmiBtnClean
@@ -370,7 +365,7 @@ namespace RoombaSharp
             this.tsmiDisplayShutdown,
             this.tsmiDisplayTest});
             this.tsmiDisplay.Name = "tsmiDisplay";
-            this.tsmiDisplay.Size = new System.Drawing.Size(152, 22);
+            this.tsmiDisplay.Size = new System.Drawing.Size(119, 22);
             this.tsmiDisplay.Text = "Display";
             // 
             // setToolStripMenuItem
@@ -396,67 +391,19 @@ namespace RoombaSharp
             // tsmiSensors
             // 
             this.tsmiSensors.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiParamettersGroup0,
-            this.tsmiParamettersGroup1,
-            this.tsmiParamettersGroup2,
-            this.tsmiParamettersGroup3,
-            this.tsmiParamettersGroup4,
-            this.tsmiParamettersGroup5,
-            this.tsmiSensorsTest});
+            this.tsmiParamettersGroup6});
             this.tsmiSensors.Name = "tsmiSensors";
-            this.tsmiSensors.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSensors.Size = new System.Drawing.Size(119, 22);
             this.tsmiSensors.Text = "Sensors";
             // 
-            // tsmiParamettersGroup0
+            // tsmiParamettersGroup6
             // 
-            this.tsmiParamettersGroup0.Name = "tsmiParamettersGroup0";
-            this.tsmiParamettersGroup0.Size = new System.Drawing.Size(194, 22);
-            this.tsmiParamettersGroup0.Text = "Group 0";
-            this.tsmiParamettersGroup0.Click += new System.EventHandler(this.tsmiParamettersGroup0_Click);
-            // 
-            // tsmiParamettersGroup1
-            // 
-            this.tsmiParamettersGroup1.Name = "tsmiParamettersGroup1";
-            this.tsmiParamettersGroup1.Size = new System.Drawing.Size(194, 22);
-            this.tsmiParamettersGroup1.Text = "Group 1";
-            this.tsmiParamettersGroup1.Click += new System.EventHandler(this.tsmiParamettersGroup1_Click);
-            // 
-            // tsmiParamettersGroup2
-            // 
-            this.tsmiParamettersGroup2.Name = "tsmiParamettersGroup2";
-            this.tsmiParamettersGroup2.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.F2)));
-            this.tsmiParamettersGroup2.Size = new System.Drawing.Size(194, 22);
-            this.tsmiParamettersGroup2.Text = "Group 2";
-            this.tsmiParamettersGroup2.Click += new System.EventHandler(this.tsmiParamettersGroup2_Click);
-            // 
-            // tsmiParamettersGroup3
-            // 
-            this.tsmiParamettersGroup3.Name = "tsmiParamettersGroup3";
-            this.tsmiParamettersGroup3.Size = new System.Drawing.Size(194, 22);
-            this.tsmiParamettersGroup3.Text = "Group 3";
-            this.tsmiParamettersGroup3.Click += new System.EventHandler(this.tsmiParamettersGroup3_Click);
-            // 
-            // tsmiParamettersGroup4
-            // 
-            this.tsmiParamettersGroup4.Name = "tsmiParamettersGroup4";
-            this.tsmiParamettersGroup4.Size = new System.Drawing.Size(194, 22);
-            this.tsmiParamettersGroup4.Text = "Group 4";
-            this.tsmiParamettersGroup4.Click += new System.EventHandler(this.tsmiParamettersGroup4_Click);
-            // 
-            // tsmiParamettersGroup5
-            // 
-            this.tsmiParamettersGroup5.Name = "tsmiParamettersGroup5";
-            this.tsmiParamettersGroup5.Size = new System.Drawing.Size(194, 22);
-            this.tsmiParamettersGroup5.Text = "Group 5";
-            this.tsmiParamettersGroup5.Click += new System.EventHandler(this.tsmiParamettersGroup5_Click);
-            // 
-            // tsmiSensorsTest
-            // 
-            this.tsmiSensorsTest.Name = "tsmiSensorsTest";
-            this.tsmiSensorsTest.Size = new System.Drawing.Size(194, 22);
-            this.tsmiSensorsTest.Text = "Test";
-            this.tsmiSensorsTest.Click += new System.EventHandler(this.tsmiSensorsTest_Click);
+            this.tsmiParamettersGroup6.Name = "tsmiParamettersGroup6";
+            this.tsmiParamettersGroup6.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+            this.tsmiParamettersGroup6.Size = new System.Drawing.Size(188, 22);
+            this.tsmiParamettersGroup6.Text = "Group 6";
+            this.tsmiParamettersGroup6.Click += new System.EventHandler(this.tsmiParamettersGroup6_Click);
             // 
             // tsmiCameraCapture
             // 
@@ -469,7 +416,7 @@ namespace RoombaSharp
             // tsmiStopCapture
             // 
             this.tsmiStopCapture.Name = "tsmiStopCapture";
-            this.tsmiStopCapture.Size = new System.Drawing.Size(152, 22);
+            this.tsmiStopCapture.Size = new System.Drawing.Size(98, 22);
             this.tsmiStopCapture.Text = "Stop";
             this.tsmiStopCapture.Click += new System.EventHandler(this.tsmiStopCaptureeDevice_Click);
             // 
@@ -477,7 +424,8 @@ namespace RoombaSharp
             // 
             this.tsmiMqttServer.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiMqttConnect,
-            this.tsmiMqttDisconnect});
+            this.tsmiMqttDisconnect,
+            this.tsmiMqttTest});
             this.tsmiMqttServer.Name = "tsmiMqttServer";
             this.tsmiMqttServer.Size = new System.Drawing.Size(51, 20);
             this.tsmiMqttServer.Text = "Server";
@@ -705,6 +653,13 @@ namespace RoombaSharp
             this.pbMain.TabIndex = 34;
             this.pbMain.TabStop = false;
             // 
+            // tsmiMqttTest
+            // 
+            this.tsmiMqttTest.Name = "tsmiMqttTest";
+            this.tsmiMqttTest.Size = new System.Drawing.Size(152, 22);
+            this.tsmiMqttTest.Text = "Test";
+            this.tsmiMqttTest.Click += new System.EventHandler(this.tsmiMqttTest_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 17F);
@@ -778,17 +733,10 @@ namespace RoombaSharp
         private System.Windows.Forms.ToolStripMenuItem tsmiLedCleanRed;
         private System.Windows.Forms.ToolStripMenuItem tsmiDisplay;
         private System.Windows.Forms.ToolStripMenuItem tsmiSensors;
-        private System.Windows.Forms.ToolStripMenuItem tsmiSensorsTest;
         private System.Windows.Forms.ToolStripMenuItem tsmiDisplayTest;
         private System.Windows.Forms.ToolStripMenuItem setToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiDisplayShutdown;
         private System.Windows.Forms.ToolStripMenuItem tsmiBeepTest;
-        private System.Windows.Forms.ToolStripMenuItem tsmiParamettersGroup0;
-        private System.Windows.Forms.ToolStripMenuItem tsmiParamettersGroup1;
-        private System.Windows.Forms.ToolStripMenuItem tsmiParamettersGroup2;
-        private System.Windows.Forms.ToolStripMenuItem tsmiParamettersGroup3;
-        private System.Windows.Forms.ToolStripMenuItem tsmiParamettersGroup4;
-        private System.Windows.Forms.ToolStripMenuItem tsmiParamettersGroup5;
         private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.TextBox tbConsole;
         private System.Windows.Forms.TabControl tbcMain;
@@ -804,6 +752,8 @@ namespace RoombaSharp
         private System.Windows.Forms.Button btnUp;
         private System.Windows.Forms.TabPage tbpCamera;
         private System.Windows.Forms.PictureBox pbMain;
+        private System.Windows.Forms.ToolStripMenuItem tsmiParamettersGroup6;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMqttTest;
     }
 }
 
