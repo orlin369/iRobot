@@ -547,7 +547,17 @@ namespace RoombaSharp
 
         private void tsmiServerSend_Click(object sender, EventArgs e)
         {
+            ToolStripMenuItem item = (ToolStripMenuItem)sender;
+            item.Checked = !item.Checked;
 
+            if(item.Checked)
+            {
+                this.StartSendDataTimer();
+            }
+            else
+            {
+                this.StopSendDataTimer();
+            }
         }
 
         #endregion
