@@ -24,7 +24,7 @@ SOFTWARE.
 
 using System;
 
-namespace RoombaSharp.Events
+namespace iRobotRemoteControl.Events
 {
     public class StringEventArgs : EventArgs
     {

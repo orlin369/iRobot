@@ -22,21 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using Newtonsoft.Json;
-using RoombaSharp.Adapters;
-using RoombaSharp.Events;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RoombaSharp.Connectors
+using iRobotRemoteControl.Adapters;
+using iRobotRemoteControl.Events;
+
+namespace iRobotRemoteControl.Connectors
 {
-    class DataConnector
+    public class DataConnector
     {
 
         #region Variables

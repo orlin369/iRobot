@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoombaSharp", "RoombaSharp\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRobot", "IRobot\iRobot.csproj", "{C4F5C4E4-7F65-49FC-8244-7554722280CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRobotRemoteControl", "iRobotRemoteControl\iRobotRemoteControl.csproj", "{BB3239E5-74FE-4313-8555-371B92F14923}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,14 @@ Global
 		{C4F5C4E4-7F65-49FC-8244-7554722280CC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C4F5C4E4-7F65-49FC-8244-7554722280CC}.Release|x86.ActiveCfg = Release|Any CPU
 		{C4F5C4E4-7F65-49FC-8244-7554722280CC}.Release|x86.Build.0 = Release|Any CPU
+		{BB3239E5-74FE-4313-8555-371B92F14923}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB3239E5-74FE-4313-8555-371B92F14923}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB3239E5-74FE-4313-8555-371B92F14923}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BB3239E5-74FE-4313-8555-371B92F14923}.Debug|x86.Build.0 = Debug|Any CPU
+		{BB3239E5-74FE-4313-8555-371B92F14923}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB3239E5-74FE-4313-8555-371B92F14923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB3239E5-74FE-4313-8555-371B92F14923}.Release|x86.ActiveCfg = Release|Any CPU
+		{BB3239E5-74FE-4313-8555-371B92F14923}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

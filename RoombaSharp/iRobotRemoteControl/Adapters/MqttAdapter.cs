@@ -24,9 +24,9 @@ using System.Text;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
-using RoombaSharp.Events;
+using iRobotRemoteControl.Events;
 
-namespace RoombaSharp.Adapters
+namespace iRobotRemoteControl.Adapters
 {
     public class MqttAdapter : Adapter
     {

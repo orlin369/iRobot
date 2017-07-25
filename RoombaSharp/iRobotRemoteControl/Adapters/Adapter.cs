@@ -18,13 +18,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using RoombaSharp.Events;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace RoombaSharp.Adapters
+using iRobotRemoteControl.Events;
+
+namespace iRobotRemoteControl.Adapters
 {
     public abstract class Adapter : IDisposable
     {

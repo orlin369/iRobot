@@ -37,8 +37,8 @@ using iRobot.Events;
 using iRobot.Communicators;
 
 using RoombaSharp.Video;
-using RoombaSharp.Connectors;
-using RoombaSharp.Adapters;
+using iRobotRemoteControl.Connectors;
+using iRobotRemoteControl.Adapters;
 using Newtonsoft.Json;
 
 namespace RoombaSharp
@@ -1002,7 +1002,7 @@ namespace RoombaSharp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void mqttCommunicator_OnMessage(object sender, Events.StringEventArgs e)
+        private void mqttCommunicator_OnMessage(object sender, iRobotRemoteControl.Events.StringEventArgs e)
         {
             this.LogMessage(e.Message);
         }
