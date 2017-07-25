@@ -26,7 +26,7 @@ using System;
 
 namespace iRobotRemoteControl.Events
 {
-    public class StringEventArgs : EventArgs
+    public class BytesEventArgs : EventArgs
     {
 
         #region Properties
@@ -34,7 +34,7 @@ namespace iRobotRemoteControl.Events
         /// <summary>
         /// Message
         /// </summary>
-        public string Message { get; private set; }
+        public byte[] Message { get; private set; }
 
         #endregion
 
@@ -43,7 +43,7 @@ namespace iRobotRemoteControl.Events
         /// <summary>
         /// Constructor
         /// </summary>
-        public StringEventArgs()
+        public BytesEventArgs()
         {
         }
 
@@ -51,7 +51,7 @@ namespace iRobotRemoteControl.Events
         /// Constructor
         /// </summary>
         /// <param name="message">Message data</param>
-        public StringEventArgs(string message)
+        public BytesEventArgs(byte[] message)
         {
             this.Message = message;
         }

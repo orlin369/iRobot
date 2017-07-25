@@ -27,9 +27,12 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Text;
 
 using AForge.Video;
 using AForge.Video.DirectShow;
+
+using Newtonsoft.Json;
 
 using iRobot;
 using iRobot.Data;
@@ -37,9 +40,7 @@ using iRobot.Events;
 using iRobot.Communicators;
 
 using RoombaSharp.Video;
-using iRobotRemoteControl.Connectors;
-using iRobotRemoteControl.Adapters;
-using Newtonsoft.Json;
+using iRobotRemoteControl;
 
 namespace RoombaSharp
 {
@@ -92,11 +93,17 @@ namespace RoombaSharp
         /// Send image timer.
         /// </summary>
         private System.Windows.Forms.Timer sendImageTimer;
-        
+
+        /// <summary>
+        /// Send image timer.
+        /// </summary>
+        private System.Windows.Forms.Timer sendDataTimer;
+
+
         /// <summary>
         /// Connector
         /// </summary>
-        private DataConnector mqttDataConnector;
+        private RemoteController remoteController;
                 
         #endregion
 
@@ -496,18 +503,51 @@ namespace RoombaSharp
 
         #endregion
 
-        #region MQTT
+        #region Server
 
-        private void tsmiMqttConnect_Click(object sender, EventArgs e)
+        private void tsmiServerConnect_Click(object sender, EventArgs e)
         {
             this.ConnectVisionSystemViaMqtt();
             this.StartSendImageTimer();
         }
 
-        private void tsmiMqttDisconnect_Click(object sender, EventArgs e)
+        private void tsmiServerDisconnect_Click(object sender, EventArgs e)
         {
             this.StopSendImageTimer();
             this.DisconnectVisionSystemFromMqtt();
+        }
+
+        private void tsmiServerTest_Click(object sender, EventArgs e)
+        {
+            iRobot.Data.Struct6 testData = new Struct6();
+
+            // Test 1
+            testData.Wall = 1;
+            // Test 2
+            testData.Voltage = 5000;
+            // Test 3
+            testData.Current = 5000;
+            // Test 4
+            testData.CliffLeft = 1;
+            // Test 5
+            testData.CliffFrontLeft = 0;
+            // Test 6
+            testData.CliffRight = 1;
+            // Test 7
+            testData.CliffFrontRight = 0;
+            // Test 8
+            testData.BumpersAndWheelDrops = 1 + 0 + 4 + 0;
+
+            string stringTestData = JsonConvert.SerializeObject(testData);
+
+            this.SendTextData(stringTestData);
+
+            LogMessage("Send test data to the server.");
+        }
+
+        private void tsmiServerSend_Click(object sender, EventArgs e)
+        {
+
         }
 
         #endregion
@@ -686,9 +726,9 @@ namespace RoombaSharp
             Struct6 sensros = Utils.ByteArrayToStructure<Struct6>(byteData);
 
             // 
-            string wheelDrops = sensros.BumpersAndWheelDrops.ToString("X2");
-            // Log it.
-            this.LogMessage("Robot: " + wheelDrops);
+            //string wheelDrops = sensros.BumpersAndWheelDrops.ToString("X2");
+            //// Log it.
+            //this.LogMessage("Robot: " + wheelDrops);
 
             // Convert it to hex text.
             //string text = Utils.ToHexText(byteData);
@@ -697,10 +737,12 @@ namespace RoombaSharp
 
             //
             string serialSensors = JsonConvert.SerializeObject(sensros);
+            
+            //
+            this.SendTextData(serialSensors);
 
-            this.SendData(serialSensors);
-            // Log it.
-            //this.LogMessage("Robot: " + serialSensors);
+            //
+            this.LogMessage("Send data to the server.");
         }
 
         #endregion
@@ -913,6 +955,46 @@ namespace RoombaSharp
 
         #endregion
 
+        #region Send Data Timer
+
+        private void StartSendDataTimer()
+        {
+            if (this.sendDataTimer == null)
+            {
+                this.sendDataTimer = new System.Windows.Forms.Timer();
+                this.sendDataTimer.Stop();
+                this.sendDataTimer.Tick += SendDataTimer_Tick;
+                this.sendDataTimer.Interval = 1000;
+            }
+
+            if (!this.sendDataTimer.Enabled)
+            {
+                this.sendDataTimer.Start();
+            }
+
+        }
+
+        private void StopSendDataTimer()
+        {
+            if (this.sendDataTimer == null) return;
+
+            if (this.sendDataTimer.Enabled)
+            {
+                this.sendDataTimer.Stop();
+            }
+
+            this.sendDataTimer.Stop();
+        }
+
+        private void SendDataTimer_Tick(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            this.robot.Sensors(SensorPacketsIDs.Group6);
+        }
+
+        #endregion
+
         #region Data Connector
 
         /// <summary>
@@ -922,17 +1004,13 @@ namespace RoombaSharp
         {
             try
             {
-                this.mqttDataConnector = new DataConnector(new MqttAdapter(
-                    Properties.Settings.Default.BrokerHost,
-                    Properties.Settings.Default.BrokerPort,
-                    Properties.Settings.Default.MqttInputTopic,
-                    Properties.Settings.Default.MqttOutputTopic,
-                    Properties.Settings.Default.MqttImageTopic));
+                this.remoteController = new RemoteController(Properties.Settings.Default.BrokerHost);
+                    
 
-                this.mqttDataConnector.OnMessage += mqttCommunicator_OnMessage;
-                this.mqttDataConnector.Connect();
+                this.remoteController.OnMessage += mqttCommunicator_OnMessage;
+                this.remoteController.Connect();
 
-                string message = "MQTT Connection: " + this.mqttDataConnector.IsConnected.ToString();
+                string message = "MQTT Connection: " + this.remoteController.IsConnected.ToString();
                 this.LogMessage(message);
                 this.tsslMQTTConnection.Text = message;
             }
@@ -949,12 +1027,12 @@ namespace RoombaSharp
         {
             try
             {
-                if (this.mqttDataConnector != null && this.mqttDataConnector.IsConnected)
+                if (this.remoteController != null && this.remoteController.IsConnected)
                 {
-                    this.mqttDataConnector.OnMessage -= mqttCommunicator_OnMessage;
-                    this.mqttDataConnector.Disconnect();
+                    this.remoteController.OnMessage -= mqttCommunicator_OnMessage;
+                    this.remoteController.Disconnect();
 
-                    string message = "MQTT Connection: " + this.mqttDataConnector.IsConnected.ToString();
+                    string message = "MQTT Connection: " + this.remoteController.IsConnected.ToString();
                     this.LogMessage(message);
                     this.tsslMQTTConnection.Text = message;
                 }
@@ -971,11 +1049,11 @@ namespace RoombaSharp
         /// <param name="image"></param>
         private void SendImageData(Bitmap image)
         {
-            if (this.mqttDataConnector == null || !this.mqttDataConnector.IsConnected) return;
+            if (this.remoteController == null || !this.remoteController.IsConnected) return;
             if (image == null) return;
             try
             {
-                this.mqttDataConnector.SendImage(Utils.ResizeImage(image, Properties.Settings.Default.ImageSize));
+                this.remoteController.SendImageData(Properties.Settings.Default.MqttImageTopic, Utils.ResizeImage(image, Properties.Settings.Default.ImageSize));
             }
             catch
             { }
@@ -985,13 +1063,13 @@ namespace RoombaSharp
         /// Send data from robot.
         /// </summary>
         /// <param name="image"></param>
-        private void SendData(string data)
+        private void SendTextData(string text)
         {
-            if (this.mqttDataConnector == null || !this.mqttDataConnector.IsConnected) return;
-            if (data == null) return;
+            if (this.remoteController == null || !this.remoteController.IsConnected) return;
+            if (text == null) return;
             try
             {
-                this.mqttDataConnector.SendData(data);
+                this.remoteController.SendTextData(Properties.Settings.Default.MqttOutputTopic, text);
             }
             catch
             { }
@@ -1002,41 +1080,12 @@ namespace RoombaSharp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void mqttCommunicator_OnMessage(object sender, iRobotRemoteControl.Events.StringEventArgs e)
+        private void mqttCommunicator_OnMessage(object sender, iRobotRemoteControl.Events.BytesEventArgs e)
         {
-            this.LogMessage(e.Message);
+            //this.LogMessage(e.Message);
         }
 
         #endregion
 
-        private void tsmiMqttTest_Click(object sender, EventArgs e)
-        {
-            iRobot.Data.Struct6 testData = new Struct6();
-
-            // Test 1
-            testData.Wall = 1;
-            // Test 2
-            testData.Voltage = 5000;
-            // Test 3
-            testData.Current = 5000;
-            // Test 4
-            testData.CliffLeft = 1;
-            // Test 5
-            testData.CliffFrontLeft = 0;
-            // Test 6
-            testData.CliffRight = 1;
-            // Test 7
-            testData.CliffFrontRight = 0;
-            // Test 8
-            testData.BumpersAndWheelDrops = 1 + 0 + 4 + 0;
-
-
-
-            string stringTestData = Newtonsoft.Json.JsonConvert.SerializeObject(testData);
-
-            this.SendData(stringTestData);
-
-            LogMessage("Send test data to the server.");
-        }
     }
 }

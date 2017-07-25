@@ -91,8 +91,9 @@ namespace RoombaSharp
             this.tsmiCameraCapture = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiStopCapture = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMqttServer = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiMqttConnect = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiMqttDisconnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiServerConnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiServerDisconnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiServerTest = new System.Windows.Forms.ToolStripMenuItem();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.tsslRobotConnection = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslMQTTConnection = new System.Windows.Forms.ToolStripStatusLabel();
@@ -111,7 +112,7 @@ namespace RoombaSharp
             this.btnUp = new System.Windows.Forms.Button();
             this.tbpCamera = new System.Windows.Forms.TabPage();
             this.pbMain = new System.Windows.Forms.PictureBox();
-            this.tsmiMqttTest = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiServerSend = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.ssMain.SuspendLayout();
             this.tlpMain.SuspendLayout();
@@ -416,33 +417,41 @@ namespace RoombaSharp
             // tsmiStopCapture
             // 
             this.tsmiStopCapture.Name = "tsmiStopCapture";
-            this.tsmiStopCapture.Size = new System.Drawing.Size(98, 22);
+            this.tsmiStopCapture.Size = new System.Drawing.Size(152, 22);
             this.tsmiStopCapture.Text = "Stop";
             this.tsmiStopCapture.Click += new System.EventHandler(this.tsmiStopCaptureeDevice_Click);
             // 
             // tsmiMqttServer
             // 
             this.tsmiMqttServer.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiMqttConnect,
-            this.tsmiMqttDisconnect,
-            this.tsmiMqttTest});
+            this.tsmiServerConnect,
+            this.tsmiServerDisconnect,
+            this.tsmiServerSend,
+            this.tsmiServerTest});
             this.tsmiMqttServer.Name = "tsmiMqttServer";
             this.tsmiMqttServer.Size = new System.Drawing.Size(51, 20);
             this.tsmiMqttServer.Text = "Server";
             // 
-            // tsmiMqttConnect
+            // tsmiServerConnect
             // 
-            this.tsmiMqttConnect.Name = "tsmiMqttConnect";
-            this.tsmiMqttConnect.Size = new System.Drawing.Size(152, 22);
-            this.tsmiMqttConnect.Text = "Connect";
-            this.tsmiMqttConnect.Click += new System.EventHandler(this.tsmiMqttConnect_Click);
+            this.tsmiServerConnect.Name = "tsmiServerConnect";
+            this.tsmiServerConnect.Size = new System.Drawing.Size(152, 22);
+            this.tsmiServerConnect.Text = "Connect";
+            this.tsmiServerConnect.Click += new System.EventHandler(this.tsmiServerConnect_Click);
             // 
-            // tsmiMqttDisconnect
+            // tsmiServerDisconnect
             // 
-            this.tsmiMqttDisconnect.Name = "tsmiMqttDisconnect";
-            this.tsmiMqttDisconnect.Size = new System.Drawing.Size(152, 22);
-            this.tsmiMqttDisconnect.Text = "Disconnect";
-            this.tsmiMqttDisconnect.Click += new System.EventHandler(this.tsmiMqttDisconnect_Click);
+            this.tsmiServerDisconnect.Name = "tsmiServerDisconnect";
+            this.tsmiServerDisconnect.Size = new System.Drawing.Size(152, 22);
+            this.tsmiServerDisconnect.Text = "Disconnect";
+            this.tsmiServerDisconnect.Click += new System.EventHandler(this.tsmiServerDisconnect_Click);
+            // 
+            // tsmiServerTest
+            // 
+            this.tsmiServerTest.Name = "tsmiServerTest";
+            this.tsmiServerTest.Size = new System.Drawing.Size(152, 22);
+            this.tsmiServerTest.Text = "Test";
+            this.tsmiServerTest.Click += new System.EventHandler(this.tsmiServerTest_Click);
             // 
             // ssMain
             // 
@@ -653,12 +662,12 @@ namespace RoombaSharp
             this.pbMain.TabIndex = 34;
             this.pbMain.TabStop = false;
             // 
-            // tsmiMqttTest
+            // tsmiServerSend
             // 
-            this.tsmiMqttTest.Name = "tsmiMqttTest";
-            this.tsmiMqttTest.Size = new System.Drawing.Size(152, 22);
-            this.tsmiMqttTest.Text = "Test";
-            this.tsmiMqttTest.Click += new System.EventHandler(this.tsmiMqttTest_Click);
+            this.tsmiServerSend.Name = "tsmiServerSend";
+            this.tsmiServerSend.Size = new System.Drawing.Size(152, 22);
+            this.tsmiServerSend.Text = "Send";
+            this.tsmiServerSend.Click += new System.EventHandler(this.tsmiServerSend_Click);
             // 
             // MainForm
             // 
@@ -723,8 +732,8 @@ namespace RoombaSharp
         private System.Windows.Forms.StatusStrip ssMain;
         private System.Windows.Forms.ToolStripStatusLabel tsslRobotConnection;
         private System.Windows.Forms.ToolStripMenuItem tsmiMqttServer;
-        private System.Windows.Forms.ToolStripMenuItem tsmiMqttConnect;
-        private System.Windows.Forms.ToolStripMenuItem tsmiMqttDisconnect;
+        private System.Windows.Forms.ToolStripMenuItem tsmiServerConnect;
+        private System.Windows.Forms.ToolStripMenuItem tsmiServerDisconnect;
         private System.Windows.Forms.ToolStripStatusLabel tsslMQTTConnection;
         private System.Windows.Forms.ToolStripMenuItem tsmiConnect;
         private System.Windows.Forms.ToolStripMenuItem tsmiLedClean;
@@ -753,7 +762,8 @@ namespace RoombaSharp
         private System.Windows.Forms.TabPage tbpCamera;
         private System.Windows.Forms.PictureBox pbMain;
         private System.Windows.Forms.ToolStripMenuItem tsmiParamettersGroup6;
-        private System.Windows.Forms.ToolStripMenuItem tsmiMqttTest;
+        private System.Windows.Forms.ToolStripMenuItem tsmiServerTest;
+        private System.Windows.Forms.ToolStripMenuItem tsmiServerSend;
     }
 }
 

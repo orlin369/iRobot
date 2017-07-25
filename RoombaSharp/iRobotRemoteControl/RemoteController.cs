@@ -1,14 +1,18 @@
 ﻿/*
  MIT License
+
 Copyright (c) [2016] [Orlin Dimitrov]
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
+
 The above copyright notice and this permission notice shall be included in all
 copies or substantial SerialPortions of the Software.
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,17 +23,24 @@ SOFTWARE.
 */
 
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+
+using iRobotRemoteControl.Events;
 
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
-using iRobotRemoteControl.Events;
-
-namespace iRobotRemoteControl.Adapters
+namespace iRobotRemoteControl
 {
-    public class MqttAdapter : Adapter
+    public class RemoteController
     {
+
 
         #region Variables
 
@@ -43,26 +54,6 @@ namespace iRobotRemoteControl.Adapters
         /// </summary>
         private string address;
 
-        /// <summary>
-        /// Port number.
-        /// </summary>
-        private int port;
-
-        /// <summary>
-        /// Input topic name.
-        /// </summary>
-        private string inputTopic;
-
-        /// <summary>
-        /// Output topic name.
-        /// </summary>
-        private string outputTopic;
-
-        /// <summary>
-        /// Output image topic.
-        /// </summary>
-        private string outputImageTopic;
-
         #endregion
 
         #region Properties
@@ -70,24 +61,15 @@ namespace iRobotRemoteControl.Adapters
         /// <summary>
         /// Is connected flag.
         /// </summary>
-        public override bool IsConnected
+        public bool IsConnected
         {
             get
             {
                 if (this.mqttClient == null) return false;
+
                 return this.mqttClient.IsConnected;
             }
-
-            protected set
-            {
-
-            }
         }
-
-        /// <summary>
-        /// Maximum timeout.
-        /// </summary>
-        public override int MaxTimeout { get; set; }
 
         #endregion
 
@@ -96,37 +78,15 @@ namespace iRobotRemoteControl.Adapters
         /// <summary>
         /// On message received event.
         /// </summary>
-        public override event EventHandler<StringEventArgs> OnMessage;
+        public event EventHandler<BytesEventArgs> OnMessage;
 
         #endregion
 
         #region Constructor
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="address"></param>
-        /// <param name="port"></param>
-        /// <param name="inputTopic"></param>
-        /// <param name="outputTopic"></param>
-        /// <param name="outputImageTopic"></param>
-        public MqttAdapter(string address, int port, string inputTopic, string outputTopic, string outputImageTopic)
+        public RemoteController(string address)
         {
             this.address = address;
-            this.port = port;
-            this.inputTopic = inputTopic;
-            this.outputTopic = outputTopic;
-            this.outputImageTopic = outputImageTopic;
-        }
-
-        #endregion
-
-        #region MQTT Events
-
-        private void MqttClient_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
-        {
-            string message = Encoding.UTF8.GetString(e.Message);
-            this.OnMessage?.Invoke(this, new StringEventArgs(message));
         }
 
         #endregion
@@ -136,7 +96,7 @@ namespace iRobotRemoteControl.Adapters
         /// <summary>
         /// Connect
         /// </summary>
-        public override void Connect()
+        public void Connect()
         {
             try
             {
@@ -148,15 +108,6 @@ namespace iRobotRemoteControl.Adapters
 
                 // Connect to broker.
                 this.mqttClient.Connect(Guid.NewGuid().ToString());
-
-                // Check and subscribe.
-                if (this.mqttClient.IsConnected)
-                {
-                    if (this.inputTopic != null)
-                    {
-                        this.mqttClient.Subscribe(new string[] { this.inputTopic }, new byte[] { 0 });
-                    }
-                }
             }
             catch (Exception exception)
             {
@@ -167,13 +118,12 @@ namespace iRobotRemoteControl.Adapters
         /// <summary>
         /// Disconnect
         /// </summary>
-        public override void Disconnect()
+        public void Disconnect()
         {
             if (this.mqttClient == null || !this.mqttClient.IsConnected) return;
 
             try
             {
-                this.mqttClient.Unsubscribe(new string[] { this.inputTopic });
                 this.mqttClient.Disconnect();
                 this.mqttClient = null;
             }
@@ -182,51 +132,83 @@ namespace iRobotRemoteControl.Adapters
                 Console.WriteLine(String.Format("Message: {0}\r\nSourece: {1}", exception.Message, exception.Source));
             }
         }
-
+        
         /// <summary>
-        /// Send string request.
+        /// 
         /// </summary>
-        /// <param name="command"></param>
-        public override void SendRequest(string command)
+        /// <param name="inputTopic"></param>
+        public void SubscribeToInputTopic(string[] inputTopics, byte[] QoS)
         {
-            if (this.mqttClient == null || !this.mqttClient.IsConnected) return;
+            // Check and subscribe.
+            if (this.mqttClient.IsConnected)
+            {
+                if (inputTopics != null)
+                {
+                    this.mqttClient.Subscribe(inputTopics, QoS);
+                }
+            }
+        }
 
-            byte[] byteArray = Encoding.UTF8.GetBytes(command);
-            this.mqttClient.Publish(this.outputTopic, byteArray);
+        public void UnsubscribeToInputTopic(string inputTopic)
+        {
+            // Check and subscribe.
+            if (this.mqttClient.IsConnected)
+            {
+                if (inputTopic != null)
+                {
+                    this.mqttClient.Unsubscribe(new string[] { inputTopic });
+                }
+            }
         }
 
         /// <summary>
-        /// Send image bytes.
+        /// 
         /// </summary>
+        /// <param name="topic"></param>
+        /// <param name="image"></param>
+        public void SendImageData(string topic, Bitmap image)
+        {
+            if (this.mqttClient == null || !this.mqttClient.IsConnected) return;
+            if (image == null) return;
+            try
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    image.Save(ms, ImageFormat.Jpeg);
+                    this.mqttClient.Publish(topic, ms.ToArray());
+                }
+            }
+            catch
+            { }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="topic"></param>
         /// <param name="data"></param>
-        public override void SendImageBytes(byte[] data)
+        public void SendTextData(string topic, string data)
         {
             if (this.mqttClient == null || !this.mqttClient.IsConnected) return;
-
-            this.mqttClient.Publish(this.outputImageTopic, data);
-        }
-
-        /// <summary>
-        /// Reset
-        /// </summary>
-        public override void Reset()
-        {
-
+            if (data == null) return;
+            try
+            {
+                byte[] byteData = Encoding.UTF8.GetBytes(data);
+                this.mqttClient.Publish(topic, byteData);
+            }
+            catch
+            { }
         }
 
         #endregion
 
-        #region IDisposible Implementation
+        #region Private Methods
 
-        /// <summary>
-        /// Dispose the object.
-        /// </summary>
-        public override void Dispose()
+        private void MqttClient_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
-            this.Disconnect();
+            this.OnMessage?.Invoke(this, new BytesEventArgs(e.Message));
         }
 
         #endregion
     }
-
 }
