@@ -67,6 +67,7 @@ namespace RoombaSharp.Settings
             this.tbImageTopic.Text = Properties.Settings.Default.MqttImageTopic;
             this.tbImageWidth.Text = Properties.Settings.Default.ImageSize.Width.ToString();
             this.tbImageHeight.Text = Properties.Settings.Default.ImageSize.Height.ToString();
+            this.tbUpdateInterval.Text = Properties.Settings.Default.UpdateInterval.ToString();
         }
 
         private void SaveFields()
@@ -125,7 +126,7 @@ namespace RoombaSharp.Settings
                 int imageWidth = 0;
                 int imageHeight = 0;
 
-                // Validate baud rate.
+                // Validate image size.
                 if (int.TryParse(this.tbImageWidth.Text.Trim(), out imageWidth) && int.TryParse(this.tbImageHeight.Text.Trim(), out imageHeight))
                 {
                     if (imageWidth < 1)
@@ -146,6 +147,27 @@ namespace RoombaSharp.Settings
                 else
                 {
                     MessageBox.Show("Invalid image size.", "Invalid value", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                int updateInterval;
+
+                // Validate update interval.
+                if (int.TryParse(this.tbUpdateInterval.Text.Trim(), out updateInterval))
+                {
+                    if (updateInterval < 1)
+                    {
+                        MessageBox.Show("Invalid update interval. [1 - infinity]", "Invalid value", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+
+                    Properties.Settings.Default.UpdateInterval = updateInterval;
+                    // Save settings.
+                    Properties.Settings.Default.Save();
+                }
+                else
+                {
+                    MessageBox.Show("Invalid update interval.", "Invalid value", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
             }

@@ -27,6 +27,7 @@ using System;
 using iRobot.Data;
 using iRobot.Events;
 using iRobot.Communicators;
+using iRobot.Queues;
 
 namespace iRobot
 {
@@ -45,6 +46,11 @@ namespace iRobot
         /// </summary>
         private ICommunicationAddapter communicator;
 
+        /// <summary>
+        /// Command queue.
+        /// </summary>
+        private CommandQueue commandQueue = new CommandQueue();
+        
         #endregion
 
         #region Properties
@@ -59,6 +65,22 @@ namespace iRobot
                 if (this.communicator == null) return false;
 
                 return this.communicator.IsConnected;
+            }
+        }
+        
+        /// <summary>
+        /// Update time.
+        /// </summary>
+        public int UpdateTime
+        {
+            get
+            {
+                return this.commandQueue.QueueDelay;
+            }
+
+            set
+            {
+                this.commandQueue.QueueDelay = value;
             }
         }
 
@@ -92,6 +114,9 @@ namespace iRobot
         public Roomba (ICommunicationAddapter communicator)
         {
             this.communicator = communicator;
+
+            this.UpdateTime = 100;
+            this.commandQueue.QueueHandler = commandQueue_QueueHandler;
         }
 
         #endregion
@@ -108,6 +133,8 @@ namespace iRobot
             this.communicator.OnConnect += Communicator_OnConnect;
             this.communicator.OnDisconnect += Communicator_OnDisconnect;
             this.communicator.Connect();
+
+            this.commandQueue.Start();
         }
 
         /// <summary>
@@ -115,6 +142,8 @@ namespace iRobot
         /// </summary>
         public void Disconnect()
         {
+            this.commandQueue.Stop();
+
             if (this.communicator == null || !communicator.IsConnected) return;
             this.communicator.Disconnect();
             this.communicator.OnMesage -= Communicator_OnMesage;
@@ -129,8 +158,7 @@ namespace iRobot
         /// </summary>
         public void Start()
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.START }, 0, 1);
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.START });
         }
 
         /// <summary>
@@ -148,8 +176,8 @@ namespace iRobot
         /// </summary>
         public void Baud(BaudRates baudRate)
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.BAUD, (byte)baudRate }, 0, 2);
+
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.BAUD, (byte)baudRate });
         }
         
         /// <summary>
@@ -160,8 +188,7 @@ namespace iRobot
         /// </summary>
         public void Control()
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.CONTROL }, 0, 1);
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.CONTROL });
         }
 
         /// <summary>
@@ -176,10 +203,9 @@ namespace iRobot
         /// <param name="intensity">0 = off, 255 = full intensity. Intermediate values are intermediate intensities.</param>
         public void LEDs(bool spot, bool clean, bool max, bool dirtDetect, byte color, byte intensity)
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
             byte leds = Convert(new bool[] { false, false, false, false, spot, clean, max, dirtDetect });
             byte[] command = { (byte)RoombaOpcodes.LEDS,  leds, color, intensity };
-            this.communicator.Write(command, 0, command.Length);
+            this.commandQueue.PutToQue(command);
         }
         
         /// <summary>
@@ -188,8 +214,7 @@ namespace iRobot
         /// </summary>
         public void Safe()
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.SAFE }, 0, 1);
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.SAFE });
         }
 
         /// <summary>
@@ -199,8 +224,7 @@ namespace iRobot
         /// </summary>
         public void Full()
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.FULL }, 0, 1);
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.FULL });
         }
 
         /// <summary>
@@ -212,8 +236,7 @@ namespace iRobot
         /// </summary>
         public void Power()
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.POWER }, 0, 1);
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.POWER });
         }
 
         /// <summary>
@@ -223,8 +246,7 @@ namespace iRobot
         /// </summary>
         public void Spot()
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.SPOT }, 0, 1);
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.SPOT });
         }
 
         /// <summary>
@@ -234,8 +256,7 @@ namespace iRobot
         /// </summary>
         public void Clean()
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.CLEAN }, 0, 1);
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.CLEAN });
         }
 
         /// <summary>
@@ -246,8 +267,7 @@ namespace iRobot
         /// </summary>
         public void Max()
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.MAX }, 0, 1);
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.MAX });
         }
 
         /// <summary>
@@ -261,10 +281,10 @@ namespace iRobot
         /// <param name="sideBrush">Brush</param>
         public void Motors(bool mainBrush, bool vacuum, bool sideBrush)
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
             byte motors = Convert(new bool[] { false, false, false, false, false, mainBrush, vacuum, sideBrush });
             byte[] command = { (byte)RoombaOpcodes.MOTORS, motors };
-            this.communicator.Write(command, 0, command.Length);
+
+            this.commandQueue.PutToQue(command);
         }
 
         /// <summary>
@@ -286,8 +306,6 @@ namespace iRobot
         /// <param name="radius">Radius (-2000 – 2000 mm)</param>
         public void Drive(short velocity, short radius)
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-
             // Convert values to bytes.
             byte[] bVelocity = BitConverter.GetBytes(velocity);
             byte[] bRadius = BitConverter.GetBytes(radius);
@@ -296,7 +314,7 @@ namespace iRobot
             byte[] command = { (byte)RoombaOpcodes.DRIVE, bVelocity[1], bVelocity[0], bRadius[1], bRadius[0] };
 
             // Send command package.
-            this.communicator.Write(command, 0, command.Length);
+            this.commandQueue.PutToQue(command);
         }
 
         /// <summary>
@@ -311,8 +329,6 @@ namespace iRobot
         /// <param name="rightWheel">Right wheel velocity (-500 – 500 mm/s)</param>
         public void DirectDrive(short leftWheel, short rightWheel)
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-
             // Convert values to bytes.
             byte[] bLeftWheel = BitConverter.GetBytes(leftWheel);
             byte[] bRightWheel = BitConverter.GetBytes(rightWheel);
@@ -321,7 +337,7 @@ namespace iRobot
             byte[] command = { (byte)RoombaOpcodes.DRIVE_DIRECT, bRightWheel[1], bRightWheel[0], bLeftWheel[1], bLeftWheel[0] };
 
             // Send command package.
-            this.communicator.Write(command, 0, command.Length);
+            this.commandQueue.PutToQue(command);
         }
 
         /// <summary>
@@ -335,8 +351,6 @@ namespace iRobot
         /// <param name="rightPWM">Right wheel PWM (-255 – 255)</param>
         public void DrivePWM(short leftPWM, short rightPWM)
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-
             // Convert values to bytes.
             byte[] bLeftWheel = BitConverter.GetBytes(leftPWM);
             byte[] bRightWheel = BitConverter.GetBytes(rightPWM);
@@ -345,7 +359,7 @@ namespace iRobot
             byte[] command = { (byte)RoombaOpcodes.DRIVE_DIRECT, bRightWheel[1], bRightWheel[0], bLeftWheel[1], bLeftWheel[0] };
 
             // Send command package.
-            this.communicator.Write(command, 0, command.Length);
+            this.commandQueue.PutToQue(command);
         }
 
         /// <summary>
@@ -364,7 +378,6 @@ namespace iRobot
         /// <param name="song"></param>
         public void Song(byte songNumber, byte[] song)
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
             if (song.Length > 255) return;
 
             // Command
@@ -377,7 +390,7 @@ namespace iRobot
             Buffer.BlockCopy(song,                                    0, command, 3, song.Length);
 
             // Send command package.
-            this.communicator.Write(command, 0, command.Length);
+            this.commandQueue.PutToQue(command);
         }
 
         /// <summary>
@@ -390,9 +403,7 @@ namespace iRobot
         /// <param name="songNumber">Song Numbe</param>
         public void Play(byte songNumber)
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-            byte[] command = { (byte)RoombaOpcodes.PLAY, songNumber };
-            this.communicator.Write(command, 0, command.Length);
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.PLAY, songNumber });
         }
 
         /// <summary>
@@ -405,9 +416,7 @@ namespace iRobot
         /// <param name="packageCode">Packet Code</param>
         public void Sensors(SensorPacketsIDs packageCode)
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-            byte[] command = { (byte)RoombaOpcodes.SENSORS, (byte)packageCode };
-            this.communicator.Write(command, 0, command.Length);
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.SENSORS, (byte)packageCode });
         }
 
         /// <summary>
@@ -423,8 +432,7 @@ namespace iRobot
         /// </summary>
         public void ForceSeekingDock()
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-            this.communicator.Write(new byte[] { (byte)RoombaOpcodes.DOCK }, 0, 1);
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.DOCK });
         }
 
         /// <summary>
@@ -434,7 +442,6 @@ namespace iRobot
         /// <param name="package">Packages IDs</param>
         public void QueryList(byte[] packagesIDs)
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
             if (packagesIDs.Length > 255) return;
 
             // Command
@@ -446,7 +453,7 @@ namespace iRobot
             Buffer.BlockCopy(packagesIDs                                  , 0, command, 2, packagesIDs.Length);
 
             // Send command package.
-            this.communicator.Write(command, 0, command.Length);
+            this.commandQueue.PutToQue(command);
         }
 
         /// <summary>
@@ -458,9 +465,7 @@ namespace iRobot
         /// <param name="d0">Digit 0</param>
         public void DigitLEDsRaw(int d3, int d2, int d1, int d0)
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-
-            byte[] message = new byte[]
+            byte[] command = new byte[]
             {
                 (byte)RoombaOpcodes.DIGIT_LEDs_RAW,
                 SevenSegment(d3),
@@ -469,7 +474,7 @@ namespace iRobot
                 SevenSegment(d0)
             };
 
-            this.communicator.Write(message, 0, message.Length);
+            this.commandQueue.PutToQue(command);
         }
 
         /// <summary>
@@ -477,14 +482,12 @@ namespace iRobot
         /// </summary>
         public void DigitLEDsRawOff()
         {
-            if (this.communicator == null || !communicator.IsConnected) return;
-
-            byte[] message = new byte[]
+            byte[] command = new byte[]
             {
                 (byte)RoombaOpcodes.DIGIT_LEDs_RAW, 0, 0, 0, 0
             };
 
-            this.communicator.Write(message, 0, message.Length);
+            this.commandQueue.PutToQue(command);
         }
 
         #endregion
@@ -525,6 +528,25 @@ namespace iRobot
 
             return segmentData[number];
         }
+
+        #endregion
+
+        #region Command Queue
+
+        /// <summary>
+        /// Command handler.
+        /// </summary>
+        /// <param name="data"></param>
+        private void commandQueue_QueueHandler(object data)
+        {
+            byte[] command = (byte[])data;
+
+            this.communicator.Write(command, 0, command.Length);
+        }
+
+        #endregion
+
+        #region Communicator
 
         /// <summary>
         /// On message handler.

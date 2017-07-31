@@ -27,6 +27,8 @@ using System.IO.Ports;
 using System.Threading;
 
 using iRobot.Events;
+using iRobot.Queues;
+using iRobot.Data;
 
 namespace iRobot.Communicators
 {
@@ -202,7 +204,7 @@ namespace iRobot.Communicators
             try
             {
                 if (!this.IsConnected)
-                {
+                {                    
                     this.SerialPort = new SerialPort(this.portName);
                     this.SerialPort.BaudRate = 115200;
                     this.SerialPort.DataBits = 8;
@@ -289,5 +291,32 @@ namespace iRobot.Communicators
 
         #endregion
 
+        #region Command Queue
+
+        private void commandQueue_QueueHandler(object data)
+        {
+            try
+            {
+                if (this.IsConnected)
+                {
+                    QueueDataUnit dataUnit = (QueueDataUnit)data;
+                    this.SerialPort.Write(dataUnit.Buffer, dataUnit.Offset, dataUnit.Count);
+                }
+            }
+            catch (Exception exception)
+            {
+                // TODO: Create log.
+
+                this.OnDisconnect?.Invoke(this, null);
+
+                if (this.Reconnect)
+                {
+                    // Reconnect.
+                    this.Connect();
+                }
+            }
+        }
+
+        #endregion
     }
 }

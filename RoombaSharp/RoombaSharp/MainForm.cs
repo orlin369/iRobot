@@ -538,18 +538,24 @@ namespace RoombaSharp
             // Test 8
             testData.BumpersAndWheelDrops = 1 + 0 + 4 + 0;
 
+            testData.BatteryTemperature = 22;
+
             string stringTestData = JsonConvert.SerializeObject(testData);
 
             this.SendTextData(stringTestData);
 
-            LogMessage("Send test data to the server.");
+            this.LogMessage("Send test data to the server.");
         }
 
-        private void tsmiServerSend_Click(object sender, EventArgs e)
+        private void tsmiEnableUpdateSensorsData_Click(object sender, EventArgs e)
         {
+            // Get the sender.
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
+
+            // Invert the check state.
             item.Checked = !item.Checked;
 
+            // Apply changes.
             if(item.Checked)
             {
                 this.StartSendDataTimer();
@@ -974,14 +980,13 @@ namespace RoombaSharp
                 this.sendDataTimer = new System.Windows.Forms.Timer();
                 this.sendDataTimer.Stop();
                 this.sendDataTimer.Tick += SendDataTimer_Tick;
-                this.sendDataTimer.Interval = 1000;
+                this.sendDataTimer.Interval = Properties.Settings.Default.UpdateInterval;
             }
 
             if (!this.sendDataTimer.Enabled)
             {
                 this.sendDataTimer.Start();
             }
-
         }
 
         private void StopSendDataTimer()
@@ -1019,6 +1024,7 @@ namespace RoombaSharp
 
                 this.remoteController.OnMessage += mqttCommunicator_OnMessage;
                 this.remoteController.Connect();
+                this.remoteController.SubscribeToInputTopic(new string[] { Properties.Settings.Default.MqttInputTopic }, new byte[] { 0 });
 
                 string message = "MQTT Connection: " + this.remoteController.IsConnected.ToString();
                 this.LogMessage(message);
@@ -1092,7 +1098,8 @@ namespace RoombaSharp
         /// <param name="e"></param>
         private void mqttCommunicator_OnMessage(object sender, iRobotRemoteControl.Events.BytesEventArgs e)
         {
-            //this.LogMessage(e.Message);
+            string text = Encoding.ASCII.GetString(e.Message);
+            this.LogMessage(text);
         }
 
         #endregion
