@@ -291,32 +291,5 @@ namespace iRobot.Communicators
 
         #endregion
 
-        #region Command Queue
-
-        private void commandQueue_QueueHandler(object data)
-        {
-            try
-            {
-                if (this.IsConnected)
-                {
-                    QueueDataUnit dataUnit = (QueueDataUnit)data;
-                    this.SerialPort.Write(dataUnit.Buffer, dataUnit.Offset, dataUnit.Count);
-                }
-            }
-            catch (Exception exception)
-            {
-                // TODO: Create log.
-
-                this.OnDisconnect?.Invoke(this, null);
-
-                if (this.Reconnect)
-                {
-                    // Reconnect.
-                    this.Connect();
-                }
-            }
-        }
-
-        #endregion
     }
 }

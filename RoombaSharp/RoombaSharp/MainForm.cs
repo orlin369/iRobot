@@ -157,10 +157,13 @@ namespace RoombaSharp
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            this.StopSendImageTimer();
+            this.StopSendDataTimer();
+
             this.DisconnectFromRobot();
             this.DisconnectFromCamera();
-            this.StopSendImageTimer();
-            this.DisconnectVisionSystemFromMqtt();
+
+            this.DisconnectFromServer();
         }
 
         #endregion
@@ -507,14 +510,14 @@ namespace RoombaSharp
 
         private void tsmiServerConnect_Click(object sender, EventArgs e)
         {
-            this.ConnectVisionSystemViaMqtt();
+            this.ConnectToServer();
             this.StartSendImageTimer();
         }
 
         private void tsmiServerDisconnect_Click(object sender, EventArgs e)
         {
             this.StopSendImageTimer();
-            this.DisconnectVisionSystemFromMqtt();
+            this.DisconnectFromServer();
         }
 
         private void tsmiServerTest_Click(object sender, EventArgs e)
@@ -1015,7 +1018,7 @@ namespace RoombaSharp
         /// <summary>
         /// Connect vision system.
         /// </summary>
-        private void ConnectVisionSystemViaMqtt()
+        private void ConnectToServer()
         {
             try
             {
@@ -1039,7 +1042,7 @@ namespace RoombaSharp
         /// <summary>
         /// Disconnect vision system.
         /// </summary>
-        private void DisconnectVisionSystemFromMqtt()
+        private void DisconnectFromServer()
         {
             try
             {
