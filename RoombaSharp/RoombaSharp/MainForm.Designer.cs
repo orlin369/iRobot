@@ -113,7 +113,7 @@ namespace RoombaSharp
             this.btnLeft = new System.Windows.Forms.Button();
             this.btnUp = new System.Windows.Forms.Button();
             this.tbpCamera = new System.Windows.Forms.TabPage();
-            this.pbMain = new System.Windows.Forms.PictureBox();
+            this.pbCamera = new System.Windows.Forms.PictureBox();
             this.pbRoomba = new System.Windows.Forms.PictureBox();
             this.msMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -123,7 +123,7 @@ namespace RoombaSharp
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).BeginInit();
             this.tbpCamera.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCamera)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbRoomba)).BeginInit();
             this.SuspendLayout();
             // 
@@ -662,7 +662,7 @@ namespace RoombaSharp
             // tbpCamera
             // 
             this.tbpCamera.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.tbpCamera.Controls.Add(this.pbMain);
+            this.tbpCamera.Controls.Add(this.pbCamera);
             this.tbpCamera.Location = new System.Drawing.Point(4, 26);
             this.tbpCamera.Name = "tbpCamera";
             this.tbpCamera.Padding = new System.Windows.Forms.Padding(3);
@@ -670,16 +670,16 @@ namespace RoombaSharp
             this.tbpCamera.TabIndex = 1;
             this.tbpCamera.Text = "Camera";
             // 
-            // pbMain
+            // pbCamera
             // 
-            this.pbMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbMain.Location = new System.Drawing.Point(3, 3);
-            this.pbMain.Name = "pbMain";
-            this.pbMain.Size = new System.Drawing.Size(1036, 438);
-            this.pbMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pbMain.TabIndex = 34;
-            this.pbMain.TabStop = false;
+            this.pbCamera.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbCamera.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbCamera.Location = new System.Drawing.Point(3, 3);
+            this.pbCamera.Name = "pbCamera";
+            this.pbCamera.Size = new System.Drawing.Size(1036, 438);
+            this.pbCamera.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pbCamera.TabIndex = 34;
+            this.pbCamera.TabStop = false;
             // 
             // pbRoomba
             // 
@@ -719,7 +719,7 @@ namespace RoombaSharp
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).EndInit();
             this.tbpCamera.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbMain)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCamera)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbRoomba)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -783,7 +783,7 @@ namespace RoombaSharp
         private System.Windows.Forms.Button btnLeft;
         private System.Windows.Forms.Button btnUp;
         private System.Windows.Forms.TabPage tbpCamera;
-        private System.Windows.Forms.PictureBox pbMain;
+        private System.Windows.Forms.PictureBox pbCamera;
         private System.Windows.Forms.ToolStripMenuItem tsmiParamettersGroup6;
         private System.Windows.Forms.ToolStripMenuItem tsmiServerTest;
         private System.Windows.Forms.ToolStripMenuItem tsmiEnableSendingImages;

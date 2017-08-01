@@ -932,9 +932,9 @@ namespace RoombaSharp
                     return;
                 }
 
-                if ((this.pbMain.Size.Width > 1 && this.pbMain.Size.Height > 1) && this.WindowState != FormWindowState.Minimized)
+                if ((this.pbCamera.Size.Width > 1 && this.pbCamera.Size.Height > 1) && this.WindowState != FormWindowState.Minimized)
                 {
-                    this.ShowImage(Utils.ResizeImage(this.capturedImage, this.pbMain.Size));
+                    this.ShowImage(Utils.ResizeImage(this.capturedImage, this.pbCamera.Size));
                 }
             }
         }
@@ -945,16 +945,16 @@ namespace RoombaSharp
         private void ShowImage(Bitmap image)
         {
             // Display image.
-            if (this.pbMain.InvokeRequired)
+            if (this.pbCamera.InvokeRequired)
             {
-                this.pbMain.BeginInvoke((MethodInvoker)delegate ()
+                this.pbCamera.BeginInvoke((MethodInvoker)delegate ()
                 {
-                    this.pbMain.Image = image;
+                    this.pbCamera.Image = image;
                 });
             }
             else
             {
-                this.pbMain.Image = image;
+                this.pbCamera.Image = image;
             }
         }
 
@@ -1149,34 +1149,34 @@ namespace RoombaSharp
             bool wallSensor = false;
 
             // Brushes
-            SolidBrush brushRed = new SolidBrush(Color.Red);
+            SolidBrush brushRed       = new SolidBrush(Color.Red);
             SolidBrush brushLimeGreen = new SolidBrush(Color.LimeGreen);
-            SolidBrush brushBase = new SolidBrush(Color.Black);
-            SolidBrush brushWheel = new SolidBrush(Color.Gray);
+            SolidBrush brushBase      = new SolidBrush(Color.Black);
+            SolidBrush brushWheel     = new SolidBrush(Color.Gray);
 
             // Pens
-            Pen penBumperRed = new Pen(brushRed, 5);
-            Pen penBumperLimeGreen = new Pen(brushLimeGreen, 5);
-            Pen penWallSensor = new Pen(wallSensor ? brushRed : brushLimeGreen, 5);
+            Pen penBumperRed        = new Pen(brushRed, 5);
+            Pen penBumperLimeGreen  = new Pen(brushLimeGreen, 5);
+            Pen penWallSensor       = new Pen(wallSensor ? brushRed : brushLimeGreen, 5);
             penWallSensor.DashStyle = DashStyle.Dash;
 
             // Shapes sizes.
-            Size sizeBase = new Size(300, 300);
+            Size sizeBase    = new Size(300, 300);
             Size sizeSensors = new Size(20, 10);
-            Size sizeWheels = new Size(30, 70);
+            Size sizeWheels  = new Size(30, 70);
 
             // Main center.
             Point mainCenter = CreateCenter(new Point(this.pbRoomba.Size), this.pbRoomba.Size);
 
             // Center of shapes.
-            Point centerBase = CreateCenter(new Point(mainCenter.X, mainCenter.Y), sizeBase);
-            Point centerCliffLeft = CreateCenter(new Point(mainCenter.X - 100, mainCenter.Y - 70), sizeSensors);
-            Point centerCliffCenterLeft = CreateCenter(new Point(mainCenter.X - 50, mainCenter.Y - 120), sizeSensors);
-            Point centerCliffCenterRight = CreateCenter(new Point(mainCenter.X + 50, mainCenter.Y - 120), sizeSensors);
-            Point centerCliffRight = CreateCenter(new Point(mainCenter.X + 100, mainCenter.Y - 70), sizeSensors);
-            Point centerWheelLeft = CreateCenter(new Point(mainCenter.X - 100, mainCenter.Y), sizeWheels);
-            Point centerWheelRight = CreateCenter(new Point(mainCenter.X + 100, mainCenter.Y), sizeWheels);
-
+            Point centerBase             = CreateCenter(new Point(mainCenter.X      , mainCenter.Y)      , sizeBase);
+            Point centerCliffLeft        = CreateCenter(new Point(mainCenter.X - 100, mainCenter.Y -  70), sizeSensors);
+            Point centerCliffCenterLeft  = CreateCenter(new Point(mainCenter.X -  50, mainCenter.Y - 120), sizeSensors);
+            Point centerCliffCenterRight = CreateCenter(new Point(mainCenter.X +  50, mainCenter.Y - 120), sizeSensors);
+            Point centerCliffRight       = CreateCenter(new Point(mainCenter.X + 100, mainCenter.Y -  70), sizeSensors);
+            Point centerWheelLeft        = CreateCenter(new Point(mainCenter.X - 100, mainCenter.Y)      , sizeWheels);
+            Point centerWheelRight       = CreateCenter(new Point(mainCenter.X + 100, mainCenter.Y)      , sizeWheels);
+                                                                                                               
             // Graphics modes.
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
