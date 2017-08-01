@@ -511,12 +511,12 @@ namespace RoombaSharp
         private void tsmiServerConnect_Click(object sender, EventArgs e)
         {
             this.ConnectToServer();
-            this.StartSendImageTimer();
         }
 
         private void tsmiServerDisconnect_Click(object sender, EventArgs e)
         {
             this.StopSendImageTimer();
+            this.StopSendDataTimer();
             this.DisconnectFromServer();
         }
 
@@ -550,7 +550,7 @@ namespace RoombaSharp
             this.LogMessage("Send test data to the server.");
         }
 
-        private void tsmiEnableUpdateSensorsData_Click(object sender, EventArgs e)
+        private void tsmiEnableSendingSensors_Click(object sender, EventArgs e)
         {
             // Get the sender.
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
@@ -566,6 +566,25 @@ namespace RoombaSharp
             else
             {
                 this.StopSendDataTimer();
+            }
+        }
+
+        private void tsmiEnableSendingImages_Click(object sender, EventArgs e)
+        {
+            // Get the sender.
+            ToolStripMenuItem item = (ToolStripMenuItem)sender;
+
+            // Invert the check state.
+            item.Checked = !item.Checked;
+
+            // Apply changes.
+            if (item.Checked)
+            {
+                this.StartSendImageTimer();
+            }
+            else
+            {
+                this.StopSendImageTimer();
             }
         }
 

@@ -93,7 +93,6 @@ namespace RoombaSharp
             this.tsmiMqttServer = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiServerConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiServerDisconnect = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiEnableUpdateSensorsData = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiServerTest = new System.Windows.Forms.ToolStripMenuItem();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.tsslRobotConnection = new System.Windows.Forms.ToolStripStatusLabel();
@@ -113,6 +112,8 @@ namespace RoombaSharp
             this.btnUp = new System.Windows.Forms.Button();
             this.tbpCamera = new System.Windows.Forms.TabPage();
             this.pbMain = new System.Windows.Forms.PictureBox();
+            this.tsmiEnableSendingSensors = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiEnableSendingImages = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.ssMain.SuspendLayout();
             this.tlpMain.SuspendLayout();
@@ -426,7 +427,8 @@ namespace RoombaSharp
             this.tsmiMqttServer.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiServerConnect,
             this.tsmiServerDisconnect,
-            this.tsmiEnableUpdateSensorsData,
+            this.tsmiEnableSendingImages,
+            this.tsmiEnableSendingSensors,
             this.tsmiServerTest});
             this.tsmiMqttServer.Name = "tsmiMqttServer";
             this.tsmiMqttServer.Size = new System.Drawing.Size(51, 20);
@@ -435,28 +437,21 @@ namespace RoombaSharp
             // tsmiServerConnect
             // 
             this.tsmiServerConnect.Name = "tsmiServerConnect";
-            this.tsmiServerConnect.Size = new System.Drawing.Size(220, 22);
+            this.tsmiServerConnect.Size = new System.Drawing.Size(198, 22);
             this.tsmiServerConnect.Text = "Connect";
             this.tsmiServerConnect.Click += new System.EventHandler(this.tsmiServerConnect_Click);
             // 
             // tsmiServerDisconnect
             // 
             this.tsmiServerDisconnect.Name = "tsmiServerDisconnect";
-            this.tsmiServerDisconnect.Size = new System.Drawing.Size(220, 22);
+            this.tsmiServerDisconnect.Size = new System.Drawing.Size(198, 22);
             this.tsmiServerDisconnect.Text = "Disconnect";
             this.tsmiServerDisconnect.Click += new System.EventHandler(this.tsmiServerDisconnect_Click);
-            // 
-            // tsmiEnableUpdateSensorsData
-            // 
-            this.tsmiEnableUpdateSensorsData.Name = "tsmiEnableUpdateSensorsData";
-            this.tsmiEnableUpdateSensorsData.Size = new System.Drawing.Size(220, 22);
-            this.tsmiEnableUpdateSensorsData.Text = "Enable Update Sensors Data";
-            this.tsmiEnableUpdateSensorsData.Click += new System.EventHandler(this.tsmiEnableUpdateSensorsData_Click);
             // 
             // tsmiServerTest
             // 
             this.tsmiServerTest.Name = "tsmiServerTest";
-            this.tsmiServerTest.Size = new System.Drawing.Size(220, 22);
+            this.tsmiServerTest.Size = new System.Drawing.Size(198, 22);
             this.tsmiServerTest.Text = "Test";
             this.tsmiServerTest.Click += new System.EventHandler(this.tsmiServerTest_Click);
             // 
@@ -669,6 +664,20 @@ namespace RoombaSharp
             this.pbMain.TabIndex = 34;
             this.pbMain.TabStop = false;
             // 
+            // tsmiEnableSendingSensors
+            // 
+            this.tsmiEnableSendingSensors.Name = "tsmiEnableSendingSensors";
+            this.tsmiEnableSendingSensors.Size = new System.Drawing.Size(198, 22);
+            this.tsmiEnableSendingSensors.Text = "Enable Sending Sensors";
+            this.tsmiEnableSendingSensors.Click += new System.EventHandler(this.tsmiEnableSendingSensors_Click);
+            // 
+            // tsmiEnableSendingImages
+            // 
+            this.tsmiEnableSendingImages.Name = "tsmiEnableSendingImages";
+            this.tsmiEnableSendingImages.Size = new System.Drawing.Size(198, 22);
+            this.tsmiEnableSendingImages.Text = "Enable Sending Images";
+            this.tsmiEnableSendingImages.Click += new System.EventHandler(this.tsmiEnableSendingImages_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 17F);
@@ -763,7 +772,8 @@ namespace RoombaSharp
         private System.Windows.Forms.PictureBox pbMain;
         private System.Windows.Forms.ToolStripMenuItem tsmiParamettersGroup6;
         private System.Windows.Forms.ToolStripMenuItem tsmiServerTest;
-        private System.Windows.Forms.ToolStripMenuItem tsmiEnableUpdateSensorsData;
+        private System.Windows.Forms.ToolStripMenuItem tsmiEnableSendingImages;
+        private System.Windows.Forms.ToolStripMenuItem tsmiEnableSendingSensors;
     }
 }
 
