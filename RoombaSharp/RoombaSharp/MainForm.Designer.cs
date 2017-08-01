@@ -555,7 +555,7 @@ namespace RoombaSharp
             // 
             this.lblRadius.AutoSize = true;
             this.lblRadius.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRadius.Location = new System.Drawing.Point(6, 296);
+            this.lblRadius.Location = new System.Drawing.Point(31, 334);
             this.lblRadius.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblRadius.Name = "lblRadius";
             this.lblRadius.Size = new System.Drawing.Size(77, 17);
@@ -564,7 +564,7 @@ namespace RoombaSharp
             // 
             // trbRadius
             // 
-            this.trbRadius.Location = new System.Drawing.Point(10, 326);
+            this.trbRadius.Location = new System.Drawing.Point(35, 367);
             this.trbRadius.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.trbRadius.Maximum = 200;
             this.trbRadius.Minimum = 1;
@@ -576,7 +576,7 @@ namespace RoombaSharp
             // btnStop
             // 
             this.btnStop.Image = global::RoombaSharp.Images.Stop;
-            this.btnStop.Location = new System.Drawing.Point(118, 114);
+            this.btnStop.Location = new System.Drawing.Point(143, 152);
             this.btnStop.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(96, 96);
@@ -603,14 +603,14 @@ namespace RoombaSharp
             this.trbSpeed.Minimum = 15;
             this.trbSpeed.Name = "trbSpeed";
             this.trbSpeed.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trbSpeed.Size = new System.Drawing.Size(45, 308);
+            this.trbSpeed.Size = new System.Drawing.Size(45, 379);
             this.trbSpeed.TabIndex = 56;
             this.trbSpeed.Value = 15;
             // 
             // btnDown
             // 
             this.btnDown.Image = global::RoombaSharp.Images.ArrowDown;
-            this.btnDown.Location = new System.Drawing.Point(118, 220);
+            this.btnDown.Location = new System.Drawing.Point(143, 258);
             this.btnDown.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btnDown.Name = "btnDown";
             this.btnDown.Size = new System.Drawing.Size(96, 96);
@@ -623,7 +623,7 @@ namespace RoombaSharp
             // btnRight
             // 
             this.btnRight.Image = global::RoombaSharp.Images.ArrowRight;
-            this.btnRight.Location = new System.Drawing.Point(226, 114);
+            this.btnRight.Location = new System.Drawing.Point(251, 152);
             this.btnRight.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btnRight.Name = "btnRight";
             this.btnRight.Size = new System.Drawing.Size(96, 96);
@@ -636,7 +636,7 @@ namespace RoombaSharp
             // btnLeft
             // 
             this.btnLeft.Image = global::RoombaSharp.Images.ArrowLeft;
-            this.btnLeft.Location = new System.Drawing.Point(10, 114);
+            this.btnLeft.Location = new System.Drawing.Point(35, 152);
             this.btnLeft.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btnLeft.Name = "btnLeft";
             this.btnLeft.Size = new System.Drawing.Size(96, 96);
@@ -649,7 +649,7 @@ namespace RoombaSharp
             // btnUp
             // 
             this.btnUp.Image = global::RoombaSharp.Images.ArrowUp;
-            this.btnUp.Location = new System.Drawing.Point(118, 8);
+            this.btnUp.Location = new System.Drawing.Point(143, 46);
             this.btnUp.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btnUp.Name = "btnUp";
             this.btnUp.Size = new System.Drawing.Size(96, 96);
@@ -686,9 +686,10 @@ namespace RoombaSharp
             this.pbRoomba.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbRoomba.Location = new System.Drawing.Point(480, 8);
             this.pbRoomba.Name = "pbRoomba";
-            this.pbRoomba.Size = new System.Drawing.Size(478, 363);
+            this.pbRoomba.Size = new System.Drawing.Size(478, 404);
             this.pbRoomba.TabIndex = 47;
             this.pbRoomba.TabStop = false;
+            this.pbRoomba.Paint += new System.Windows.Forms.PaintEventHandler(this.pbRoomba_Paint);
             // 
             // MainForm
             // 

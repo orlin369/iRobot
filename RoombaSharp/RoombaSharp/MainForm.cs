@@ -41,6 +41,7 @@ using iRobot.Communicators;
 
 using RoombaSharp.Video;
 using iRobotRemoteControl;
+using System.Drawing.Drawing2D;
 
 namespace RoombaSharp
 {
@@ -143,6 +144,14 @@ namespace RoombaSharp
                     this.tbConsole.AppendText(dataTime + " -> " + message + Environment.NewLine);
                 }
             }
+        }
+
+        private Point CreateCenter(Point center, Size size)
+        {
+            int x = center.X - (int)(size.Width / 2);
+            int y = center.Y - (int)(size.Height / 2);
+
+            return new Point(x, y);
         }
 
         #endregion
@@ -1126,5 +1135,84 @@ namespace RoombaSharp
 
         #endregion
 
+        private void pbRoomba_Paint(object sender, PaintEventArgs e)
+        {
+
+            bool cliffLeft = false;
+            bool cliffCenterLeft = false;
+            bool cliffCenterRight = false;
+            bool cliffRight = false;
+            bool wheelDropLeft = false;
+            bool wheelDropRight = false;
+            bool bumperLeft = false;
+            bool bumperRight = false;
+            bool wallSensor = false;
+
+            // Brushes
+            SolidBrush brushRed = new SolidBrush(Color.Red);
+            SolidBrush brushLimeGreen = new SolidBrush(Color.LimeGreen);
+            SolidBrush brushBase = new SolidBrush(Color.Black);
+            SolidBrush brushWheel = new SolidBrush(Color.Gray);
+
+            // Pens
+            Pen penBumperRed = new Pen(brushRed, 5);
+            Pen penBumperLimeGreen = new Pen(brushLimeGreen, 5);
+            Pen penWallSensor = new Pen(wallSensor ? brushRed : brushLimeGreen, 5);
+            penWallSensor.DashStyle = DashStyle.Dash;
+
+            // Shapes sizes.
+            Size sizeBase = new Size(300, 300);
+            Size sizeSensors = new Size(20, 10);
+            Size sizeWheels = new Size(30, 70);
+
+            // Main center.
+            Point mainCenter = CreateCenter(new Point(this.pbRoomba.Size), this.pbRoomba.Size);
+
+            // Center of shapes.
+            Point centerBase = CreateCenter(new Point(mainCenter.X, mainCenter.Y), sizeBase);
+            Point centerCliffLeft = CreateCenter(new Point(mainCenter.X - 100, mainCenter.Y - 70), sizeSensors);
+            Point centerCliffCenterLeft = CreateCenter(new Point(mainCenter.X - 50, mainCenter.Y - 120), sizeSensors);
+            Point centerCliffCenterRight = CreateCenter(new Point(mainCenter.X + 50, mainCenter.Y - 120), sizeSensors);
+            Point centerCliffRight = CreateCenter(new Point(mainCenter.X + 100, mainCenter.Y - 70), sizeSensors);
+            Point centerWheelLeft = CreateCenter(new Point(mainCenter.X - 100, mainCenter.Y), sizeWheels);
+            Point centerWheelRight = CreateCenter(new Point(mainCenter.X + 100, mainCenter.Y), sizeWheels);
+
+            // Graphics modes.
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            // Clear background.
+            e.Graphics.Clear(Color.White);
+
+            // Base contour.
+            e.Graphics.FillEllipse(brushBase, new RectangleF(centerBase, sizeBase));
+
+            // Cliff left.
+            e.Graphics.FillRectangle(cliffLeft ? brushRed : brushLimeGreen, new RectangleF(centerCliffLeft, sizeSensors));
+            // Cliff center left.
+            e.Graphics.FillRectangle(cliffCenterLeft ? brushRed : brushLimeGreen, new RectangleF(centerCliffCenterLeft, sizeSensors));
+            // Cliff center right.
+            e.Graphics.FillRectangle(cliffCenterRight ? brushRed : brushLimeGreen, new RectangleF(centerCliffCenterRight, sizeSensors));
+            // Cliff right.
+            e.Graphics.FillRectangle(cliffRight ? brushRed : brushLimeGreen, new RectangleF(centerCliffRight, sizeSensors));
+
+            // Left wheel.
+            e.Graphics.FillRectangle(brushWheel, new RectangleF(centerWheelLeft, sizeWheels));
+            // Left wheel drop.
+            e.Graphics.DrawRectangle(wheelDropLeft ? penBumperRed : penBumperLimeGreen, new Rectangle(centerWheelLeft, sizeWheels));
+            // Right wheel.
+            e.Graphics.FillRectangle(brushWheel, new RectangleF(centerWheelRight, sizeWheels));
+            // Right wheel drop.
+            e.Graphics.DrawRectangle(wheelDropRight ? penBumperRed : penBumperLimeGreen, new Rectangle(centerWheelRight, sizeWheels));
+
+            // Draw bumper left.
+            e.Graphics.DrawArc(bumperRight ? penBumperRed : penBumperLimeGreen, new RectangleF(centerBase, sizeBase), 270, 90);
+            // Draw bumper left.
+            e.Graphics.DrawArc(bumperLeft ? penBumperRed : penBumperLimeGreen, new RectangleF(centerBase, sizeBase), 180, 90);
+
+            // Draw wall.
+            e.Graphics.DrawLine(penWallSensor, mainCenter.X - 200, mainCenter.Y - 170, mainCenter.X + 200, mainCenter.Y - 170);
+            e.Graphics.DrawLine(penWallSensor, mainCenter.X - 200, mainCenter.Y - 180, mainCenter.X + 200, mainCenter.Y - 180);
+            e.Graphics.DrawLine(penWallSensor, mainCenter.X - 200, mainCenter.Y - 190, mainCenter.X + 200, mainCenter.Y - 190);
+        }
     }
 }
