@@ -93,6 +93,8 @@ namespace RoombaSharp
             this.tsmiMqttServer = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiServerConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiServerDisconnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiEnableSendingImages = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiEnableSendingSensors = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiServerTest = new System.Windows.Forms.ToolStripMenuItem();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.tsslRobotConnection = new System.Windows.Forms.ToolStripStatusLabel();
@@ -112,8 +114,7 @@ namespace RoombaSharp
             this.btnUp = new System.Windows.Forms.Button();
             this.tbpCamera = new System.Windows.Forms.TabPage();
             this.pbMain = new System.Windows.Forms.PictureBox();
-            this.tsmiEnableSendingSensors = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiEnableSendingImages = new System.Windows.Forms.ToolStripMenuItem();
+            this.pbRoomba = new System.Windows.Forms.PictureBox();
             this.msMain.SuspendLayout();
             this.ssMain.SuspendLayout();
             this.tlpMain.SuspendLayout();
@@ -123,6 +124,7 @@ namespace RoombaSharp
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).BeginInit();
             this.tbpCamera.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRoomba)).BeginInit();
             this.SuspendLayout();
             // 
             // msMain
@@ -448,6 +450,20 @@ namespace RoombaSharp
             this.tsmiServerDisconnect.Text = "Disconnect";
             this.tsmiServerDisconnect.Click += new System.EventHandler(this.tsmiServerDisconnect_Click);
             // 
+            // tsmiEnableSendingImages
+            // 
+            this.tsmiEnableSendingImages.Name = "tsmiEnableSendingImages";
+            this.tsmiEnableSendingImages.Size = new System.Drawing.Size(198, 22);
+            this.tsmiEnableSendingImages.Text = "Enable Sending Images";
+            this.tsmiEnableSendingImages.Click += new System.EventHandler(this.tsmiEnableSendingImages_Click);
+            // 
+            // tsmiEnableSendingSensors
+            // 
+            this.tsmiEnableSendingSensors.Name = "tsmiEnableSendingSensors";
+            this.tsmiEnableSendingSensors.Size = new System.Drawing.Size(198, 22);
+            this.tsmiEnableSendingSensors.Text = "Enable Sending Sensors";
+            this.tsmiEnableSendingSensors.Click += new System.EventHandler(this.tsmiEnableSendingSensors_Click);
+            // 
             // tsmiServerTest
             // 
             this.tsmiServerTest.Name = "tsmiServerTest";
@@ -518,6 +534,7 @@ namespace RoombaSharp
             // tbpMotion
             // 
             this.tbpMotion.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.tbpMotion.Controls.Add(this.pbRoomba);
             this.tbpMotion.Controls.Add(this.lblRadius);
             this.tbpMotion.Controls.Add(this.trbRadius);
             this.tbpMotion.Controls.Add(this.btnStop);
@@ -664,19 +681,14 @@ namespace RoombaSharp
             this.pbMain.TabIndex = 34;
             this.pbMain.TabStop = false;
             // 
-            // tsmiEnableSendingSensors
+            // pbRoomba
             // 
-            this.tsmiEnableSendingSensors.Name = "tsmiEnableSendingSensors";
-            this.tsmiEnableSendingSensors.Size = new System.Drawing.Size(198, 22);
-            this.tsmiEnableSendingSensors.Text = "Enable Sending Sensors";
-            this.tsmiEnableSendingSensors.Click += new System.EventHandler(this.tsmiEnableSendingSensors_Click);
-            // 
-            // tsmiEnableSendingImages
-            // 
-            this.tsmiEnableSendingImages.Name = "tsmiEnableSendingImages";
-            this.tsmiEnableSendingImages.Size = new System.Drawing.Size(198, 22);
-            this.tsmiEnableSendingImages.Text = "Enable Sending Images";
-            this.tsmiEnableSendingImages.Click += new System.EventHandler(this.tsmiEnableSendingImages_Click);
+            this.pbRoomba.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbRoomba.Location = new System.Drawing.Point(480, 8);
+            this.pbRoomba.Name = "pbRoomba";
+            this.pbRoomba.Size = new System.Drawing.Size(478, 363);
+            this.pbRoomba.TabIndex = 47;
+            this.pbRoomba.TabStop = false;
             // 
             // MainForm
             // 
@@ -707,6 +719,7 @@ namespace RoombaSharp
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).EndInit();
             this.tbpCamera.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRoomba)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -774,6 +787,7 @@ namespace RoombaSharp
         private System.Windows.Forms.ToolStripMenuItem tsmiServerTest;
         private System.Windows.Forms.ToolStripMenuItem tsmiEnableSendingImages;
         private System.Windows.Forms.ToolStripMenuItem tsmiEnableSendingSensors;
+        private System.Windows.Forms.PictureBox pbRoomba;
     }
 }
 
