@@ -50,6 +50,8 @@ namespace RoombaSharp
 
         #region Variables
 
+        #region Robot
+
         /// <summary>
         /// Robot
         /// </summary>
@@ -66,9 +68,18 @@ namespace RoombaSharp
         private byte cleanLedColor = 0;
 
         /// <summary>
-        /// Log messages sync lock object.
+        /// Remote controller
         /// </summary>
-        private object syncLockLogs = new object();
+        private RemoteController remoteController;
+
+        /// <summary>
+        /// Sensors dump
+        /// </summary>
+        private Struct6 sensrosDump;
+
+        #endregion
+
+        #region Camera
 
         /// <summary>
         /// Video capture device.
@@ -90,6 +101,13 @@ namespace RoombaSharp
         /// </summary>
         private object syncLockVideo = new object();
 
+        #endregion
+
+        /// <summary>
+        /// Log messages sync lock object.
+        /// </summary>
+        private object syncLockLogs = new object();
+        
         /// <summary>
         /// Send image timer.
         /// </summary>
@@ -99,13 +117,7 @@ namespace RoombaSharp
         /// Send image timer.
         /// </summary>
         private System.Windows.Forms.Timer sendDataTimer;
-
-
-        /// <summary>
-        /// Connector
-        /// </summary>
-        private RemoteController remoteController;
-                
+        
         #endregion
 
         #region Constructor
@@ -146,6 +158,31 @@ namespace RoombaSharp
             }
         }
 
+        /// <summary>
+        /// Draw the sensors.
+        /// </summary>
+        private void DrawSCADA()
+        {
+            if (this.pbRoomba.InvokeRequired)
+            {
+                this.pbRoomba.BeginInvoke(
+                    (MethodInvoker)delegate ()
+                    {
+                        this.pbRoomba.Refresh();
+                    });
+            }
+            else
+            {
+                this.pbRoomba.Refresh();
+            }
+        }
+
+        /// <summary>
+        /// Create center point.
+        /// </summary>
+        /// <param name="center">Center of the object.</param>
+        /// <param name="size">Size of the system.</param>
+        /// <returns>Center of the coordinate system.</returns>
         private Point CreateCenter(Point center, Size size)
         {
             int x = center.X - (int)(size.Width / 2);
@@ -158,12 +195,22 @@ namespace RoombaSharp
 
         #region Main Form
 
+        /// <summary>
+        /// Form Load
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.SearchForPorts();
             this.SearchForCameras();
         }
 
+        /// <summary>
+        /// Form Closing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.StopSendImageTimer();
@@ -181,6 +228,11 @@ namespace RoombaSharp
 
         #region Robot
 
+        /// <summary>
+        /// Connect to the robot.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiConnect_Click(object sender, EventArgs e)
         {
             this.DisconnectFromRobot();
@@ -190,6 +242,11 @@ namespace RoombaSharp
 
         #region Beep
 
+        /// <summary>
+        /// Makes robot to beep.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiBeepTest_Click(object sender, EventArgs e)
         {
             // Create the worker thread.
@@ -228,6 +285,11 @@ namespace RoombaSharp
 
         #region LED
 
+        /// <summary>
+        /// Set/Reset "Check the robot" LED.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiLedCheckRobot_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
@@ -237,7 +299,11 @@ namespace RoombaSharp
             this.robot.LEDs(this.tsmiLedCheckRobot.Checked, this.tsmiLedDock.Checked, this.tsmiLedSpot.Checked, this.tsmiLedDirtDetect.Checked, this.cleanLedColor, this.cleanLedIntensity);
         }
 
-
+        /// <summary>
+        /// Set/Reset "Spot" LED.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiLedSpot_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
@@ -247,6 +313,11 @@ namespace RoombaSharp
             this.robot.LEDs(this.tsmiLedCheckRobot.Checked, this.tsmiLedDock.Checked, this.tsmiLedSpot.Checked, this.tsmiLedDirtDetect.Checked, this.cleanLedColor, this.cleanLedIntensity);
         }
 
+        /// <summary>
+        /// Set/Reset "Dock" LED.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiLedDock_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
@@ -256,6 +327,11 @@ namespace RoombaSharp
             this.robot.LEDs(this.tsmiLedCheckRobot.Checked, this.tsmiLedDock.Checked, this.tsmiLedSpot.Checked, this.tsmiLedDirtDetect.Checked, this.cleanLedColor, this.cleanLedIntensity);
         }
 
+        /// <summary>
+        /// Set/Reset "Dirt detect" LED.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiLedDirtDetect_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
@@ -265,6 +341,11 @@ namespace RoombaSharp
             this.robot.LEDs(this.tsmiLedCheckRobot.Checked, this.tsmiLedDock.Checked, this.tsmiLedSpot.Checked, this.tsmiLedDirtDetect.Checked, this.cleanLedColor, this.cleanLedIntensity);
         }
 
+        /// <summary>
+        /// Set/Reset "Clean" LED.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiLedCleanOff_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
@@ -280,6 +361,11 @@ namespace RoombaSharp
             this.robot.LEDs(this.tsmiLedCheckRobot.Checked, this.tsmiLedDock.Checked, this.tsmiLedSpot.Checked, this.tsmiLedDirtDetect.Checked, this.cleanLedColor, this.cleanLedIntensity);
         }
 
+        /// <summary>
+        /// Set/Reset "Clean" LED.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiLedCleanGreen_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
@@ -302,6 +388,11 @@ namespace RoombaSharp
             this.robot.LEDs(this.tsmiLedCheckRobot.Checked, this.tsmiLedDock.Checked, this.tsmiLedSpot.Checked, this.tsmiLedDirtDetect.Checked, this.cleanLedColor, this.cleanLedIntensity);
         }
 
+        /// <summary>
+        /// Set/Reset "Clean" LED.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiLedCleanRed_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
@@ -329,6 +420,11 @@ namespace RoombaSharp
 
         #region Motors
 
+        /// <summary>
+        /// Set/Reset main brush motor.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiMainBrush_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
@@ -338,6 +434,11 @@ namespace RoombaSharp
             this.robot.Motors(this.tsmiMainBrush.Checked, this.tsmiVacuum.Checked, this.tsmiSideBrush.Checked);
         }
 
+        /// <summary>
+        /// Set/Reset vacuum motor.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiVacuum_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
@@ -347,6 +448,11 @@ namespace RoombaSharp
             this.robot.Motors(this.tsmiMainBrush.Checked, this.tsmiVacuum.Checked, this.tsmiSideBrush.Checked);
         }
 
+        /// <summary>
+        /// Set/Reset side brush motor.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiSideBrush_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
@@ -360,30 +466,55 @@ namespace RoombaSharp
 
         #region Buttons
 
+        /// <summary>
+        /// Set/Reset button clean.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiBtnClean_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Clean();
         }
 
+        /// <summary>
+        /// Set/Reset button spot.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiBtnSpot_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Spot();
         }
 
+        /// <summary>
+        /// Set/Reset button dock.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiBtnDock_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.ForceSeekingDock();
         }
 
+        /// <summary>
+        /// Set/Reset button power.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiBtnPower_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Power();
         }
 
+        /// <summary>
+        /// Set/Reset button max.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiBtnMax_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
@@ -394,6 +525,11 @@ namespace RoombaSharp
 
         #region LED Display
 
+        /// <summary>
+        /// Test the LED display.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiDisplayTest_Click(object sender, EventArgs e)
         {
             // Create worker thread.
@@ -417,7 +553,12 @@ namespace RoombaSharp
             worker.Start();
         }
 
-        private void shutdownToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Shutdown the LED display.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiDisplayShutdown_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
 
@@ -428,7 +569,12 @@ namespace RoombaSharp
         #endregion
 
         #region Sensors
-
+        
+        /// <summary>
+        /// Get package ID6
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiParamettersGroup6_Click(object sender, EventArgs e)
         {
             // Create the worker thread.
@@ -455,6 +601,11 @@ namespace RoombaSharp
 
         #endregion
 
+        /// <summary>
+        /// Show settings form.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiSettings_Click(object sender, EventArgs e)
         {
             using (Settings.SettingsForm sf = new Settings.SettingsForm())
@@ -463,6 +614,11 @@ namespace RoombaSharp
             }
         }
 
+        /// <summary>
+        /// Exit the application.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -470,6 +626,11 @@ namespace RoombaSharp
 
         #region Camera
 
+        /// <summary>
+        /// Stop the video capture.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiStopCaptureeDevice_Click(object sender, EventArgs e)
         {
             // Disconnect from the camera.
@@ -486,6 +647,11 @@ namespace RoombaSharp
             }
         }
 
+        /// <summary>
+        /// Capture device.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiCaptureeDevice_Click(object sender, EventArgs e)
         {
             // Create instance of caller.
@@ -497,7 +663,7 @@ namespace RoombaSharp
             // Uncheck all cameras.
             foreach (ToolStripMenuItem mItem in this.tsmiCameraCapture.DropDown.Items)
             {
-                item.Checked = false;
+                mItem.Checked = false;
             }
 
             // Check only this camera.
@@ -603,54 +769,99 @@ namespace RoombaSharp
 
         #region Buttons
 
+        /// <summary>
+        /// Turn the robot CW.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnRight_MouseDown(object sender, MouseEventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive((short)this.trbSpeed.Value, (short)-this.trbRadius.Value);
         }
 
+        /// <summary>
+        /// Turn the robot CCW.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnLeft_MouseDown(object sender, MouseEventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive((short)this.trbSpeed.Value, (short)this.trbRadius.Value);
         }
 
+        /// <summary>
+        /// Move the robot Forward.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnUp_MouseDown(object sender, MouseEventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive((short)this.trbSpeed.Value, 0);
         }
 
+        /// <summary>
+        /// Move the robot Backward.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDown_MouseDown(object sender, MouseEventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive((short)-this.trbSpeed.Value, 0);
         }
         
+        /// <summary>
+        /// Stop the robot.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnStop_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
         }
 
+        /// <summary>
+        /// Stop the robot.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnUp_MouseUp(object sender, MouseEventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
         }
 
+        /// <summary>
+        /// Stop the robot.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnRight_MouseUp(object sender, MouseEventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
         }
 
+        /// <summary>
+        /// Stop the robot.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDown_MouseUp(object sender, MouseEventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             this.robot.Drive(0, 0);
         }
 
+        /// <summary>
+        /// Stop the robot.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnLeft_MouseUp(object sender, MouseEventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
@@ -660,18 +871,115 @@ namespace RoombaSharp
         #endregion
 
         #region Track bar
-
+        
+        /// <summary>
+        /// Changes speed value.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void trbSpeed_ValueChanged(object sender, EventArgs e)
         {
             this.lblSpeed.Text = String.Format("Speed: {0:F3}[mm/s]", ((float)this.trbSpeed.Value / 5.0));
         }
 
+        /// <summary>
+        /// Radius value.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void trbRadius_ValueChanged(object sender, EventArgs e)
         {
             this.lblRadius.Text = String.Format("Radius: {0}", this.trbRadius.Value);
         }
 
+        #endregion
 
+        #region pbRoomba
+        
+        /// <summary>
+        /// Paints the SCADA.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pbRoomba_Paint(object sender, PaintEventArgs e)
+        {
+            
+            bool cliffLeft       = this.sensrosDump.CliffLeft != 0;
+            bool cliffFrontLeft  = this.sensrosDump.CliffFrontLeft != 0;
+            bool cliffFrontRight = this.sensrosDump.CliffFrontRight != 0;
+            bool cliffRight      = this.sensrosDump.CliffRight != 0;
+            bool wheelDropLeft   = (this.sensrosDump.BumpersAndWheelDrops & (byte)8) != 0;
+            bool wheelDropRight  = (this.sensrosDump.BumpersAndWheelDrops & (byte)4) != 0;
+            bool bumperLeft      = (this.sensrosDump.BumpersAndWheelDrops & (byte)2) != 0;
+            bool bumperRight     = (this.sensrosDump.BumpersAndWheelDrops & (byte)1) != 0;
+            bool wallSensor      = this.sensrosDump.Wall != 0;
+
+            // Brushes
+            SolidBrush brushRed = new SolidBrush(Color.Red);
+            SolidBrush brushLimeGreen = new SolidBrush(Color.LimeGreen);
+            SolidBrush brushBase = new SolidBrush(Color.Black);
+            SolidBrush brushWheel = new SolidBrush(Color.Gray);
+
+            // Pens
+            Pen penBumperRed = new Pen(brushRed, 5);
+            Pen penBumperLimeGreen = new Pen(brushLimeGreen, 5);
+            Pen penWallSensor = new Pen(wallSensor ? brushRed : brushLimeGreen, 5);
+            penWallSensor.DashStyle = DashStyle.Dash;
+
+            // Shapes sizes.
+            Size sizeBase = new Size(300, 300);
+            Size sizeSensors = new Size(20, 10);
+            Size sizeWheels = new Size(30, 70);
+
+            // Main center.
+            Point mainCenter = CreateCenter(new Point(this.pbRoomba.Size), this.pbRoomba.Size);
+
+            // Center of shapes.
+            Point centerBase = CreateCenter(new Point(mainCenter.X, mainCenter.Y), sizeBase);
+            Point centerCliffLeft = CreateCenter(new Point(mainCenter.X - 100, mainCenter.Y - 70), sizeSensors);
+            Point centerCliffCenterLeft = CreateCenter(new Point(mainCenter.X - 50, mainCenter.Y - 120), sizeSensors);
+            Point centerCliffCenterRight = CreateCenter(new Point(mainCenter.X + 50, mainCenter.Y - 120), sizeSensors);
+            Point centerCliffRight = CreateCenter(new Point(mainCenter.X + 100, mainCenter.Y - 70), sizeSensors);
+            Point centerWheelLeft = CreateCenter(new Point(mainCenter.X - 100, mainCenter.Y), sizeWheels);
+            Point centerWheelRight = CreateCenter(new Point(mainCenter.X + 100, mainCenter.Y), sizeWheels);
+
+            // Graphics modes.
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            // Clear background.
+            e.Graphics.Clear(Color.White);
+
+            // Base contour.
+            e.Graphics.FillEllipse(brushBase, new RectangleF(centerBase, sizeBase));
+
+            // Cliff left.
+            e.Graphics.FillRectangle(cliffLeft ? brushRed : brushLimeGreen, new RectangleF(centerCliffLeft, sizeSensors));
+            // Cliff center left.
+            e.Graphics.FillRectangle(cliffFrontLeft ? brushRed : brushLimeGreen, new RectangleF(centerCliffCenterLeft, sizeSensors));
+            // Cliff center right.
+            e.Graphics.FillRectangle(cliffFrontRight ? brushRed : brushLimeGreen, new RectangleF(centerCliffCenterRight, sizeSensors));
+            // Cliff right.
+            e.Graphics.FillRectangle(cliffRight ? brushRed : brushLimeGreen, new RectangleF(centerCliffRight, sizeSensors));
+
+            // Left wheel.
+            e.Graphics.FillRectangle(brushWheel, new RectangleF(centerWheelLeft, sizeWheels));
+            // Left wheel drop.
+            e.Graphics.DrawRectangle(wheelDropLeft ? penBumperRed : penBumperLimeGreen, new Rectangle(centerWheelLeft, sizeWheels));
+            // Right wheel.
+            e.Graphics.FillRectangle(brushWheel, new RectangleF(centerWheelRight, sizeWheels));
+            // Right wheel drop.
+            e.Graphics.DrawRectangle(wheelDropRight ? penBumperRed : penBumperLimeGreen, new Rectangle(centerWheelRight, sizeWheels));
+
+            // Draw bumper left.
+            e.Graphics.DrawArc(bumperRight ? penBumperRed : penBumperLimeGreen, new RectangleF(centerBase, sizeBase), 270, 90);
+            // Draw bumper left.
+            e.Graphics.DrawArc(bumperLeft ? penBumperRed : penBumperLimeGreen, new RectangleF(centerBase, sizeBase), 180, 90);
+
+            // Draw wall.
+            e.Graphics.DrawLine(penWallSensor, mainCenter.X - 200, mainCenter.Y - 170, mainCenter.X + 200, mainCenter.Y - 170);
+            e.Graphics.DrawLine(penWallSensor, mainCenter.X - 200, mainCenter.Y - 180, mainCenter.X + 200, mainCenter.Y - 180);
+            e.Graphics.DrawLine(penWallSensor, mainCenter.X - 200, mainCenter.Y - 190, mainCenter.X + 200, mainCenter.Y - 190);
+        }
 
         #endregion
 
@@ -772,30 +1080,29 @@ namespace RoombaSharp
             // Convert it to sensor structure.
             Struct6 sensros = Utils.ByteArrayToStructure<Struct6>(byteData);
 
-            // 
-            //string wheelDrops = sensros.BumpersAndWheelDrops.ToString("X2");
-            //// Log it.
-            //this.LogMessage("Robot: " + wheelDrops);
+            // Dump all the data.
+            this.sensrosDump = sensros;
 
-            // Convert it to hex text.
-            //string text = Utils.ToHexText(byteData);
-            //// Log it.
-            //this.LogMessage("Robot: " + text);
-
-            //
+            // Convert the structure to JSON.
             string serialSensors = JsonConvert.SerializeObject(sensros);
             
-            //
+            // Send text data to the server.
             this.SendTextData(serialSensors);
 
-            //
+            // Log the event.
             this.LogMessage("Send data to the server.");
-        }
 
+            // Draw the SCADA.
+            this.DrawSCADA();
+        }
+        
         #endregion
 
         #region Camera
 
+        /// <summary>
+        /// Search the for video cameras.
+        /// </summary>
         private void SearchForCameras()
         {
             // Check to see what video inputs we have available.
@@ -812,6 +1119,10 @@ namespace RoombaSharp
             this.AddCameras(this.videoDevices, this.tsmiCameraCapture, this.tsmiCaptureeDevice_Click);
         }
 
+        /// <summary>
+        /// Connect to the video camera.
+        /// </summary>
+        /// <param name="monikerString">Moniker string.</param>
         private void ConnecToCamera(string monikerString)
         {
             // Create camera.
@@ -831,6 +1142,9 @@ namespace RoombaSharp
             this.LogMessage("Video Capture: Started");
         }
 
+        /// <summary>
+        /// Disconnect from video camera.
+        /// </summary>
         private void DisconnectFromCamera()
         {
             if (this.videoDevice == null) return;
@@ -851,7 +1165,7 @@ namespace RoombaSharp
         /// <summary>
         /// Get list of all available devices on the PC.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Video device.</returns>
         private VideoDevice[] GetDevices()
         {
             //Set up the capture method 
@@ -912,6 +1226,11 @@ namespace RoombaSharp
 
         }
 
+        /// <summary>
+        /// New frame handler.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void videoDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
             lock (this.syncLockVideo)
@@ -961,7 +1280,10 @@ namespace RoombaSharp
         #endregion
 
         #region Send Image Timer
-
+        
+        /// <summary>
+        /// Start frame send timer.
+        /// </summary>
         private void StartSendImageTimer()
         {
             if (this.sendImageTimer == null)
@@ -979,6 +1301,9 @@ namespace RoombaSharp
 
         }
 
+        /// <summary>
+        /// Stop frame send timer.
+        /// </summary>
         private void StopSendImageTimer()
         {
             if (this.sendImageTimer == null) return;
@@ -991,6 +1316,11 @@ namespace RoombaSharp
             this.sendImageTimer.Stop();
         }
 
+        /// <summary>
+        /// Send frame handler.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SendImageTimer_Tick(object sender, EventArgs e)
         {
             lock (this.syncLockVideo)
@@ -1004,6 +1334,9 @@ namespace RoombaSharp
 
         #region Send Data Timer
 
+        /// <summary>
+        /// Start sensor data send timer.
+        /// </summary>
         private void StartSendDataTimer()
         {
             if (this.sendDataTimer == null)
@@ -1020,6 +1353,9 @@ namespace RoombaSharp
             }
         }
 
+        /// <summary>
+        /// Stop sensor data send timer.
+        /// </summary>
         private void StopSendDataTimer()
         {
             if (this.sendDataTimer == null) return;
@@ -1032,6 +1368,11 @@ namespace RoombaSharp
             this.sendDataTimer.Stop();
         }
 
+        /// <summary>
+        /// Sensor data send handler.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SendDataTimer_Tick(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
@@ -1044,7 +1385,7 @@ namespace RoombaSharp
         #region Data Connector
 
         /// <summary>
-        /// Connect vision system.
+        /// Connect to broker server.
         /// </summary>
         private void ConnectToServer()
         {
@@ -1068,7 +1409,7 @@ namespace RoombaSharp
         }
 
         /// <summary>
-        /// Disconnect vision system.
+        /// Disconnect from broker server.
         /// </summary>
         private void DisconnectFromServer()
         {
@@ -1091,7 +1432,7 @@ namespace RoombaSharp
         }
 
         /// <summary>
-        /// Send image.
+        /// Send image data.
         /// </summary>
         /// <param name="image"></param>
         private void SendImageData(Bitmap image)
@@ -1135,84 +1476,5 @@ namespace RoombaSharp
 
         #endregion
 
-        private void pbRoomba_Paint(object sender, PaintEventArgs e)
-        {
-
-            bool cliffLeft = false;
-            bool cliffCenterLeft = false;
-            bool cliffCenterRight = false;
-            bool cliffRight = false;
-            bool wheelDropLeft = false;
-            bool wheelDropRight = false;
-            bool bumperLeft = false;
-            bool bumperRight = false;
-            bool wallSensor = false;
-
-            // Brushes
-            SolidBrush brushRed       = new SolidBrush(Color.Red);
-            SolidBrush brushLimeGreen = new SolidBrush(Color.LimeGreen);
-            SolidBrush brushBase      = new SolidBrush(Color.Black);
-            SolidBrush brushWheel     = new SolidBrush(Color.Gray);
-
-            // Pens
-            Pen penBumperRed        = new Pen(brushRed, 5);
-            Pen penBumperLimeGreen  = new Pen(brushLimeGreen, 5);
-            Pen penWallSensor       = new Pen(wallSensor ? brushRed : brushLimeGreen, 5);
-            penWallSensor.DashStyle = DashStyle.Dash;
-
-            // Shapes sizes.
-            Size sizeBase    = new Size(300, 300);
-            Size sizeSensors = new Size(20, 10);
-            Size sizeWheels  = new Size(30, 70);
-
-            // Main center.
-            Point mainCenter = CreateCenter(new Point(this.pbRoomba.Size), this.pbRoomba.Size);
-
-            // Center of shapes.
-            Point centerBase             = CreateCenter(new Point(mainCenter.X      , mainCenter.Y)      , sizeBase);
-            Point centerCliffLeft        = CreateCenter(new Point(mainCenter.X - 100, mainCenter.Y -  70), sizeSensors);
-            Point centerCliffCenterLeft  = CreateCenter(new Point(mainCenter.X -  50, mainCenter.Y - 120), sizeSensors);
-            Point centerCliffCenterRight = CreateCenter(new Point(mainCenter.X +  50, mainCenter.Y - 120), sizeSensors);
-            Point centerCliffRight       = CreateCenter(new Point(mainCenter.X + 100, mainCenter.Y -  70), sizeSensors);
-            Point centerWheelLeft        = CreateCenter(new Point(mainCenter.X - 100, mainCenter.Y)      , sizeWheels);
-            Point centerWheelRight       = CreateCenter(new Point(mainCenter.X + 100, mainCenter.Y)      , sizeWheels);
-                                                                                                               
-            // Graphics modes.
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
-            // Clear background.
-            e.Graphics.Clear(Color.White);
-
-            // Base contour.
-            e.Graphics.FillEllipse(brushBase, new RectangleF(centerBase, sizeBase));
-
-            // Cliff left.
-            e.Graphics.FillRectangle(cliffLeft ? brushRed : brushLimeGreen, new RectangleF(centerCliffLeft, sizeSensors));
-            // Cliff center left.
-            e.Graphics.FillRectangle(cliffCenterLeft ? brushRed : brushLimeGreen, new RectangleF(centerCliffCenterLeft, sizeSensors));
-            // Cliff center right.
-            e.Graphics.FillRectangle(cliffCenterRight ? brushRed : brushLimeGreen, new RectangleF(centerCliffCenterRight, sizeSensors));
-            // Cliff right.
-            e.Graphics.FillRectangle(cliffRight ? brushRed : brushLimeGreen, new RectangleF(centerCliffRight, sizeSensors));
-
-            // Left wheel.
-            e.Graphics.FillRectangle(brushWheel, new RectangleF(centerWheelLeft, sizeWheels));
-            // Left wheel drop.
-            e.Graphics.DrawRectangle(wheelDropLeft ? penBumperRed : penBumperLimeGreen, new Rectangle(centerWheelLeft, sizeWheels));
-            // Right wheel.
-            e.Graphics.FillRectangle(brushWheel, new RectangleF(centerWheelRight, sizeWheels));
-            // Right wheel drop.
-            e.Graphics.DrawRectangle(wheelDropRight ? penBumperRed : penBumperLimeGreen, new Rectangle(centerWheelRight, sizeWheels));
-
-            // Draw bumper left.
-            e.Graphics.DrawArc(bumperRight ? penBumperRed : penBumperLimeGreen, new RectangleF(centerBase, sizeBase), 270, 90);
-            // Draw bumper left.
-            e.Graphics.DrawArc(bumperLeft ? penBumperRed : penBumperLimeGreen, new RectangleF(centerBase, sizeBase), 180, 90);
-
-            // Draw wall.
-            e.Graphics.DrawLine(penWallSensor, mainCenter.X - 200, mainCenter.Y - 170, mainCenter.X + 200, mainCenter.Y - 170);
-            e.Graphics.DrawLine(penWallSensor, mainCenter.X - 200, mainCenter.Y - 180, mainCenter.X + 200, mainCenter.Y - 180);
-            e.Graphics.DrawLine(penWallSensor, mainCenter.X - 200, mainCenter.Y - 190, mainCenter.X + 200, mainCenter.Y - 190);
-        }
     }
 }

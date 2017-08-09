@@ -23,13 +23,10 @@ SOFTWARE.
 */
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 using iRobotRemoteControl.Events;
 
@@ -38,9 +35,12 @@ using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace iRobotRemoteControl
 {
+
+    /// <summary>
+    /// Remote controller class. Its purpose is to communicate 
+    /// </summary>
     public class RemoteController
     {
-
 
         #region Variables
 
@@ -84,6 +84,10 @@ namespace iRobotRemoteControl
 
         #region Constructor
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="address">Broker address.</param>
         public RemoteController(string address)
         {
             this.address = address;
@@ -134,7 +138,7 @@ namespace iRobotRemoteControl
         }
         
         /// <summary>
-        /// 
+        /// Subscribe to input topic.
         /// </summary>
         /// <param name="inputTopic"></param>
         public void SubscribeToInputTopic(string[] inputTopics, byte[] QoS)
@@ -148,7 +152,11 @@ namespace iRobotRemoteControl
                 }
             }
         }
-
+        
+        /// <summary>
+        /// Unsubscribe from topic.
+        /// </summary>
+        /// <param name="inputTopic"></param>
         public void UnsubscribeToInputTopic(string inputTopic)
         {
             // Check and subscribe.
@@ -183,10 +191,10 @@ namespace iRobotRemoteControl
         }
 
         /// <summary>
-        /// 
+        /// Send text data.
         /// </summary>
-        /// <param name="topic"></param>
-        /// <param name="data"></param>
+        /// <param name="topic">Topic</param>
+        /// <param name="data">Data</param>
         public void SendTextData(string topic, string data)
         {
             if (this.mqttClient == null || !this.mqttClient.IsConnected) return;
@@ -204,11 +212,17 @@ namespace iRobotRemoteControl
 
         #region Private Methods
 
+        /// <summary>
+        /// MQTT message handler.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MqttClient_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
             this.OnMessage?.Invoke(this, new BytesEventArgs(e.Message));
         }
 
         #endregion
+
     }
 }
