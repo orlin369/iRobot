@@ -163,17 +163,17 @@ namespace RoombaSharp
         /// </summary>
         private void DrawSCADA()
         {
-            if (this.pbRoomba.InvokeRequired)
+            if (this.pbSCADA.InvokeRequired)
             {
-                this.pbRoomba.BeginInvoke(
+                this.pbSCADA.BeginInvoke(
                     (MethodInvoker)delegate ()
                     {
-                        this.pbRoomba.Refresh();
+                        this.pbSCADA.Refresh();
                     });
             }
             else
             {
-                this.pbRoomba.Refresh();
+                this.pbSCADA.Refresh();
             }
         }
 
@@ -901,17 +901,17 @@ namespace RoombaSharp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void pbRoomba_Paint(object sender, PaintEventArgs e)
+        private void pbSCADA_Paint(object sender, PaintEventArgs e)
         {
             
             bool cliffLeft       = this.sensrosDump.CliffLeft != 0;
             bool cliffFrontLeft  = this.sensrosDump.CliffFrontLeft != 0;
             bool cliffFrontRight = this.sensrosDump.CliffFrontRight != 0;
             bool cliffRight      = this.sensrosDump.CliffRight != 0;
-            bool wheelDropLeft   = (this.sensrosDump.BumpersAndWheelDrops & (byte)8) != 0;
-            bool wheelDropRight  = (this.sensrosDump.BumpersAndWheelDrops & (byte)4) != 0;
-            bool bumperLeft      = (this.sensrosDump.BumpersAndWheelDrops & (byte)2) != 0;
-            bool bumperRight     = (this.sensrosDump.BumpersAndWheelDrops & (byte)1) != 0;
+            bool wheelDropLeft   = (this.sensrosDump.BumpersAndWheelDrops & BumpersAndWheelDropsBits.WHEEL_DROP_LEFT) != 0;
+            bool wheelDropRight  = (this.sensrosDump.BumpersAndWheelDrops & BumpersAndWheelDropsBits.WHEEL_DROP_RIGHT) != 0;
+            bool bumperLeft      = (this.sensrosDump.BumpersAndWheelDrops & BumpersAndWheelDropsBits.BUMP_LEFT) != 0;
+            bool bumperRight     = (this.sensrosDump.BumpersAndWheelDrops & BumpersAndWheelDropsBits.BUMP_RIGHT) != 0;
             bool wallSensor      = this.sensrosDump.Wall != 0;
 
             // Brushes
@@ -932,7 +932,7 @@ namespace RoombaSharp
             Size sizeWheels = new Size(30, 70);
 
             // Main center.
-            Point mainCenter = CreateCenter(new Point(this.pbRoomba.Size), this.pbRoomba.Size);
+            Point mainCenter = CreateCenter(new Point(this.pbSCADA.Size), this.pbSCADA.Size);
 
             // Center of shapes.
             Point centerBase = CreateCenter(new Point(mainCenter.X, mainCenter.Y), sizeBase);

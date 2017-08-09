@@ -104,7 +104,7 @@ namespace RoombaSharp
             this.tbcMain = new System.Windows.Forms.TabControl();
             this.tbpRobot = new System.Windows.Forms.TabPage();
             this.tlpRobot = new System.Windows.Forms.TableLayoutPanel();
-            this.pbRoomba = new System.Windows.Forms.PictureBox();
+            this.pbSCADA = new System.Windows.Forms.PictureBox();
             this.pnlRobotControl = new System.Windows.Forms.Panel();
             this.lblRadius = new System.Windows.Forms.Label();
             this.trbRadius = new System.Windows.Forms.TrackBar();
@@ -123,7 +123,7 @@ namespace RoombaSharp
             this.tbcMain.SuspendLayout();
             this.tbpRobot.SuspendLayout();
             this.tlpRobot.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbRoomba)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSCADA)).BeginInit();
             this.pnlRobotControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbSpeed)).BeginInit();
@@ -551,7 +551,7 @@ namespace RoombaSharp
             this.tlpRobot.ColumnCount = 2;
             this.tlpRobot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 400F));
             this.tlpRobot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpRobot.Controls.Add(this.pbRoomba, 1, 0);
+            this.tlpRobot.Controls.Add(this.pbSCADA, 1, 0);
             this.tlpRobot.Controls.Add(this.pnlRobotControl, 0, 0);
             this.tlpRobot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpRobot.Location = new System.Drawing.Point(3, 3);
@@ -561,16 +561,16 @@ namespace RoombaSharp
             this.tlpRobot.Size = new System.Drawing.Size(1033, 463);
             this.tlpRobot.TabIndex = 61;
             // 
-            // pbRoomba
+            // pbSCADA
             // 
-            this.pbRoomba.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbRoomba.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbRoomba.Location = new System.Drawing.Point(403, 3);
-            this.pbRoomba.Name = "pbRoomba";
-            this.pbRoomba.Size = new System.Drawing.Size(627, 457);
-            this.pbRoomba.TabIndex = 48;
-            this.pbRoomba.TabStop = false;
-            this.pbRoomba.Paint += new System.Windows.Forms.PaintEventHandler(this.pbRoomba_Paint);
+            this.pbSCADA.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbSCADA.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbSCADA.Location = new System.Drawing.Point(403, 3);
+            this.pbSCADA.Name = "pbSCADA";
+            this.pbSCADA.Size = new System.Drawing.Size(627, 457);
+            this.pbSCADA.TabIndex = 48;
+            this.pbSCADA.TabStop = false;
+            this.pbSCADA.Paint += new System.Windows.Forms.PaintEventHandler(this.pbSCADA_Paint);
             // 
             // pnlRobotControl
             // 
@@ -746,7 +746,7 @@ namespace RoombaSharp
             this.tbcMain.ResumeLayout(false);
             this.tbpRobot.ResumeLayout(false);
             this.tlpRobot.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbRoomba)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSCADA)).EndInit();
             this.pnlRobotControl.ResumeLayout(false);
             this.pnlRobotControl.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).EndInit();
@@ -812,7 +812,7 @@ namespace RoombaSharp
         private System.Windows.Forms.ToolStripMenuItem tsmiEnableSendingImages;
         private System.Windows.Forms.ToolStripMenuItem tsmiEnableSendingSensors;
         private System.Windows.Forms.TableLayoutPanel tlpRobot;
-        private System.Windows.Forms.PictureBox pbRoomba;
+        private System.Windows.Forms.PictureBox pbSCADA;
         private System.Windows.Forms.Panel pnlRobotControl;
         private System.Windows.Forms.Label lblRadius;
         private System.Windows.Forms.TrackBar trbRadius;
