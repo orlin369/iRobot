@@ -24,6 +24,9 @@ SOFTWARE.
 
 namespace iRobot.Data
 {
+    /// <summary>
+    /// Bumpers and wheel DropsBits
+    /// </summary>
     public static class BumpersAndWheelDropsBits
     {
         /// <summary>

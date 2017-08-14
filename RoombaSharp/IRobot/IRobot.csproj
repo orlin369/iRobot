@@ -41,6 +41,7 @@
     <Compile Include="Communicators\ICommunicationAddapter.cs" />
     <Compile Include="Communicators\SerialCommunicator.cs" />
     <Compile Include="Data\BaudRates.cs" />
+    <Compile Include="Data\BumpersAndWheelDropsBits.cs" />
     <Compile Include="Data\ChargingState.cs" />
     <Compile Include="Data\OIMode.cs" />
     <Compile Include="Data\RoombaOpcodes.cs" />
