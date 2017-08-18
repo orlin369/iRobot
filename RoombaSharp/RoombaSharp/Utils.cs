@@ -84,20 +84,6 @@ namespace RoombaSharp
         }
 
         /// <summary>
-        /// Converts byte aray to structure.
-        /// </summary>
-        /// <typeparam name="T">Type of the structure.</typeparam>
-        /// <param name="bytes">Bytes for the structure.</param>
-        /// <returns>Type of the structure.</returns>
-        public static T ByteArrayToStructure<T>(byte[] bytes) where T : struct
-        {
-            var handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-            var result = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
-            handle.Free();
-            return result;
-        }
-
-        /// <summary>
         /// Converts byte arrays to hex string.
         /// </summary>
         /// <param name="bytes">Byte array</param>

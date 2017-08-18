@@ -1078,7 +1078,7 @@ namespace RoombaSharp
             byte[] byteData = e.Message;
 
             // Convert it to sensor structure.
-            Struct6 sensros = Utils.ByteArrayToStructure<Struct6>(byteData);
+            Struct6 sensros = iRobot.Utils.ByteArrayToStructure<Struct6>(byteData);
 
             // Dump all the data.
             this.sensrosDump = sensros;
