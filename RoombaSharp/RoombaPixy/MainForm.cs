@@ -1,14 +1,41 @@
-﻿using AForge;
+﻿/*
+ MIT License
+
+Copyright (c) [2016] [Orlin Dimitrov]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial SerialPortions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+using AForge;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
 using AForge.Video;
 using AForge.Video.DirectShow;
+
 using iRobot;
 using iRobot.Communicators;
 using iRobot.Data;
 using iRobot.Events;
+
 using RoombaSharp.Video;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,6 +52,7 @@ namespace RoombaPixy
 {
     public partial class MainForm : Form
     {
+
         #region Variables
 
         #region Robot
@@ -75,22 +103,44 @@ namespace RoombaPixy
 
         #endregion
 
+        #region Image Processing
+
+        /// <summary>
+        /// Processed image.
+        /// </summary>
+        private Bitmap processedImage = null;
+
+        /// <summary>
+        /// Blob counter.
+        /// </summary>
+        private BlobCounter blobCounter = new BlobCounter();
+
+        /// <summary>
+        /// Found blobs.
+        /// </summary>
+        private Blob[] blobs;
+
+        /// <summary>
+        /// Draw font.
+        /// </summary>
+        private Font drawFont;
+
+        /// <summary>
+        /// First stage color filter.
+        /// </summary>
+        private ColorFiltering colorFilter = new ColorFiltering(new IntRange(0, 30), new IntRange(150, 255), new IntRange(0, 30));
+
+        /// <summary>
+        /// Second stage color filter.
+        /// </summary>
+        private Invert invertFilter = new Invert();
+
+        #endregion
+        
         /// <summary>
         /// Log messages sync lock object.
         /// </summary>
         private object syncLockLogs = new object();
-
-        private Bitmap image = null;
-
-        private BlobCounter blobCounter = new BlobCounter();
-
-        private Blob[] blobs;
-
-        private Font drawFont;
-
-        private ColorFiltering colorFilter = new ColorFiltering(new IntRange(0, 30), new IntRange(150, 255), new IntRange(0, 30));
-
-        private Invert invertFilter = new Invert();
 
         #endregion
 
@@ -440,7 +490,7 @@ namespace RoombaPixy
                 this.pbCamera.Image = image;
             }
 
-            this.image = image;
+            this.processedImage = image;
         }
 
         #endregion
@@ -536,10 +586,10 @@ namespace RoombaPixy
         private void ProcessImage(Bitmap processedImage)
         {
             // Make a copy.
-            this.image = AForge.Imaging.Image.Clone(processedImage, PixelFormat.Format24bppRgb);
+            this.processedImage = AForge.Imaging.Image.Clone(processedImage, PixelFormat.Format24bppRgb);
 
             // Apply color filter.
-            Bitmap filteredImage = this.colorFilter.Apply(this.image);
+            Bitmap filteredImage = this.colorFilter.Apply(this.processedImage);
             // filteredImage = invertFilter.Apply(filteredImage);
 
             // Process blobs.
@@ -554,7 +604,7 @@ namespace RoombaPixy
 
         private void pbCamera_MouseDown(object sender, MouseEventArgs e)
         {
-            Color color = this.image.GetPixel(e.X, e.Y);
+            Color color = this.processedImage.GetPixel(e.X, e.Y);
             tbConsole.AppendText($"Red: {color.R} Green: {color.G} Blue: {color.B}");
         }
 
@@ -562,7 +612,7 @@ namespace RoombaPixy
 
         private void tsmiSnap_Click(object sender, EventArgs e)
         {
-            this.image.Save("Image.png" + counter);
+            this.processedImage.Save("Image.png" + counter);
 
             counter++;
         }
