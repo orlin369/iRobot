@@ -548,6 +548,8 @@ namespace RoombaPixy
 
         #endregion
 
+        #region Robot
+
         /// <summary>
         /// Connect to the robot.
         /// </summary>
@@ -562,8 +564,22 @@ namespace RoombaPixy
 
         #endregion
 
+        private void tsmiSnap_Click(object sender, EventArgs e)
+        {
+            this.processedImage.Save("Image.png" + counter);
+
+            counter++;
+        }
+
+        #endregion
+
         #region pbCamera
 
+        /// <summary>
+        /// Paint the image from the camera.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pbCamera_Paint(object sender, PaintEventArgs e)
         {
             if (this.blobs == null) return;
@@ -579,6 +595,17 @@ namespace RoombaPixy
                 e.Graphics.DrawRectangle(Pens.Red, rect);
                 e.Graphics.DrawString(blob.ID.ToString(), drawFont, Brushes.Red, new System.Drawing.Point(rect.Location.X + 20, rect.Location.Y + 20));
             }
+        }
+
+        /// <summary>
+        /// Saves the color pointed from picture box.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pbCamera_MouseDown(object sender, MouseEventArgs e)
+        {
+            Color color = this.processedImage.GetPixel(e.X, e.Y);
+            tbConsole.AppendText($"Red: {color.R} Green: {color.G} Blue: {color.B}");
         }
 
         #endregion
@@ -602,19 +629,8 @@ namespace RoombaPixy
             this.ShowImage(filteredImage);
         }
 
-        private void pbCamera_MouseDown(object sender, MouseEventArgs e)
-        {
-            Color color = this.processedImage.GetPixel(e.X, e.Y);
-            tbConsole.AppendText($"Red: {color.R} Green: {color.G} Blue: {color.B}");
-        }
 
         private static int counter = 1;
 
-        private void tsmiSnap_Click(object sender, EventArgs e)
-        {
-            this.processedImage.Save("Image.png" + counter);
-
-            counter++;
-        }
     }
 }

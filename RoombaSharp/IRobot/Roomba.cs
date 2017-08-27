@@ -207,7 +207,21 @@ namespace iRobot
             byte[] command = { (byte)RoombaOpcodes.LEDS,  leds, color, intensity };
             this.commandQueue.PutToQue(command);
         }
-        
+
+        /// <summary>
+        /// This command sets Roomba’s clock.
+        /// </summary>
+        /// <param name="day">Day</param>
+        /// <param name="hour">Hour [00-23]</param>
+        /// <param name="minute">Minute [00-95]</param>
+        public void SetDayTime(DayCodes day, byte hour, byte minute)
+        {
+            if (hour > 23 || minute > 59) return;
+
+            byte[] command = { (byte)RoombaOpcodes.SET_DAY_TIME, (byte)day, hour, minute };
+            this.commandQueue.PutToQue(command);
+        }
+
         /// <summary>
         /// This command puts the SCI in safe mode.The SCI must be in 
         /// full mode to accept this command.
