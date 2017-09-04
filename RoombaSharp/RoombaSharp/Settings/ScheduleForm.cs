@@ -58,7 +58,26 @@ namespace RoombaSharp.Settings
 
         private void LoadFields()
         {
-            
+            this.tbMonHour.Text = RoombaSharp.Properties.Settings.Default.SchedulingData.Monday.Hour.ToString();
+            this.tbMonMinute.Text = RoombaSharp.Properties.Settings.Default.SchedulingData.Monday.Minute.ToString();
+
+            this.tbMonHour.Text = RoombaSharp.Properties.Settings.Default.SchedulingData.Monday.Hour.ToString();
+            this.tbMonMinute.Text = RoombaSharp.Properties.Settings.Default.SchedulingData.Monday.Minute.ToString();
+
+            this.tbMonHour.Text = RoombaSharp.Properties.Settings.Default.SchedulingData.Monday.Hour.ToString();
+            this.tbMonMinute.Text = RoombaSharp.Properties.Settings.Default.SchedulingData.Monday.Minute.ToString();
+
+            this.tbMonHour.Text = RoombaSharp.Properties.Settings.Default.SchedulingData.Monday.Hour.ToString();
+            this.tbMonMinute.Text = RoombaSharp.Properties.Settings.Default.SchedulingData.Monday.Minute.ToString();
+
+            this.tbMonHour.Text = RoombaSharp.Properties.Settings.Default.SchedulingData.Monday.Hour.ToString();
+            this.tbMonMinute.Text = RoombaSharp.Properties.Settings.Default.SchedulingData.Monday.Minute.ToString();
+
+            this.tbMonHour.Text = RoombaSharp.Properties.Settings.Default.SchedulingData.Monday.Hour.ToString();
+            this.tbMonMinute.Text = RoombaSharp.Properties.Settings.Default.SchedulingData.Monday.Minute.ToString();
+
+            this.tbMonHour.Text = RoombaSharp.Properties.Settings.Default.SchedulingData.Monday.Hour.ToString();
+            this.tbMonMinute.Text = RoombaSharp.Properties.Settings.Default.SchedulingData.Monday.Minute.ToString();
         }
 
         private void SaveFields()
@@ -163,6 +182,5 @@ namespace RoombaSharp.Settings
         }
 
         #endregion
-
     }
 }
