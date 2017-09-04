@@ -208,6 +208,35 @@ namespace iRobot
             this.commandQueue.PutToQue(command);
         }
 
+
+        public void Schedule(ScheduleData scheduleData)
+        {
+            if (scheduleData == null) return;
+            if (!scheduleData.IsValid()) return;
+
+            byte[] command =
+            {
+                (byte)RoombaOpcodes.SCHEDULE,
+                (byte)scheduleData.Days,
+                (byte)scheduleData.Sunday.Hour,
+                (byte)scheduleData.Sunday.Minute,
+                (byte)scheduleData.Monday.Hour,
+                (byte)scheduleData.Monday.Minute,
+                (byte)scheduleData.Tuesday.Hour,
+                (byte)scheduleData.Tuesday.Minute,
+                (byte)scheduleData.Wednesday.Hour,
+                (byte)scheduleData.Wednesday.Minute,
+                (byte)scheduleData.Thursday.Hour,
+                (byte)scheduleData.Thursday.Minute,
+                (byte)scheduleData.Friday.Hour,
+                (byte)scheduleData.Friday.Minute,
+                (byte)scheduleData.Saturday.Hour,
+                (byte)scheduleData.Saturday.Minute,
+            };
+
+            this.commandQueue.PutToQue(command);
+        }
+
         /// <summary>
         /// This command sets Roomba’s clock.
         /// </summary>
@@ -218,7 +247,6 @@ namespace iRobot
 
             this.SetDayTime(dateTime.DayOfWeek, dateTime.Hour, dateTime.Minute);
         }
-
 
         /// <summary>
         /// This command sets Roomba’s clock.

@@ -45,6 +45,7 @@
     <Compile Include="Data\ChargingState.cs" />
     <Compile Include="Data\OIMode.cs" />
     <Compile Include="Data\RoombaOpcodes.cs" />
+    <Compile Include="Data\ScheduleData.cs" />
     <Compile Include="Data\SensorPacketsIDs.cs" />
     <Compile Include="Data\Struct6.cs" />
     <Compile Include="Events\BytesEventArgs.cs" />
