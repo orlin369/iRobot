@@ -43,7 +43,6 @@
     <Compile Include="Data\BaudRates.cs" />
     <Compile Include="Data\BumpersAndWheelDropsBits.cs" />
     <Compile Include="Data\ChargingState.cs" />
-    <Compile Include="Data\DayCodes.cs" />
     <Compile Include="Data\OIMode.cs" />
     <Compile Include="Data\RoombaOpcodes.cs" />
     <Compile Include="Data\SensorPacketsIDs.cs" />

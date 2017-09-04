@@ -51,6 +51,7 @@ namespace iRobot.Data
         DIGITAL_OUTPUT = 147, //0x93
         QUERY_LIST = 149,     //0x95
         DIGIT_LEDs_RAW = 163, //0xA3
+        SCHEDULE = 167,       //
         SET_DAY_TIME = 168,   //
     }
 }
