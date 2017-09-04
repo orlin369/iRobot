@@ -48,7 +48,6 @@ namespace RoombaSharp.Settings
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            this.PaseData();
             this.DialogResult = DialogResult.OK;
         }
 
@@ -57,12 +56,46 @@ namespace RoombaSharp.Settings
             this.DialogResult = DialogResult.Cancel;
         }
 
-        #region Private Methods
-
-        private void PaseData()
+        private void LoadFields()
         {
-            throw new NotImplementedException();
+            
         }
+
+        private void SaveFields()
+        {
+            /*
+            try
+            {
+                int borkerPort;
+
+                // Validate baud rate.
+                if (int.TryParse(this.tbBrokerPort.Text.Trim(), out borkerPort))
+                {
+                    if (borkerPort < 0 || borkerPort > 65535)
+                    {
+                        MessageBox.Show("Invalid Broker port. [0 - 65535]", "Invalid value", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+
+                    Properties.Settings.Default.BrokerPort = borkerPort;
+                    // Save settings.
+                    Properties.Settings.Default.Save();
+                }
+                else
+                {
+                    MessageBox.Show("Invalid Broker port.", "Invalid value", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(String.Format("Message: {0}\r\nSource: {1}", err.Message, err.Source), "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            */
+        }
+        
+        #region Private Methods
 
         private void SetDay(DayOfWeek day, bool enableDay)
         {

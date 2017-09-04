@@ -106,5 +106,16 @@ namespace RoombaSharp.Properties {
                 this["UpdateInterval"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::iRobot.Data.ScheduleData SchedulingData {
+            get {
+                return ((global::iRobot.Data.ScheduleData)(this["SchedulingData"]));
+            }
+            set {
+                this["SchedulingData"] = value;
+            }
+        }
     }
 }
