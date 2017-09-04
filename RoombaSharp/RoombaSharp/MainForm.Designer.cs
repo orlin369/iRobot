@@ -88,6 +88,9 @@ namespace RoombaSharp
             this.tsmiDisplayTest = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSensors = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiParamettersGroup6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSetDayTime = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSetFromPC = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSetSpecific = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCameraCapture = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiStopCapture = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMqttServer = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,9 +120,7 @@ namespace RoombaSharp
             this.btnUp = new System.Windows.Forms.Button();
             this.tbpCamera = new System.Windows.Forms.TabPage();
             this.pbCamera = new System.Windows.Forms.PictureBox();
-            this.tsmiSetDayTime = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiSetFromPC = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiSetSpecific = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSchedule = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.ssMain.SuspendLayout();
             this.tlpMain.SuspendLayout();
@@ -163,24 +164,24 @@ namespace RoombaSharp
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(113, 6);
             // 
             // tsmiSettings
             // 
             this.tsmiSettings.Name = "tsmiSettings";
-            this.tsmiSettings.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSettings.Size = new System.Drawing.Size(116, 22);
             this.tsmiSettings.Text = "Settings";
             this.tsmiSettings.Click += new System.EventHandler(this.tsmiSettings_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(113, 6);
             // 
             // tsmiExit
             // 
             this.tsmiExit.Name = "tsmiExit";
-            this.tsmiExit.Size = new System.Drawing.Size(152, 22);
+            this.tsmiExit.Size = new System.Drawing.Size(116, 22);
             this.tsmiExit.Text = "Exit";
             this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
@@ -194,7 +195,8 @@ namespace RoombaSharp
             this.tsmiButtons,
             this.tsmiDisplay,
             this.tsmiSensors,
-            this.tsmiSetDayTime});
+            this.tsmiSetDayTime,
+            this.tsmiSchedule});
             this.tsmiRobot.Name = "tsmiRobot";
             this.tsmiRobot.Size = new System.Drawing.Size(51, 20);
             this.tsmiRobot.Text = "Robot";
@@ -416,6 +418,28 @@ namespace RoombaSharp
             this.tsmiParamettersGroup6.Size = new System.Drawing.Size(188, 22);
             this.tsmiParamettersGroup6.Text = "Group 6";
             this.tsmiParamettersGroup6.Click += new System.EventHandler(this.tsmiParamettersGroup6_Click);
+            // 
+            // tsmiSetDayTime
+            // 
+            this.tsmiSetDayTime.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiSetFromPC,
+            this.tsmiSetSpecific});
+            this.tsmiSetDayTime.Name = "tsmiSetDayTime";
+            this.tsmiSetDayTime.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSetDayTime.Text = "Set Day Time";
+            // 
+            // tsmiSetFromPC
+            // 
+            this.tsmiSetFromPC.Name = "tsmiSetFromPC";
+            this.tsmiSetFromPC.Size = new System.Drawing.Size(137, 22);
+            this.tsmiSetFromPC.Text = "Set from PC";
+            this.tsmiSetFromPC.Click += new System.EventHandler(this.tsmiSetFromPC_Click);
+            // 
+            // tsmiSetSpecific
+            // 
+            this.tsmiSetSpecific.Name = "tsmiSetSpecific";
+            this.tsmiSetSpecific.Size = new System.Drawing.Size(137, 22);
+            this.tsmiSetSpecific.Text = "Set Specific";
             // 
             // tsmiCameraCapture
             // 
@@ -725,27 +749,12 @@ namespace RoombaSharp
             this.pbCamera.TabIndex = 34;
             this.pbCamera.TabStop = false;
             // 
-            // tsmiSetDayTime
+            // tsmiSchedule
             // 
-            this.tsmiSetDayTime.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiSetFromPC,
-            this.tsmiSetSpecific});
-            this.tsmiSetDayTime.Name = "tsmiSetDayTime";
-            this.tsmiSetDayTime.Size = new System.Drawing.Size(152, 22);
-            this.tsmiSetDayTime.Text = "Set Day Time";
-            // 
-            // tsmiSetFromPC
-            // 
-            this.tsmiSetFromPC.Name = "tsmiSetFromPC";
-            this.tsmiSetFromPC.Size = new System.Drawing.Size(152, 22);
-            this.tsmiSetFromPC.Text = "Set from PC";
-            this.tsmiSetFromPC.Click += new System.EventHandler(this.tsmiSetFromPC_Click);
-            // 
-            // tsmiSetSpecific
-            // 
-            this.tsmiSetSpecific.Name = "tsmiSetSpecific";
-            this.tsmiSetSpecific.Size = new System.Drawing.Size(152, 22);
-            this.tsmiSetSpecific.Text = "Set Specific";
+            this.tsmiSchedule.Name = "tsmiSchedule";
+            this.tsmiSchedule.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSchedule.Text = "Schedule";
+            this.tsmiSchedule.Click += new System.EventHandler(this.tsmiSchedule_Click);
             // 
             // MainForm
             // 
@@ -852,6 +861,7 @@ namespace RoombaSharp
         private System.Windows.Forms.ToolStripMenuItem tsmiSetDayTime;
         private System.Windows.Forms.ToolStripMenuItem tsmiSetFromPC;
         private System.Windows.Forms.ToolStripMenuItem tsmiSetSpecific;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSchedule;
     }
 }
 

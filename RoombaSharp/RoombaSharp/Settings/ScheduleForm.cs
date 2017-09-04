@@ -31,14 +31,69 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using iRobot.Data;
 
 namespace RoombaSharp.Settings
 {
     public partial class ScheduleForm : Form
     {
+        public ScheduleData ScheduleData { get; private set; }
+
         public ScheduleForm()
         {
             InitializeComponent();
         }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            this.PaseData();
+            this.DialogResult = DialogResult.OK;
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+        }
+
+        private void PaseData()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void cbSunEnb_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbMonEnb_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbTueEnb_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbWedEnb_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbThuEnb_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbFriEnb_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbSatEnb_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

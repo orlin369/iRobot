@@ -42,6 +42,7 @@ using iRobot.Communicators;
 using RoombaSharp.Video;
 using iRobotRemoteControl;
 using System.Drawing.Drawing2D;
+using RoombaSharp.Settings;
 
 namespace RoombaSharp
 {
@@ -1486,5 +1487,21 @@ namespace RoombaSharp
 
         #endregion
 
+        private void tsmiSchedule_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            using (ScheduleForm sf = new ScheduleForm())
+            {
+                DialogResult result = sf.ShowDialog();
+
+                if(result == DialogResult.OK)
+                {
+                    ScheduleData scheduleDate = sf.ScheduleData;
+
+                    robot.Schedule(scheduleDate);
+                }
+            }
+        }
     }
 }
