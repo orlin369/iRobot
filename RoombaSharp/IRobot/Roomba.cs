@@ -208,7 +208,10 @@ namespace iRobot
             this.commandQueue.PutToQue(command);
         }
 
-
+        /// <summary>
+        /// Schedule the robot.
+        /// </summary>
+        /// <param name="scheduleData">Schedule data.</param>
         public void Schedule(ScheduleData scheduleData)
         {
             if (scheduleData == null) return;

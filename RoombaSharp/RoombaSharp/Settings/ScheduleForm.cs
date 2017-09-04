@@ -42,6 +42,8 @@ namespace RoombaSharp.Settings
         public ScheduleForm()
         {
             InitializeComponent();
+
+            this.ScheduleData = new ScheduleData();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -55,45 +57,79 @@ namespace RoombaSharp.Settings
             this.DialogResult = DialogResult.Cancel;
         }
 
+        #region Private Methods
+
         private void PaseData()
         {
             throw new NotImplementedException();
         }
 
+        private void SetDay(DayOfWeek day, bool enableDay)
+        {
+            if(enableDay)
+            {
+                this.ScheduleData.Days = (DayOfWeek)iRobot.Utils.BitSet((byte)this.ScheduleData.Days, (byte)day);
+            }
+            else
+            {
+                this.ScheduleData.Days = (DayOfWeek)iRobot.Utils.BitSet((byte)this.ScheduleData.Days, (byte)day);
+            }
+        }
+
+        #endregion
+
+        #region Check Boxes
+
         private void cbSunEnb_CheckedChanged(object sender, EventArgs e)
         {
+            CheckBox component = (CheckBox)sender;
 
+            this.SetDay(DayOfWeek.Sunday, component.Checked);
         }
 
         private void cbMonEnb_CheckedChanged(object sender, EventArgs e)
         {
+            CheckBox component = (CheckBox)sender;
 
+            this.SetDay(DayOfWeek.Monday, component.Checked);
         }
 
         private void cbTueEnb_CheckedChanged(object sender, EventArgs e)
         {
+            CheckBox component = (CheckBox)sender;
 
+            this.SetDay(DayOfWeek.Tuesday, component.Checked);
         }
 
         private void cbWedEnb_CheckedChanged(object sender, EventArgs e)
         {
+            CheckBox component = (CheckBox)sender;
 
+            this.SetDay(DayOfWeek.Wednesday, component.Checked);
         }
 
         private void cbThuEnb_CheckedChanged(object sender, EventArgs e)
         {
+            CheckBox component = (CheckBox)sender;
 
+            this.SetDay(DayOfWeek.Thursday, component.Checked);
         }
 
         private void cbFriEnb_CheckedChanged(object sender, EventArgs e)
         {
+            CheckBox component = (CheckBox)sender;
 
+            this.SetDay(DayOfWeek.Friday, component.Checked);
         }
 
         private void cbSatEnb_CheckedChanged(object sender, EventArgs e)
         {
+            CheckBox component = (CheckBox)sender;
 
+            this.SetDay(DayOfWeek.Saturday, component.Checked);
         }
+
+        #endregion
 
     }
 }

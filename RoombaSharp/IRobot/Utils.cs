@@ -45,5 +45,37 @@ namespace iRobot
             return result;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static byte BitSet(byte value, byte index)
+        {
+            return (byte)(value | (1 << index));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static byte BitClear(byte value, byte index)
+        {
+            return (byte)(value & ~(1 << index));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static byte BitToggle(byte value, byte index)
+        {
+            return (byte)(value ^ (1 << index));
+        }
     }
 }
