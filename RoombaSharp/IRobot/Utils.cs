@@ -77,5 +77,16 @@ namespace iRobot
         {
             return (byte)(value ^ (1 << index));
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static bool GetBit(this byte value, int index)
+        {
+            return (value & (1 << index)) != 0;
+        }
     }
 }

@@ -40,17 +40,17 @@
             this.tbThuMinute = new System.Windows.Forms.TextBox();
             this.tbFriHour = new System.Windows.Forms.TextBox();
             this.tbFriMinute = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lblMonday = new System.Windows.Forms.Label();
+            this.lblTuesday = new System.Windows.Forms.Label();
+            this.lblThursday = new System.Windows.Forms.Label();
+            this.lblWednesday = new System.Windows.Forms.Label();
+            this.lblFriday = new System.Windows.Forms.Label();
             this.tbSatMinute = new System.Windows.Forms.TextBox();
             this.tbSatHour = new System.Windows.Forms.TextBox();
             this.tbSunMinute = new System.Windows.Forms.TextBox();
             this.tbSunHour = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
+            this.lblSaturday = new System.Windows.Forms.Label();
+            this.lblSunday = new System.Windows.Forms.Label();
             this.cbMonEnb = new System.Windows.Forms.CheckBox();
             this.cbTueEnb = new System.Windows.Forms.CheckBox();
             this.cbThuEnb = new System.Windows.Forms.CheckBox();
@@ -150,50 +150,50 @@
             this.tbFriMinute.Size = new System.Drawing.Size(100, 20);
             this.tbFriMinute.TabIndex = 11;
             // 
-            // label1
+            // lblMonday
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(61, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "label1";
+            this.lblMonday.AutoSize = true;
+            this.lblMonday.Location = new System.Drawing.Point(51, 15);
+            this.lblMonday.Name = "lblMonday";
+            this.lblMonday.Size = new System.Drawing.Size(45, 13);
+            this.lblMonday.TabIndex = 12;
+            this.lblMonday.Text = "Monday";
             // 
-            // label2
+            // lblTuesday
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(61, 41);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "label2";
+            this.lblTuesday.AutoSize = true;
+            this.lblTuesday.Location = new System.Drawing.Point(48, 41);
+            this.lblTuesday.Name = "lblTuesday";
+            this.lblTuesday.Size = new System.Drawing.Size(48, 13);
+            this.lblTuesday.TabIndex = 13;
+            this.lblTuesday.Text = "Tuesday";
             // 
-            // label3
+            // lblThursday
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(61, 67);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
-            this.label3.TabIndex = 14;
-            this.label3.Text = "label3";
+            this.lblThursday.AutoSize = true;
+            this.lblThursday.Location = new System.Drawing.Point(45, 93);
+            this.lblThursday.Name = "lblThursday";
+            this.lblThursday.Size = new System.Drawing.Size(51, 13);
+            this.lblThursday.TabIndex = 14;
+            this.lblThursday.Text = "Thursday";
             // 
-            // label4
+            // lblWednesday
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(61, 93);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
-            this.label4.TabIndex = 15;
-            this.label4.Text = "label4";
+            this.lblWednesday.AutoSize = true;
+            this.lblWednesday.Location = new System.Drawing.Point(32, 67);
+            this.lblWednesday.Name = "lblWednesday";
+            this.lblWednesday.Size = new System.Drawing.Size(64, 13);
+            this.lblWednesday.TabIndex = 15;
+            this.lblWednesday.Text = "Wednesday";
             // 
-            // label5
+            // lblFriday
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(61, 119);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(35, 13);
-            this.label5.TabIndex = 16;
-            this.label5.Text = "label5";
+            this.lblFriday.AutoSize = true;
+            this.lblFriday.Location = new System.Drawing.Point(61, 119);
+            this.lblFriday.Name = "lblFriday";
+            this.lblFriday.Size = new System.Drawing.Size(35, 13);
+            this.lblFriday.TabIndex = 16;
+            this.lblFriday.Text = "Friday";
             // 
             // tbSatMinute
             // 
@@ -223,23 +223,23 @@
             this.tbSunHour.Size = new System.Drawing.Size(100, 20);
             this.tbSunHour.TabIndex = 19;
             // 
-            // label6
+            // lblSaturday
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(61, 145);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(35, 13);
-            this.label6.TabIndex = 21;
-            this.label6.Text = "label6";
+            this.lblSaturday.AutoSize = true;
+            this.lblSaturday.Location = new System.Drawing.Point(47, 145);
+            this.lblSaturday.Name = "lblSaturday";
+            this.lblSaturday.Size = new System.Drawing.Size(49, 13);
+            this.lblSaturday.TabIndex = 21;
+            this.lblSaturday.Text = "Saturday";
             // 
-            // label7
+            // lblSunday
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(61, 171);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(35, 13);
-            this.label7.TabIndex = 22;
-            this.label7.Text = "label7";
+            this.lblSunday.AutoSize = true;
+            this.lblSunday.Location = new System.Drawing.Point(53, 171);
+            this.lblSunday.Name = "lblSunday";
+            this.lblSunday.Size = new System.Drawing.Size(43, 13);
+            this.lblSunday.TabIndex = 22;
+            this.lblSunday.Text = "Sunday";
             // 
             // cbMonEnb
             // 
@@ -330,17 +330,17 @@
             this.Controls.Add(this.cbThuEnb);
             this.Controls.Add(this.cbTueEnb);
             this.Controls.Add(this.cbMonEnb);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.lblSunday);
+            this.Controls.Add(this.lblSaturday);
             this.Controls.Add(this.tbSunMinute);
             this.Controls.Add(this.tbSunHour);
             this.Controls.Add(this.tbSatMinute);
             this.Controls.Add(this.tbSatHour);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblFriday);
+            this.Controls.Add(this.lblWednesday);
+            this.Controls.Add(this.lblThursday);
+            this.Controls.Add(this.lblTuesday);
+            this.Controls.Add(this.lblMonday);
             this.Controls.Add(this.tbFriMinute);
             this.Controls.Add(this.tbFriHour);
             this.Controls.Add(this.tbThuMinute);
@@ -355,6 +355,8 @@
             this.Controls.Add(this.btnOK);
             this.Name = "ScheduleForm";
             this.Text = "ScheduleForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScheduleForm_FormClosing);
+            this.Load += new System.EventHandler(this.ScheduleForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -374,17 +376,17 @@
         private System.Windows.Forms.TextBox tbThuMinute;
         private System.Windows.Forms.TextBox tbFriHour;
         private System.Windows.Forms.TextBox tbFriMinute;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblMonday;
+        private System.Windows.Forms.Label lblTuesday;
+        private System.Windows.Forms.Label lblThursday;
+        private System.Windows.Forms.Label lblWednesday;
+        private System.Windows.Forms.Label lblFriday;
         private System.Windows.Forms.TextBox tbSatMinute;
         private System.Windows.Forms.TextBox tbSatHour;
         private System.Windows.Forms.TextBox tbSunMinute;
         private System.Windows.Forms.TextBox tbSunHour;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lblSaturday;
+        private System.Windows.Forms.Label lblSunday;
         private System.Windows.Forms.CheckBox cbMonEnb;
         private System.Windows.Forms.CheckBox cbTueEnb;
         private System.Windows.Forms.CheckBox cbThuEnb;

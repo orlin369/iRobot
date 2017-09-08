@@ -30,26 +30,42 @@ namespace iRobot.Data
     public class ScheduleData
     {
 
+        /// <summary>
+        /// Days
+        /// </summary>
         public DayOfWeek Days { get; set; }
 
-        public DateTime Sunday { get; set; }
+        public RoombaDateTime Sunday { get; set; }
 
-        public DateTime Monday { get; set; }
+        public RoombaDateTime Monday { get; set; }
 
-        public DateTime Tuesday { get; set; }
+        public RoombaDateTime Tuesday { get; set; }
 
-        public DateTime Wednesday { get; set; }
+        public RoombaDateTime Wednesday { get; set; }
 
-        public DateTime Thursday { get; set; }
+        public RoombaDateTime Thursday { get; set; }
 
-        public DateTime Friday { get; set; }
+        public RoombaDateTime Friday { get; set; }
 
-        public DateTime Saturday { get; set; }
+        public RoombaDateTime Saturday { get; set; }
 
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ScheduleData()
         {
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Validate data content.
+        /// </summary>
+        /// <returns></returns>
         public bool IsValid()
         {
             bool isValid =
@@ -63,5 +79,8 @@ namespace iRobot.Data
 
             return isValid;
         }
+
+        #endregion
+
     }
 }

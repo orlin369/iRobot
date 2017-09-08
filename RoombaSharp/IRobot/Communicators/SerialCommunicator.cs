@@ -240,7 +240,7 @@ namespace iRobot.Communicators
             catch (Exception exception)
             {
                 // TODO: Create log.
-                this.OnDisconnect?.Invoke(this, null);
+                this.OnDisconnect?.Invoke(exception, null);
             }
         }
 
