@@ -1,5 +1,4 @@
 ﻿/*
- MIT License
 
 Copyright (c) [2016] [Orlin Dimitrov]
 
@@ -11,7 +10,7 @@ copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all
-copies or substantial SerialPortions of the Software.
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -20,67 +19,34 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
 */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace iRobot.Data
+namespace Logger
 {
-    [Serializable]
-    public class ScheduleData
+    /// <summary>
+    /// Describe the LOG messages types.
+    /// </summary>
+    public enum LogMessageTypes
     {
+        /// <summary>
+        /// You must pay attention to this message.
+        /// </summary>
+        Warning,
 
         /// <summary>
-        /// Days
+        /// Something happed that it must not be happening.
         /// </summary>
-        public DayOfWeek Days;
-
-        public RoombaDateTime Sunday;
-
-        public RoombaDateTime Monday;
-
-        public RoombaDateTime Tuesday;
-
-        public RoombaDateTime Wednesday;
-
-        public RoombaDateTime Thursday;
-
-        public RoombaDateTime Friday;
-
-        public RoombaDateTime Saturday;
-
-        #region Constructor
+        Error,
 
         /// <summary>
-        /// Constructor
+        /// Information for some event, process or control message.
         /// </summary>
-        public ScheduleData()
-        {
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Validate data content.
-        /// </summary>
-        /// <returns></returns>
-        public bool IsValid()
-        {
-            bool isValid =
-                   (this.Sunday != null)
-                && (this.Monday != null)
-                && (this.Thursday != null)
-                && (this.Wednesday != null)
-                && (this.Thursday != null)
-                && (this.Friday != null)
-                && (this.Saturday != null);
-
-            return isValid;
-        }
-
-        #endregion
-
+        Info
     }
 }

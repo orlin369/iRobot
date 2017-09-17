@@ -185,7 +185,7 @@ namespace iRobot.Communicators
                     // Discard the duffer.
                     serialPort.DiscardInBuffer();
                 }
-                catch(Exception exception)
+                catch
                 {
                     // TODO: Create log.
                 }
@@ -217,7 +217,7 @@ namespace iRobot.Communicators
                     this.OnConnect?.Invoke(this, null);
                 }
             }
-            catch(Exception exception)
+            catch
             {
                 // TODO: Create log.
                 this.OnDisconnect?.Invoke(this, null);
@@ -261,7 +261,7 @@ namespace iRobot.Communicators
                         this.SerialPort.Write(buffer, offset, count);
                     }
                 }
-                catch (Exception exception)
+                catch
                 {
                     // TODO: Create log.
 

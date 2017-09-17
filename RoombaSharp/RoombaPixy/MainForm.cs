@@ -63,16 +63,6 @@ namespace RoombaPixy
         private Roomba robot;
 
         /// <summary>
-        /// Clean LED intensity.
-        /// </summary>
-        private byte cleanLedIntensity = 0;
-
-        /// <summary>
-        /// Clean LED color.
-        /// </summary>
-        private byte cleanLedColor = 0;
-
-        /// <summary>
         /// Sensors dump
         /// </summary>
         private Struct6 sensrosDump;

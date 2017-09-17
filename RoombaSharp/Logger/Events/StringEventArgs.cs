@@ -24,60 +24,36 @@ SOFTWARE.
 
 using System;
 
-namespace iRobot.Data
+namespace Logger.Events
 {
-    [Serializable]
-    public class ScheduleData
+    public class StringEventArgs : EventArgs
     {
 
+        #region Properties
+
         /// <summary>
-        /// Days
+        /// Message
         /// </summary>
-        public DayOfWeek Days;
+        public string Message { get; private set; }
 
-        public RoombaDateTime Sunday;
-
-        public RoombaDateTime Monday;
-
-        public RoombaDateTime Tuesday;
-
-        public RoombaDateTime Wednesday;
-
-        public RoombaDateTime Thursday;
-
-        public RoombaDateTime Friday;
-
-        public RoombaDateTime Saturday;
+        #endregion
 
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public ScheduleData()
+        public StringEventArgs()
         {
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
-        /// Validate data content.
+        /// Constructor
         /// </summary>
-        /// <returns></returns>
-        public bool IsValid()
+        /// <param name="message">Message data</param>
+        public StringEventArgs(string message)
         {
-            bool isValid =
-                   (this.Sunday != null)
-                && (this.Monday != null)
-                && (this.Thursday != null)
-                && (this.Wednesday != null)
-                && (this.Thursday != null)
-                && (this.Friday != null)
-                && (this.Saturday != null);
-
-            return isValid;
+            this.Message = message;
         }
 
         #endregion

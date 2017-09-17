@@ -22,65 +22,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System;
 
-namespace iRobot.Data
+using System;
+using System.Collections.Generic;
+
+namespace iRobotRemoteControl.Data
 {
     [Serializable]
-    public class ScheduleData
+    public class RequestMessage
     {
+        public byte Opcode;
 
-        /// <summary>
-        /// Days
-        /// </summary>
-        public DayOfWeek Days;
+        public int[] Data;
 
-        public RoombaDateTime Sunday;
-
-        public RoombaDateTime Monday;
-
-        public RoombaDateTime Tuesday;
-
-        public RoombaDateTime Wednesday;
-
-        public RoombaDateTime Thursday;
-
-        public RoombaDateTime Friday;
-
-        public RoombaDateTime Saturday;
-
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public ScheduleData()
+        public byte[] ToCommand()
         {
+            List<byte> command = new List<byte>();
+
+            command.Add(Opcode);
+
+            if(this.Data != null)
+            {
+                foreach (int data in this.Data)
+                {
+                    command.Add((byte)data);
+                }
+            }
+
+            return command.ToArray();
         }
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Validate data content.
-        /// </summary>
-        /// <returns></returns>
-        public bool IsValid()
-        {
-            bool isValid =
-                   (this.Sunday != null)
-                && (this.Monday != null)
-                && (this.Thursday != null)
-                && (this.Wednesday != null)
-                && (this.Thursday != null)
-                && (this.Friday != null)
-                && (this.Saturday != null);
-
-            return isValid;
-        }
-
-        #endregion
-
     }
 }

@@ -32,6 +32,8 @@ using iRobotRemoteControl.Events;
 
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
+using iRobotRemoteControl.Data;
+using Newtonsoft.Json;
 
 namespace iRobotRemoteControl
 {
@@ -78,7 +80,7 @@ namespace iRobotRemoteControl
         /// <summary>
         /// On message received event.
         /// </summary>
-        public event EventHandler<BytesEventArgs> OnMessage;
+        public event EventHandler<RequestMessageEventArgs> OnRequest;
 
         #endregion
 
@@ -219,7 +221,12 @@ namespace iRobotRemoteControl
         /// <param name="e"></param>
         private void MqttClient_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
-            this.OnMessage?.Invoke(this, new BytesEventArgs(e.Message));
+
+            string text = Encoding.ASCII.GetString(e.Message);
+
+            RequestMessage request = JsonConvert.DeserializeObject<RequestMessage>(text);
+
+            this.OnRequest?.Invoke(this, new RequestMessageEventArgs(request));
         }
 
         #endregion

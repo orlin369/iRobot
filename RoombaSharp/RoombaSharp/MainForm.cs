@@ -28,6 +28,8 @@ using System.Threading;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing.Drawing2D;
+using System.IO;
 
 using AForge.Video;
 using AForge.Video.DirectShow;
@@ -39,10 +41,13 @@ using iRobot.Data;
 using iRobot.Events;
 using iRobot.Communicators;
 
-using RoombaSharp.Video;
 using iRobotRemoteControl;
-using System.Drawing.Drawing2D;
+
+using Logger;
+
 using RoombaSharp.Settings;
+using RoombaSharp.Video;
+using iRobotRemoteControl.Events;
 
 namespace RoombaSharp
 {
@@ -118,7 +123,7 @@ namespace RoombaSharp
         /// Send image timer.
         /// </summary>
         private System.Windows.Forms.Timer sendDataTimer;
-        
+
         #endregion
 
         #region Constructor
@@ -133,31 +138,8 @@ namespace RoombaSharp
 
         #endregion
 
+
         #region Private Methods
-
-        /// <summary>
-        /// Log Message
-        /// </summary>
-        /// <param name="message">The message.</param>
-        private void LogMessage(string message)
-        {
-            lock (this.syncLockLogs)
-            {
-                string dataTime = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss");
-
-                if (this.tbConsole.InvokeRequired)
-                {
-                    this.tbConsole.BeginInvoke((MethodInvoker)delegate ()
-                    {
-                        this.tbConsole.AppendText(dataTime + " -> " + message + Environment.NewLine);
-                    });
-                }
-                else
-                {
-                    this.tbConsole.AppendText(dataTime + " -> " + message + Environment.NewLine);
-                }
-            }
-        }
 
         /// <summary>
         /// Draw the sensors.
@@ -203,8 +185,11 @@ namespace RoombaSharp
         /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
+            this.SetupLog();
             this.SearchForPorts();
             this.SearchForCameras();
+
+            this.LogMessage("MainForm.MainForm_Load()", "Application started.", LogMessageTypes.Info);
         }
 
         /// <summary>
@@ -221,6 +206,8 @@ namespace RoombaSharp
             this.DisconnectFromCamera();
 
             this.DisconnectFromServer();
+
+            this.LogMessage("MainForm.MainForm_FormClosing()", "Application stopped.", LogMessageTypes.Info, true);
         }
 
         #endregion
@@ -587,7 +574,8 @@ namespace RoombaSharp
 
                         int waitTime = 1000;
 
-                        this.LogMessage("Group 6");
+                        this.LogMessage("MainForm.tsmiParamettersGroup6_Click()", "Group 6", LogMessageTypes.Info);
+
                         this.robot.Sensors(SensorPacketsIDs.Group6);
                         Thread.Sleep(waitTime);
                     }
@@ -606,6 +594,27 @@ namespace RoombaSharp
         {
             if (this.robot == null || !this.robot.IsConnected) return;
             robot.SetDayTime(DateTime.Now);
+        }
+
+        #endregion
+
+        #region Schedule
+
+        private void tsmiSchedule_Click(object sender, EventArgs e)
+        {
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            using (ScheduleForm sf = new ScheduleForm())
+            {
+                DialogResult result = sf.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    ScheduleData scheduleDate = sf.ScheduleData;
+
+                    robot.Schedule(scheduleDate);
+                }
+            }
         }
 
         #endregion
@@ -733,7 +742,7 @@ namespace RoombaSharp
 
             this.SendTextData(stringTestData);
 
-            this.LogMessage("Send test data to the server.");
+            this.LogMessage("MainForm.tsmiServerTest_Click()", "Send test data to the server.", LogMessageTypes.Info);
         }
 
         private void tsmiEnableSendingSensors_Click(object sender, EventArgs e)
@@ -890,7 +899,7 @@ namespace RoombaSharp
         /// <param name="e"></param>
         private void trbSpeed_ValueChanged(object sender, EventArgs e)
         {
-            this.lblSpeed.Text = String.Format("Speed: {0:F3}[mm/s]", ((float)this.trbSpeed.Value / 5.0));
+            this.lblSpeed.Text = String.Format("Speed: {0}[mm/s]", this.trbSpeed.Value);
         }
 
         /// <summary>
@@ -905,8 +914,8 @@ namespace RoombaSharp
 
         #endregion
 
-        #region pbRoomba
-        
+        #region pbSCADA
+
         /// <summary>
         /// Paints the SCADA.
         /// </summary>
@@ -994,6 +1003,54 @@ namespace RoombaSharp
 
         #endregion
 
+        #region Log
+
+        /// <summary>
+        /// Setup log system.
+        /// </summary>
+        private void SetupLog()
+        {
+            string logPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Logs");
+
+            if (!Directory.Exists(logPath))
+            {
+                Directory.CreateDirectory(logPath);
+            }
+
+            Log.SetLogPath(logPath);
+            Log.SetColectionSize(0);
+            Log.OnLoggedMessage += Log_OnLoggedMessage;
+        }
+
+        /// <summary>
+        /// Log Message
+        /// </summary>
+        /// <param name="message">The message.</param>
+        private void LogMessage(string logSource, string messageText, LogMessageTypes messageType, bool endOfLogs = false)
+        {
+            lock (this.syncLockLogs)
+            {
+                Log.CreateRecord(logSource, messageText, messageType, endOfLogs);
+            }
+        }
+
+        private void Log_OnLoggedMessage(object sender, Logger.Events.StringEventArgs e)
+        {
+            if (this.tbConsole.InvokeRequired)
+            {
+                this.tbConsole.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    this.tbConsole.AppendText(e.Message + Environment.NewLine);
+                });
+            }
+            else
+            {
+                this.tbConsole.AppendText(e.Message + Environment.NewLine);
+            }
+        }
+
+        #endregion
+
         #region Robot
 
         /// <summary>
@@ -1008,7 +1065,7 @@ namespace RoombaSharp
             if (portNames.Length == 0)
             {
                 string message = "A serial port device was not detected.";
-                this.LogMessage(message);
+                this.LogMessage("MainForm.SearchForPorts()", message, LogMessageTypes.Warning);
                 MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 return;
             }
@@ -1054,7 +1111,7 @@ namespace RoombaSharp
             {
                 string message = "Robot Connection: Connected@" + portName;
                 this.tsslRobotConnection.Text = message;
-                this.LogMessage(message);
+                this.LogMessage("MainForm.ConnectToRobot()", message, LogMessageTypes.Info);
             }
         }
 
@@ -1074,7 +1131,7 @@ namespace RoombaSharp
             {
                 string message = "Robot Connection: Disconnected";
                 this.tsslRobotConnection.Text = message;
-                this.LogMessage(message);
+                this.LogMessage("MainForm.DisconnectFromRobot()", message, LogMessageTypes.Info);
             }
         }
 
@@ -1083,7 +1140,7 @@ namespace RoombaSharp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void robot_OnMesage(object sender, BytesEventArgs e)
+        private void robot_OnMesage(object sender, iRobot.Events.BytesEventArgs e)
         {
             // Get the data.
             byte[] byteData = e.Message;
@@ -1101,10 +1158,12 @@ namespace RoombaSharp
             this.SendTextData(serialSensors);
 
             // Log the event.
-            this.LogMessage("Send data to the server.");
+            this.LogMessage("MainForm.robot_OnMesage()", Utils.ToHexText(byteData), LogMessageTypes.Info);
 
             // Draw the SCADA.
             this.DrawSCADA();
+
+
         }
         
         #endregion
@@ -1116,16 +1175,26 @@ namespace RoombaSharp
         /// </summary>
         private void SearchForCameras()
         {
-            // Check to see what video inputs we have available.
-            this.videoDevices = this.GetDevices();
-
-            if (videoDevices.Length == 0)
+            for(;;)
             {
-                string message = "A camera device was not detected.";
-                this.LogMessage(message);
-                MessageBox.Show(message, "",  MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            }
+                // Check to see what video inputs we have available.
+                this.videoDevices = this.GetDevices();
 
+                if (videoDevices.Length == 0)
+                {
+                    string message = "A camera device was not detected.\r\nWolud you like to search again?";
+                    DialogResult result = MessageBox.Show(message, "", MessageBoxButtons.RetryCancel, MessageBoxIcon.Question);
+                    if(result == DialogResult.Cancel)
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
             // Add cameras to the menus.
             this.AddCameras(this.videoDevices, this.tsmiCameraCapture, this.tsmiCaptureeDevice_Click);
         }
@@ -1150,7 +1219,7 @@ namespace RoombaSharp
             this.videoDevice.Start();
 
             // Log this event.
-            this.LogMessage("Video Capture: Started");
+            this.LogMessage("MainForm.ConnecToCamera(string monikerString)", "Video Capture: Started", LogMessageTypes.Info);
         }
 
         /// <summary>
@@ -1170,7 +1239,7 @@ namespace RoombaSharp
             this.videoDevice = null;
 
             // Log this event.
-            this.LogMessage("Video Capture: Stopped");
+            this.LogMessage("MainForm.ConnecToCamera(string monikerString)", "Video Capture: Stopped", LogMessageTypes.Info);
         }
 
         /// <summary>
@@ -1405,17 +1474,17 @@ namespace RoombaSharp
                 this.remoteController = new RemoteController(Properties.Settings.Default.BrokerHost);
                     
 
-                this.remoteController.OnMessage += mqttCommunicator_OnMessage;
+                this.remoteController.OnRequest += mqttCommunicator_OnRequest;
                 this.remoteController.Connect();
                 this.remoteController.SubscribeToInputTopic(new string[] { Properties.Settings.Default.MqttInputTopic }, new byte[] { 0 });
 
                 string message = "MQTT Connection: " + this.remoteController.IsConnected.ToString();
-                this.LogMessage(message);
+                this.LogMessage("MainForm.ConnectToServer()", message, LogMessageTypes.Info);
                 this.tsslMQTTConnection.Text = message;
             }
             catch (Exception exception)
             {
-                this.LogMessage(exception.ToString());
+                this.LogMessage("MainForm.ConnectToServer()", exception.ToString(), LogMessageTypes.Error);
             }
         }
 
@@ -1428,17 +1497,18 @@ namespace RoombaSharp
             {
                 if (this.remoteController != null && this.remoteController.IsConnected)
                 {
-                    this.remoteController.OnMessage -= mqttCommunicator_OnMessage;
+                    this.remoteController.OnRequest -= mqttCommunicator_OnRequest;
                     this.remoteController.Disconnect();
 
                     string message = "MQTT Connection: " + this.remoteController.IsConnected.ToString();
-                    this.LogMessage(message);
+                    this.LogMessage("MainForm.DisconnectFromServer()", message, LogMessageTypes.Info);
+
                     this.tsslMQTTConnection.Text = message;
                 }
             }
             catch (Exception exception)
             {
-                this.LogMessage(exception.ToString());
+                this.LogMessage("MainForm.DisconnectFromServer()", exception.ToString(), LogMessageTypes.Error);
             }
         }
 
@@ -1454,8 +1524,10 @@ namespace RoombaSharp
             {
                 this.remoteController.SendImageData(Properties.Settings.Default.MqttImageTopic, Utils.ResizeImage(image, Properties.Settings.Default.ImageSize));
             }
-            catch
-            { }
+            catch (Exception exception)
+            {
+                this.LogMessage("MainForm.SendImageData(Bitmap image)", exception.ToString(), LogMessageTypes.Error);
+            }
         }
 
         /// <summary>
@@ -1470,8 +1542,10 @@ namespace RoombaSharp
             {
                 this.remoteController.SendTextData(Properties.Settings.Default.MqttOutputTopic, text);
             }
-            catch
-            { }
+            catch (Exception exception)
+            {
+                this.LogMessage("MainForm.SendTextData(string text)", exception.ToString(), LogMessageTypes.Error);
+            }
         }
 
         /// <summary>
@@ -1479,29 +1553,18 @@ namespace RoombaSharp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void mqttCommunicator_OnMessage(object sender, iRobotRemoteControl.Events.BytesEventArgs e)
+        private void mqttCommunicator_OnRequest(object sender, RequestMessageEventArgs e)
         {
-            string text = Encoding.ASCII.GetString(e.Message);
-            this.LogMessage(text);
+            byte[] command = e.Request.ToCommand();
+
+            this.LogMessage("MainForm.mqttCommunicator_OnMessage(object sender, RequestMessageEventArgs e)", Utils.ToHexText(command), LogMessageTypes.Info);
+
+            if (this.robot == null || !this.robot.IsConnected) return;
+
+            this.robot.Command(command);
         }
 
         #endregion
-
-        private void tsmiSchedule_Click(object sender, EventArgs e)
-        {
-            if (this.robot == null || !this.robot.IsConnected) return;
-
-            using (ScheduleForm sf = new ScheduleForm())
-            {
-                DialogResult result = sf.ShowDialog();
-
-                if(result == DialogResult.OK)
-                {
-                    ScheduleData scheduleDate = sf.ScheduleData;
-
-                    robot.Schedule(scheduleDate);
-                }
-            }
-        }
+        
     }
 }

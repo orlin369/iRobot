@@ -154,10 +154,9 @@ namespace iRobot.Queues
                         Thread.Sleep(this.QueueDelay);
                     }
                 }
-                catch (Exception exception)
+                catch
                 {
-                    // Create log.
-                    //Log.CreateRecord("PrintingService.PrintingService.PoolMethod()[GENERAL_EXCEPTION]", exception.ToString() + Environment.NewLine, LogMessageTypes.Error);
+                    // TODO: Create log.
                 }
             }
         }

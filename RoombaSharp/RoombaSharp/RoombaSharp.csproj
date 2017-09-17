@@ -185,6 +185,10 @@
       <Project>{c4f5c4e4-7f65-49fc-8244-7554722280cc}</Project>
       <Name>iRobot</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Logger\Logger.csproj">
+      <Project>{4ccfdd46-550c-4267-a069-4fbceba9db4e}</Project>
+      <Name>Logger</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

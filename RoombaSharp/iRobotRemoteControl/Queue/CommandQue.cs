@@ -127,7 +127,7 @@ namespace Services.Queues
                 }
                 catch
                 {
-
+                    // TODO: Create log.
                 }
             }
 
@@ -154,7 +154,7 @@ namespace Services.Queues
                         Thread.Sleep(this.QueDelay);
                     }
                 }
-                catch (Exception exception)
+                catch
                 {
                     // TODO: Create log.
                     //Log.CreateRecord("PrintingService.PrintingService.PoolMethod()[GENERAL_EXCEPTION]", exception.ToString() + Environment.NewLine, LogMessageTypes.Error);

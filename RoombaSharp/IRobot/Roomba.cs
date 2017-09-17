@@ -151,6 +151,12 @@ namespace iRobot
             this.communicator.OnDisconnect -= Communicator_OnDisconnect;
         }
 
+        public void Command(byte[] command)
+        {
+            this.commandQueue.PutToQue(command);
+        }
+
+
         /// <summary>
         /// Starts the SCI.The Start command must be sent before any
         /// other SCI commands.This command puts the SCI in passive
@@ -634,7 +640,7 @@ namespace iRobot
         {
             this.OnConnect?.Invoke(this, e);
         }
-        
+
         #endregion
 
     }
