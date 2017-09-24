@@ -451,7 +451,7 @@ namespace iRobot
         public void PWMMotors(byte mainBrushPWM, byte sideBrushPWM, byte vacuumPWM)
         {
             // Build command package.
-            byte[] command = { (byte)RoombaOpcodes.PWM_MOTORS, digit3, digit2, digit1 };
+            byte[] command = { (byte)RoombaOpcodes.PWM_MOTORS, mainBrushPWM, sideBrushPWM, vacuumPWM };
 
             // Send command package.
             this.commandQueue.PutToQue(command);
