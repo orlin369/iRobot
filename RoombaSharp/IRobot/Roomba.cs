@@ -646,7 +646,33 @@ namespace iRobot
             // Send command package.
             this.commandQueue.PutToQue(command);
         }
-        
+
+        /// <summary>
+        /// This command starts a stream of data packets.
+        /// The list of packets requested is sent every 15 ms, which is the rate Roomba uses to update data.
+        /// This method of requesting sensor data is best if you are controlling Roomba over a wireless network
+        /// (which has poor real-time characteristics) with software running on a desktop computer.
+        /// Serial sequence: [148] [Number of packets] [Packet ID 1] [Packet ID 2] [Packet ID 3] etc.
+        /// Available in modes: Passive, Safe, or Full
+        /// Changes mode to: No Change 
+        /// </summary>
+        /// <param name="package">Packages IDs</param>
+        public void Stream(byte[] packagesIDs)
+        {
+            if (packagesIDs.Length > 255) return;
+
+            // Command
+            byte[] command = new byte[1 + 1 + packagesIDs.Length];
+
+            // Build command package.
+            Buffer.BlockCopy(new byte[] { (byte)RoombaOpcodes.STREAM }, 0, command, 0, 1);
+            Buffer.BlockCopy(new byte[] { (byte)(packagesIDs.Length) }, 0, command, 1, 1);
+            Buffer.BlockCopy(packagesIDs, 0, command, 2, packagesIDs.Length);
+
+            // Send command package.
+            this.commandQueue.PutToQue(command);
+        }
+
         #endregion
 
         #region Private Methods

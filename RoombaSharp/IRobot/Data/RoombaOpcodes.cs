@@ -50,6 +50,7 @@ namespace iRobot.Data
         DRIVE_DIRECT = 145,     //0x91
         DRIVE_PWN = 146,        //0x92
         DIGITAL_OUTPUT = 147,   //0x93
+        STREAM = 148,           //0x94
         QUERY_LIST = 149,       //0x95
         SCHEDULING_LEDS = 162,  //0xA2
         DIGIT_LEDs_RAW = 163,   //0xA3
