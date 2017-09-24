@@ -10,9 +10,9 @@ namespace iRobot.Data
     public class RoombaDateTime
     {
 
-        public byte Hour;
+        public int Hour;
 
-        public byte Minute;
+        public int Minute;
 
         public RoombaDateTime()
         {

@@ -23,8 +23,8 @@
     <Setting Name="UpdateInterval" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
     </Setting>
-    <Setting Name="SchedulingData" Type="iRobot.Data.ScheduleData" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="SchedulingSettings" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\\Users\\POLYGONTeam Ltd\\Documents\\GitHub\\iRobot\\RoombaSharp\\RoombaSharp\\bin\\Debug\\Settings\\ScheduleData.XML</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -138,41 +138,7 @@ namespace RoombaSharp
 
         #endregion
 
-
         #region Private Methods
-
-        /// <summary>
-        /// Draw the sensors.
-        /// </summary>
-        private void DrawSCADA()
-        {
-            if (this.pbSCADA.InvokeRequired)
-            {
-                this.pbSCADA.BeginInvoke(
-                    (MethodInvoker)delegate ()
-                    {
-                        this.pbSCADA.Refresh();
-                    });
-            }
-            else
-            {
-                this.pbSCADA.Refresh();
-            }
-        }
-
-        /// <summary>
-        /// Create center point.
-        /// </summary>
-        /// <param name="center">Center of the object.</param>
-        /// <param name="size">Size of the system.</param>
-        /// <returns>Center of the coordinate system.</returns>
-        private Point CreateCenter(Point center, Size size)
-        {
-            int x = center.X - (int)(size.Width / 2);
-            int y = center.Y - (int)(size.Height / 2);
-
-            return new Point(x, y);
-        }
 
         #endregion
 
@@ -188,7 +154,6 @@ namespace RoombaSharp
             this.SetupLog();
             this.SearchForPorts();
             this.SearchForCameras();
-
             this.LogMessage("MainForm.MainForm_Load()", "Application started.", LogMessageTypes.Info);
         }
 
@@ -215,6 +180,16 @@ namespace RoombaSharp
         #region Tool Strip Menu Items
 
         #region Robot
+
+        /// <summary>
+        /// Refresh port list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiRobot_Click(object sender, EventArgs e)
+        {
+            this.SearchForPorts();
+        }
 
         /// <summary>
         /// Connect to the robot.
@@ -923,7 +898,7 @@ namespace RoombaSharp
         /// <param name="e"></param>
         private void pbSCADA_Paint(object sender, PaintEventArgs e)
         {
-            
+            // Get sensor data.
             bool cliffLeft       = this.sensrosDump.CliffLeft != 0;
             bool cliffFrontLeft  = this.sensrosDump.CliffFrontLeft != 0;
             bool cliffFrontRight = this.sensrosDump.CliffFrontRight != 0;
@@ -1001,6 +976,40 @@ namespace RoombaSharp
             e.Graphics.DrawLine(penWallSensor, mainCenter.X - 200, mainCenter.Y - 190, mainCenter.X + 200, mainCenter.Y - 190);
         }
 
+        /// <summary>
+        /// Draw the sensors.
+        /// </summary>
+        private void DrawSCADA()
+        {
+            if (this.pbSCADA.InvokeRequired)
+            {
+                this.pbSCADA.BeginInvoke(
+                    (MethodInvoker)delegate ()
+                    {
+                        this.pbSCADA.Refresh();
+                    });
+            }
+            else
+            {
+                this.pbSCADA.Refresh();
+            }
+        }
+
+        /// <summary>
+        /// Create center point.
+        /// </summary>
+        /// <param name="center">Center of the object.</param>
+        /// <param name="size">Size of the system.</param>
+        /// <returns>Center of the coordinate system.</returns>
+        private Point CreateCenter(Point center, Size size)
+        {
+            int x = center.X - (int)(size.Width / 2);
+            int y = center.Y - (int)(size.Height / 2);
+
+            return new Point(x, y);
+        }
+
+
         #endregion
 
         #region Log
@@ -1058,8 +1067,6 @@ namespace RoombaSharp
         /// </summary>
         private void SearchForPorts()
         {
-            this.tsmiConnect.DropDown.Items.Clear();
-
             string[] portNames = System.IO.Ports.SerialPort.GetPortNames();
 
             if (portNames.Length == 0)
@@ -1069,6 +1076,8 @@ namespace RoombaSharp
                 MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 return;
             }
+
+            this.tsmiConnect.DropDown.Items.Clear();
 
             foreach (string item in portNames)
             {
@@ -1565,6 +1574,6 @@ namespace RoombaSharp
         }
 
         #endregion
-        
+
     }
 }

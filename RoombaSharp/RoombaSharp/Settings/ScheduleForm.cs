@@ -23,15 +23,11 @@ SOFTWARE.
 */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using iRobot.Data;
+
+using System.IO;
 
 namespace RoombaSharp.Settings
 {
@@ -78,12 +74,13 @@ namespace RoombaSharp.Settings
 
         private void ScheduleForm_Load(object sender, EventArgs e)
         {
+            this.SetDefaultSettings();
             this.LoadFields();
         }
 
         private void ScheduleForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            this.SaveFields();
         }
 
         #endregion
@@ -144,25 +141,44 @@ namespace RoombaSharp.Settings
         #region Private Methods
 
         /// <summary>
+        /// Set the default settings file.
+        /// </summary>
+        private void SetDefaultSettings()
+        {
+            string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Settings");
+
+            // Create directory if does not exists.
+            if (!Directory.Exists(path))
+            {
+                // Create directory.
+                Directory.CreateDirectory(path);
+            }
+
+            // Create default settings if does not exists.
+            if (!File.Exists(Properties.Settings.Default.SchedulingSettings))
+            {
+                // Create file.
+                File.Create(Properties.Settings.Default.SchedulingSettings);
+
+                // Save default settings path.
+                Properties.Settings.Default.SchedulingSettings = Path.Combine(path, "Settings.XML");
+                Properties.Settings.Default.Save();
+
+                // Create empty object.
+                ScheduleData scheduleData = ScheduleData.Create();
+
+                // Save the object.
+                ScheduleData.Save(scheduleData, Properties.Settings.Default.SchedulingSettings);
+            }
+        }
+
+        /// <summary>
         /// Load field to the form.
         /// </summary>
         private void LoadFields()
         {
-            // Validate value.
-            if(RoombaSharp.Properties.Settings.Default.SchedulingData == null)
-            {
-                RoombaSharp.Properties.Settings.Default.SchedulingData = new ScheduleData();
-                RoombaSharp.Properties.Settings.Default.SchedulingData.Monday = new RoombaDateTime();
-                RoombaSharp.Properties.Settings.Default.SchedulingData.Tuesday = new RoombaDateTime();
-                RoombaSharp.Properties.Settings.Default.SchedulingData.Wednesday = new RoombaDateTime();
-                RoombaSharp.Properties.Settings.Default.SchedulingData.Thursday = new RoombaDateTime();
-                RoombaSharp.Properties.Settings.Default.SchedulingData.Friday = new RoombaDateTime();
-                RoombaSharp.Properties.Settings.Default.SchedulingData.Saturday = new RoombaDateTime();
-                RoombaSharp.Properties.Settings.Default.SchedulingData.Sunday = new RoombaDateTime();
-            }
-
             // Set temporal data.
-            this.ScheduleData = RoombaSharp.Properties.Settings.Default.SchedulingData;
+            this.ScheduleData = ScheduleData.Load(Properties.Settings.Default.SchedulingSettings);
 
             this.tbMonHour.Text = this.ScheduleData.Monday.Hour.ToString();
             this.tbMonMinute.Text = this.ScheduleData.Monday.Minute.ToString();
@@ -170,7 +186,7 @@ namespace RoombaSharp.Settings
 
             this.tbTueHour.Text = this.ScheduleData.Tuesday.Hour.ToString();
             this.tbTueMinute.Text = this.ScheduleData.Tuesday.Minute.ToString();
-            this.cbTueEnb.Checked = this.GetDay(DayOfWeek.Thursday);
+            this.cbTueEnb.Checked = this.GetDay(DayOfWeek.Tuesday);
 
             this.tbWedHour.Text = this.ScheduleData.Wednesday.Hour.ToString();
             this.tbWedMinute.Text = this.ScheduleData.Wednesday.Minute.ToString();
@@ -198,39 +214,35 @@ namespace RoombaSharp.Settings
         /// </summary>
         private void SaveFields()
         {
-            /*
             try
             {
-                int monHour;
+                this.SetHour(this.tbMonHour.Text.Trim(), out this.ScheduleData.Monday.Hour);
+                this.SetMinute(this.tbMonMinute.Text.Trim(), out this.ScheduleData.Monday.Minute);
 
-                // Validate baud rate.
-                if (int.TryParse(this.tbMonHour.Text.Trim(), out monHour))
-                {
-                    if (monHour < 0 || monHour > 23)
-                    {
-                        MessageBox.Show("Invalid Monday hour. [0 - 23]", "Invalid value", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        return;
-                    }
-                    DateTime t = new DateTime();
-                    t.AddHours(monHour);
-                    //Properties.Settings.Default.SchedulingData.Monday.Hour = (byte)monHour;
-                    // Save settings.
-                    Properties.Settings.Default.Save();
-                }
-                else
-                {
-                    MessageBox.Show("Invalid Monday.", "Invalid value", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
-                }
+                this.SetHour(this.tbTueHour.Text.Trim(), out this.ScheduleData.Tuesday.Hour);
+                this.SetMinute(this.tbTueMinute.Text.Trim(), out this.ScheduleData.Tuesday.Minute);
+
+                this.SetHour(this.tbWedHour.Text.Trim(), out this.ScheduleData.Wednesday.Hour);
+                this.SetMinute(this.tbWedMinute.Text.Trim(), out this.ScheduleData.Wednesday.Minute);
+
+                this.SetHour(this.tbThuHour.Text.Trim(), out this.ScheduleData.Thursday.Hour);
+                this.SetMinute(this.tbThuMinute.Text.Trim(), out this.ScheduleData.Thursday.Minute);
+
+                this.SetHour(this.tbFriHour.Text.Trim(), out this.ScheduleData.Friday.Hour);
+                this.SetMinute(this.tbFriMinute.Text.Trim(), out this.ScheduleData.Friday.Minute);
+
+                this.SetHour(this.tbSatHour.Text.Trim(), out this.ScheduleData.Saturday.Hour);
+                this.SetMinute(this.tbSatMinute.Text.Trim(), out this.ScheduleData.Saturday.Minute);
+
+                this.SetHour(this.tbSunHour.Text.Trim(), out this.ScheduleData.Sunday.Hour);
+                this.SetMinute(this.tbSunMinute.Text.Trim(), out this.ScheduleData.Sunday.Minute);
+
+                ScheduleData.Save(this.ScheduleData, Properties.Settings.Default.SchedulingSettings);
             }
-            catch (Exception err)
+            catch (Exception exception)
             {
-                MessageBox.Show(String.Format("Message: {0}\r\nSource: {1}", err.Message, err.Source), "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                Logger.Log.CreateRecord("RoombaSharp.Settings.ScheduleForm.SaveFields()", exception.ToString(), Logger.LogMessageTypes.Error);
             }
-            */
-            RoombaSharp.Properties.Settings.Default.SchedulingData = this.ScheduleData;
-
-            Properties.Settings.Default.Save();
         }
 
         /// <summary>
@@ -242,22 +254,98 @@ namespace RoombaSharp.Settings
         {
             if(enableDay)
             {
-                this.ScheduleData.Days = (DayOfWeek)iRobot.Utils.BitSet((byte)this.ScheduleData.Days, (byte)day);
+                this.ScheduleData.Days = iRobot.Utils.BitSet(this.ScheduleData.Days, (byte)day);
             }
             else
             {
-                this.ScheduleData.Days = (DayOfWeek)iRobot.Utils.BitSet((byte)this.ScheduleData.Days, (byte)day);
+                this.ScheduleData.Days = iRobot.Utils.BitClear(this.ScheduleData.Days, (byte)day);
+            }
+
+            Console.WriteLine("Day value: {0}", this.ScheduleData.Days);
+        }
+        
+        /// <summary>
+        /// Return true if the day is set.
+        /// </summary>
+        /// <param name="day">Day of week.</param>
+        /// <returns>Day state.</returns>
+        private bool GetDay(DayOfWeek day)
+        {
+            return iRobot.Utils.GetBit((byte)this.ScheduleData.Days, (byte)day);
+        }
+
+        /// <summary>
+        /// Parse minute from text.
+        /// </summary>
+        /// <param name="textValue">Text value.</param>
+        /// <param name="intValue">Int value.</param>
+        private void SetMinute(string textValue, out int intValue)
+        {
+            int tempValue = 0;
+            intValue = tempValue;
+
+            if (int.TryParse(textValue, out tempValue))
+            {
+                if (this.IsValiMinute(tempValue))
+                {
+                    intValue = tempValue;
+                }
+                else
+                {
+                    MessageBox.Show("Invalid minute. [0 - 59]", "Invalid value", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Invalid minute.", "Invalid value", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        /// <summary>
+        /// Parse hour from text.
+        /// </summary>
+        /// <param name="textValue">Text value.</param>
+        /// <param name="intValue">Int value.</param>
+        private void SetHour(string textValue, out int intValue)
+        {
+            int tempValue = 0;
+            intValue = tempValue;
+
+            if (int.TryParse(textValue, out tempValue))
+            {
+                if (this.IsValiHour(tempValue))
+                {
+                    intValue = tempValue;
+                }
+                else
+                {
+                    MessageBox.Show("Invalid hour. [0 - 23]", "Invalid value", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Invalid hour.", "Invalid value", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
         
         /// <summary>
-        /// 
+        /// Validate minute value.
         /// </summary>
-        /// <param name="day"></param>
-        /// <returns></returns>
-        private bool GetDay(DayOfWeek day)
+        /// <param name="minute">Minute value.</param>
+        /// <returns>Is valid state.</returns>
+        private bool IsValiMinute(int minute)
         {
-            return iRobot.Utils.GetBit((byte)this.ScheduleData.Days, (byte)day);
+            return !(minute < 0 || minute > 59);
+        }
+
+        /// <summary>
+        /// Validate hour value.
+        /// </summary>
+        /// <param name="hour">Hour value.</param>
+        /// <returns>Is valid state.</returns>
+        private bool IsValiHour(int hour)
+        {
+            return !(hour < 0 || hour > 23);
         }
 
         #endregion

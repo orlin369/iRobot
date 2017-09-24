@@ -109,12 +109,14 @@ namespace RoombaSharp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::iRobot.Data.ScheduleData SchedulingData {
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\Users\\\\POLYGONTeam Ltd\\\\Documents\\\\GitHub\\\\iRobot\\\\RoombaSharp\\\\RoombaSharp\\\\" +
+            "bin\\\\Debug\\\\Settings\\\\ScheduleData.XML")]
+        public string SchedulingSettings {
             get {
-                return ((global::iRobot.Data.ScheduleData)(this["SchedulingData"]));
+                return ((string)(this["SchedulingSettings"]));
             }
             set {
-                this["SchedulingData"] = value;
+                this["SchedulingSettings"] = value;
             }
         }
     }

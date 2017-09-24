@@ -23,6 +23,8 @@ SOFTWARE.
 */
 
 using System;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace iRobot.Data
 {
@@ -33,7 +35,7 @@ namespace iRobot.Data
         /// <summary>
         /// Days
         /// </summary>
-        public DayOfWeek Days;
+        public byte Days;
 
         public RoombaDateTime Sunday;
 
@@ -82,5 +84,62 @@ namespace iRobot.Data
 
         #endregion
 
+        #region Public Static Methods
+
+        /// <summary>
+        /// Create empty object.
+        /// </summary>
+        /// <returns></returns>
+        public static ScheduleData Create()
+        {
+            ScheduleData scheduleData = new ScheduleData();
+
+            scheduleData.Monday = new RoombaDateTime();
+            scheduleData.Tuesday = new RoombaDateTime();
+            scheduleData.Wednesday = new RoombaDateTime();
+            scheduleData.Thursday = new RoombaDateTime();
+            scheduleData.Friday = new RoombaDateTime();
+            scheduleData.Saturday = new RoombaDateTime();
+            scheduleData.Sunday = new RoombaDateTime();
+
+            return scheduleData;
+        }
+
+        /// <summary>
+        /// Save device descriptions to XML.
+        /// </summary>
+        /// <remarks>@"C:\Temp\Serialization.xml"</remarks>
+        /// <param name="settings">Device Descriptions</param>
+        /// <param name="path">File</param>
+        public static void Save(ScheduleData settings, string path)
+        {
+            using (FileStream file = File.Create(path))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(ScheduleData));
+                serializer.Serialize(file, settings);
+            }
+        }
+
+        /// <summary>
+        /// Read device descriptions from XML.
+        /// </summary>
+        /// <remarks>@"C:\Temp\Serialization.xml"</remarks>
+        /// <param name="path">File</param>
+        /// <returns>Device Descriptions</returns>
+        public static ScheduleData Load(string path)
+        {
+            ScheduleData settings = new ScheduleData();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(ScheduleData));
+            using (StreamReader file = new StreamReader(path))
+            {
+                settings = (ScheduleData)serializer.Deserialize(file);
+            }
+
+            return settings;
+        }
+
+
+        #endregion
     }
 }
