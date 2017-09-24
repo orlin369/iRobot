@@ -151,12 +151,15 @@ namespace iRobot
             this.communicator.OnDisconnect -= Communicator_OnDisconnect;
         }
 
+        /// <summary>
+        /// Send raw command.
+        /// </summary>
+        /// <param name="command"></param>
         public void Command(byte[] command)
         {
             this.commandQueue.PutToQue(command);
         }
-
-
+        
         /// <summary>
         /// Starts the SCI.The Start command must be sent before any
         /// other SCI commands.This command puts the SCI in passive
@@ -198,20 +201,69 @@ namespace iRobot
         }
 
         /// <summary>
-        /// Starts the SCI. The Start command must be sent before any 
-        /// other SCI commands.This command puts the SCI in passive
+        /// This command puts the SCI in safe mode.The SCI must be in 
+        /// full mode to accept this command.
+        /// </summary>
+        public void Safe()
+        {
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.SAFE });
+        }
+
+        /// <summary>
+        /// Enables unrestricted control of Roomba through the SCI and
+        /// turns off the safety features.The SCI must be in safe mode to
+        /// accept this command. This command puts the SCI in full mode.
+        /// </summary>
+        public void Full()
+        {
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.FULL });
+        }
+
+        /// <summary>
+        /// Starts a normal cleaning cycle, the same as a normal “clean” 
+        /// button press.The SCI must be in safe or full mode to accept this
+        /// command.This command puts the SCI in passive mode
+        /// </summary>
+        public void Clean()
+        {
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.CLEAN });
+        }
+
+        /// <summary>
+        /// Starts a maximum time cleaning cycle, the same as a normal 
+        /// “max” button press.The SCI must be in safe or full mode to
+        /// accept this command.This command puts the SCI in passive
         /// mode.
         /// </summary>
-        /// <param name="spot">Spot</param>
-        /// <param name="clean">Clean</param>
-        /// <param name="max">Max</param>
-        /// <param name="color">0 = green, 255 = red. Intermediate values are intermediate colors (orange, yellow, etc).</param>
-        /// <param name="intensity">0 = off, 255 = full intensity. Intermediate values are intermediate intensities.</param>
-        public void LEDs(bool spot, bool clean, bool max, bool dirtDetect, byte color, byte intensity)
+        public void Max()
         {
-            byte leds = Convert(new bool[] { false, false, false, false, spot, clean, max, dirtDetect });
-            byte[] command = { (byte)RoombaOpcodes.LEDS,  leds, color, intensity };
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.MAX });
+        }
+        
+        /// <summary>
+        /// Starts a spot cleaning cycle, the same as a normal “spot” 
+        /// button press.The SCI must be in safe or full mode to accept this
+        /// command.This command puts the SCI in passive mode
+        /// </summary>
+        public void Spot()
+        {
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.SPOT });
+        }
+
+        /// <summary>
+        /// Turns on force-seeking-dock mode, which causes the robot 
+        /// to immediately attempt to dock during its cleaning cycle if it
+        /// encounters the docking beams from the Home Base. (Note, 
+        /// however, that if the robot was not active in a clean, spot or max
+        /// cycle it will not attempt to execute the docking.) Normally the
+        /// robot attempts to dock only if the cleaning cycle has completed
+        /// or the battery is nearing depletion.This command can be sent
+        /// anytime, but the mode will be cancelled if the robot turns off,
+        /// begins charging, or is commanded into SCI safe or full modes
+        /// </summary>
+        public void SeekDock()
+        {
+            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.DOCK });
         }
 
         /// <summary>
@@ -223,6 +275,7 @@ namespace iRobot
             if (scheduleData == null) return;
             if (!scheduleData.IsValid()) return;
 
+            // Build command package.
             byte[] command =
             {
                 (byte)RoombaOpcodes.SCHEDULE,
@@ -265,29 +318,14 @@ namespace iRobot
         /// <param name="minute">Minute [00-95]</param>
         public void SetDayTime(DayOfWeek day, int hour, int minute)
         {
-            if (hour > 23 || minute > 59) return;
+            if (hour < 0 || hour > 23) return;
+            if (minute < 0 || minute > 59) return;
 
+            // Build command package.
             byte[] command = { (byte)RoombaOpcodes.SET_DAY_TIME, (byte)day, (byte)hour, (byte)minute };
+
+            // Send command package.
             this.commandQueue.PutToQue(command);
-        }
-
-        /// <summary>
-        /// This command puts the SCI in safe mode.The SCI must be in 
-        /// full mode to accept this command.
-        /// </summary>
-        public void Safe()
-        {
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.SAFE });
-        }
-
-        /// <summary>
-        /// Enables unrestricted control of Roomba through the SCI and
-        /// turns off the safety features.The SCI must be in safe mode to
-        /// accept this command. This command puts the SCI in full mode.
-        /// </summary>
-        public void Full()
-        {
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.FULL });
         }
 
         /// <summary>
@@ -299,55 +337,8 @@ namespace iRobot
         /// </summary>
         public void Power()
         {
+            // Send command package.
             this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.POWER });
-        }
-
-        /// <summary>
-        /// Starts a spot cleaning cycle, the same as a normal “spot” 
-        /// button press.The SCI must be in safe or full mode to accept this
-        /// command.This command puts the SCI in passive mode
-        /// </summary>
-        public void Spot()
-        {
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.SPOT });
-        }
-
-        /// <summary>
-        /// Starts a normal cleaning cycle, the same as a normal “clean” 
-        /// button press.The SCI must be in safe or full mode to accept this
-        /// command.This command puts the SCI in passive mode
-        /// </summary>
-        public void Clean()
-        {
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.CLEAN });
-        }
-
-        /// <summary>
-        /// Starts a maximum time cleaning cycle, the same as a normal 
-        /// “max” button press.The SCI must be in safe or full mode to
-        /// accept this command.This command puts the SCI in passive
-        /// mode.
-        /// </summary>
-        public void Max()
-        {
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.MAX });
-        }
-
-        /// <summary>
-        /// Controls Roomba’s cleaning motors.The state of each motor is 
-        /// specified by one bit in the data byte. The SCI must be in safe
-        /// or full mode to accept this command.This command does not
-        /// change the mode.
-        /// </summary>
-        /// <param name="mainBrush">Main Brush</param>
-        /// <param name="vacuumSide">Vacuum Side</param>
-        /// <param name="sideBrush">Brush</param>
-        public void Motors(bool mainBrush, bool vacuum, bool sideBrush)
-        {
-            byte motors = Convert(new bool[] { false, false, false, false, false, mainBrush, vacuum, sideBrush });
-            byte[] command = { (byte)RoombaOpcodes.MOTORS, motors };
-
-            this.commandQueue.PutToQue(command);
         }
 
         /// <summary>
@@ -426,6 +417,157 @@ namespace iRobot
         }
 
         /// <summary>
+        /// Controls Roomba’s cleaning motors.The state of each motor is 
+        /// specified by one bit in the data byte. The SCI must be in safe
+        /// or full mode to accept this command.This command does not
+        /// change the mode.
+        /// </summary>
+        /// <param name="mainBrush">Main Brush</param>
+        /// <param name="vacuumSide">Vacuum Side</param>
+        /// <param name="sideBrush">Brush</param>
+        public void Motors(bool mainBrush, bool vacuum, bool sideBrush)
+        {
+            byte motors = Convert(new bool[] { false, false, false, false, false, mainBrush, vacuum, sideBrush });
+
+            // Build command package.
+            byte[] command = { (byte)RoombaOpcodes.MOTORS, motors };
+
+            // Send command package.
+            this.commandQueue.PutToQue(command);
+        }
+
+        /// <summary>
+        ///This command lets you control the speed of Roomba’s main brush, side brush, and vacuum
+        ///independently.With each data byte, you specify the duty cycle for the low side driver(max 128). For
+        ///example, if you want to control a motor with 25% of battery voltage, choose a duty cycle of 128 * 25%  32.
+        ///The main brush and side brush can be run in either direction.The vacuum only runs forward.
+        ///Positive speeds turn the motor in its default (cleaning) direction.Default direction for the side brush is
+        ///counterclockwise.Default direction for the main brush/flapper is inward.
+        ///Serial sequence: [144] [Main Brush PWM] [Side Brush PWM] [Vacuum PWM]
+        /// </summary>
+        /// <param name="digit3"></param>
+        /// <param name="digit2"></param>
+        /// <param name="digit1"></param>
+        public void PWMMotors(byte mainBrushPWM, byte sideBrushPWM, byte vacuumPWM)
+        {
+            // Build command package.
+            byte[] command = { (byte)RoombaOpcodes.PWM_MOTORS, digit3, digit2, digit1 };
+
+            // Send command package.
+            this.commandQueue.PutToQue(command);
+        }
+
+        /// <summary>
+        /// Starts the SCI. The Start command must be sent before any 
+        /// other SCI commands.This command puts the SCI in passive
+        /// mode.
+        /// </summary>
+        /// <param name="spot">Spot</param>
+        /// <param name="clean">Clean</param>
+        /// <param name="max">Max</param>
+        /// <param name="color">0 = green, 255 = red. Intermediate values are intermediate colors (orange, yellow, etc).</param>
+        /// <param name="intensity">0 = off, 255 = full intensity. Intermediate values are intermediate intensities.</param>
+        public void LEDs(bool spot, bool clean, bool max, bool dirtDetect, byte color, byte intensity)
+        {
+            byte leds = Convert(new bool[] { false, false, false, false, spot, clean, max, dirtDetect });
+            
+            // Build command package.
+            byte[] command = { (byte)RoombaOpcodes.LEDS,  leds, color, intensity };
+
+            // Send command package.
+            this.commandQueue.PutToQue(command);
+        }
+
+        public void SchedulingLEDs(byte weekdayLEDBits, byte schedulingLEDBits)
+        {
+            // Build command package.
+            byte[] command = new byte[] { (byte)RoombaOpcodes.SCHEDULING_LEDS, weekdayLEDBits, schedulingLEDBits };
+
+            // Send command package.
+            this.commandQueue.PutToQue(command);
+        }
+
+        /// <summary>
+        /// Show HEX digits on the Roomba's screen.
+        /// </summary>
+        /// <param name="d3">Digit 3</param>
+        /// <param name="d2">Digit 2</param>
+        /// <param name="d1">Digit 1</param>
+        /// <param name="d0">Digit 0</param>
+        public void DigitLEDsRaw(int d3, int d2, int d1, int d0)
+        {
+            // Build command package.
+            byte[] command = new byte[]
+            {
+                (byte)RoombaOpcodes.DIGIT_LEDs_RAW,
+                SevenSegment(d3),
+                SevenSegment(d2),
+                SevenSegment(d1),
+                SevenSegment(d0)
+            };
+
+            // Send command package.
+            this.commandQueue.PutToQue(command);
+        }
+
+        /// <summary>
+        /// Shutdown the LED display.
+        /// </summary>
+        public void DigitLEDsRawOff()
+        {
+            // Build command package.
+            byte[] command = new byte[] { (byte)RoombaOpcodes.DIGIT_LEDs_RAW, 0, 0, 0, 0 };
+
+            // Send command package.
+            this.commandQueue.PutToQue(command);
+        }
+
+        /// <summary>
+        /// This command controls the four 7 segment displays on the Roomba 560 and 570 using ASCII character
+        /// codes.Because a 7 segment display is not sufficient to display alphabetic characters properly, all
+        /// characters are an approximation, and not all ASCII codes are implemented.
+        /// Serial sequence: [164] [Digit 3 ASCII] [Digit 2 ASCII] [Digit 1 ASCII] [Digit 0 ASCII]
+        /// </summary>
+        /// <param name="digit3"></param>
+        /// <param name="digit2"></param>
+        /// <param name="digit1"></param>
+        /// <param name="digit0"></param>
+        public void DigitLEDsASCII(byte digit3, byte digit2, byte digit1, byte digit0)
+        {
+            // Build command package.
+            byte[] command = { (byte)RoombaOpcodes.DIGIT_LEDs_ASCII, digit3, digit2, digit1, digit0 };
+
+            // Send command package.
+            this.commandQueue.PutToQue(command);
+        }
+
+        /// <summary>
+        /// This command lets you push Roomba’s buttons.The buttons will automatically release after 1/6th of a second.
+        /// Serial sequence: [165] [Buttons]
+        /// Available in modes: Passive, Safe, or Full
+        /// Changes mode to: No Change
+        /// Buttons (0-255) 1 = Push Button, 0 = Release Button
+        /// </summary>
+        /// <param name="clock"></param>
+        /// <param name="chedule"></param>
+        /// <param name="maxday"></param>
+        /// <param name="hour"></param>
+        /// <param name="minute"></param>
+        /// <param name="dock"></param>
+        /// <param name="spot"></param>
+        /// <param name="clean"></param>
+        public void Buttons(bool clock, bool chedule, bool maxday, bool hour, bool minute, bool dock, bool spot, bool clean)
+        {
+            byte buttons = Convert(new bool[] { clock, chedule, maxday, hour, minute, dock, spot, clean });
+            
+            // Build command package.
+            byte[] command = { (byte)RoombaOpcodes.BUTTONS, buttons, };
+
+            // Send command package.
+            this.commandQueue.PutToQue(command);
+        }
+
+        /// <summary>
         /// Specifies a song to the SCI to be played later.Each song is 
         /// associated with a song number which the Play command uses
         /// to select the song to play. Users can specify up to 16 songs
@@ -466,6 +608,7 @@ namespace iRobot
         /// <param name="songNumber">Song Numbe</param>
         public void Play(byte songNumber)
         {
+            // Send command package.
             this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.PLAY, songNumber });
         }
 
@@ -479,25 +622,10 @@ namespace iRobot
         /// <param name="packageCode">Packet Code</param>
         public void Sensors(SensorPacketsIDs packageCode)
         {
+            // Send command package.
             this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.SENSORS, (byte)packageCode });
         }
-
-        /// <summary>
-        /// Turns on force-seeking-dock mode, which causes the robot 
-        /// to immediately attempt to dock during its cleaning cycle if it
-        /// encounters the docking beams from the Home Base. (Note, 
-        /// however, that if the robot was not active in a clean, spot or max
-        /// cycle it will not attempt to execute the docking.) Normally the
-        /// robot attempts to dock only if the cleaning cycle has completed
-        /// or the battery is nearing depletion.This command can be sent
-        /// anytime, but the mode will be cancelled if the robot turns off,
-        /// begins charging, or is commanded into SCI safe or full modes
-        /// </summary>
-        public void ForceSeekingDock()
-        {
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.DOCK });
-        }
-
+        
         /// <summary>
         /// This command lets you ask for a list of sensor packets. The result is returned once, as in the Sensors
         /// command. The robot returns the packets in the order you specify.
@@ -518,41 +646,7 @@ namespace iRobot
             // Send command package.
             this.commandQueue.PutToQue(command);
         }
-
-        /// <summary>
-        /// Show HEX digits on the Roomba's screen.
-        /// </summary>
-        /// <param name="d3">Digit 3</param>
-        /// <param name="d2">Digit 2</param>
-        /// <param name="d1">Digit 1</param>
-        /// <param name="d0">Digit 0</param>
-        public void DigitLEDsRaw(int d3, int d2, int d1, int d0)
-        {
-            byte[] command = new byte[]
-            {
-                (byte)RoombaOpcodes.DIGIT_LEDs_RAW,
-                SevenSegment(d3),
-                SevenSegment(d2),
-                SevenSegment(d1),
-                SevenSegment(d0)
-            };
-
-            this.commandQueue.PutToQue(command);
-        }
-
-        /// <summary>
-        /// Shutdown the LED display.
-        /// </summary>
-        public void DigitLEDsRawOff()
-        {
-            byte[] command = new byte[]
-            {
-                (byte)RoombaOpcodes.DIGIT_LEDs_RAW, 0, 0, 0, 0
-            };
-
-            this.commandQueue.PutToQue(command);
-        }
-
+        
         #endregion
 
         #region Private Methods

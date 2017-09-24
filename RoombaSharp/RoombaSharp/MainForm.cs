@@ -459,7 +459,7 @@ namespace RoombaSharp
         private void tsmiBtnDock_Click(object sender, EventArgs e)
         {
             if (this.robot == null || !this.robot.IsConnected) return;
-            this.robot.ForceSeekingDock();
+            this.robot.SeekDock();
         }
 
         /// <summary>
