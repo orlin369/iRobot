@@ -157,9 +157,6 @@ namespace RoombaSharp.Settings
             // Create default settings if does not exists.
             if (!File.Exists(Properties.Settings.Default.SchedulingSettings))
             {
-                // Create file.
-                File.Create(Properties.Settings.Default.SchedulingSettings);
-
                 // Save default settings path.
                 Properties.Settings.Default.SchedulingSettings = Path.Combine(path, "Settings.XML");
                 Properties.Settings.Default.Save();

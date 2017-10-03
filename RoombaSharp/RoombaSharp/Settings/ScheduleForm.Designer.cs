@@ -82,13 +82,17 @@ namespace RoombaSharp.Settings
             this.cbFriEnb = new System.Windows.Forms.CheckBox();
             this.cbSatEnb = new System.Windows.Forms.CheckBox();
             this.cbSunEnb = new System.Windows.Forms.CheckBox();
+            this.lblDays = new System.Windows.Forms.Label();
+            this.lblEnable = new System.Windows.Forms.Label();
+            this.lblHours = new System.Windows.Forms.Label();
+            this.lblMinutes = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(201, 207);
+            this.btnOK.Location = new System.Drawing.Point(158, 229);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
+            this.btnOK.Size = new System.Drawing.Size(100, 23);
             this.btnOK.TabIndex = 0;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -96,9 +100,9 @@ namespace RoombaSharp.Settings
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(282, 207);
+            this.btnCancel.Location = new System.Drawing.Point(264, 229);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(100, 23);
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -106,70 +110,70 @@ namespace RoombaSharp.Settings
             // 
             // tbMonHour
             // 
-            this.tbMonHour.Location = new System.Drawing.Point(151, 34);
+            this.tbMonHour.Location = new System.Drawing.Point(158, 73);
             this.tbMonHour.Name = "tbMonHour";
             this.tbMonHour.Size = new System.Drawing.Size(100, 20);
             this.tbMonHour.TabIndex = 2;
             // 
             // tbMonMinute
             // 
-            this.tbMonMinute.Location = new System.Drawing.Point(257, 34);
+            this.tbMonMinute.Location = new System.Drawing.Point(264, 73);
             this.tbMonMinute.Name = "tbMonMinute";
             this.tbMonMinute.Size = new System.Drawing.Size(100, 20);
             this.tbMonMinute.TabIndex = 3;
             // 
             // tbTueHour
             // 
-            this.tbTueHour.Location = new System.Drawing.Point(151, 60);
+            this.tbTueHour.Location = new System.Drawing.Point(158, 99);
             this.tbTueHour.Name = "tbTueHour";
             this.tbTueHour.Size = new System.Drawing.Size(100, 20);
             this.tbTueHour.TabIndex = 4;
             // 
             // tbTueMinute
             // 
-            this.tbTueMinute.Location = new System.Drawing.Point(257, 60);
+            this.tbTueMinute.Location = new System.Drawing.Point(264, 99);
             this.tbTueMinute.Name = "tbTueMinute";
             this.tbTueMinute.Size = new System.Drawing.Size(100, 20);
             this.tbTueMinute.TabIndex = 5;
             // 
             // tbWedHour
             // 
-            this.tbWedHour.Location = new System.Drawing.Point(151, 86);
+            this.tbWedHour.Location = new System.Drawing.Point(158, 125);
             this.tbWedHour.Name = "tbWedHour";
             this.tbWedHour.Size = new System.Drawing.Size(100, 20);
             this.tbWedHour.TabIndex = 6;
             // 
             // tbWedMinute
             // 
-            this.tbWedMinute.Location = new System.Drawing.Point(257, 86);
+            this.tbWedMinute.Location = new System.Drawing.Point(264, 125);
             this.tbWedMinute.Name = "tbWedMinute";
             this.tbWedMinute.Size = new System.Drawing.Size(100, 20);
             this.tbWedMinute.TabIndex = 7;
             // 
             // tbThuHour
             // 
-            this.tbThuHour.Location = new System.Drawing.Point(151, 112);
+            this.tbThuHour.Location = new System.Drawing.Point(158, 151);
             this.tbThuHour.Name = "tbThuHour";
             this.tbThuHour.Size = new System.Drawing.Size(100, 20);
             this.tbThuHour.TabIndex = 8;
             // 
             // tbThuMinute
             // 
-            this.tbThuMinute.Location = new System.Drawing.Point(257, 112);
+            this.tbThuMinute.Location = new System.Drawing.Point(264, 151);
             this.tbThuMinute.Name = "tbThuMinute";
             this.tbThuMinute.Size = new System.Drawing.Size(100, 20);
             this.tbThuMinute.TabIndex = 9;
             // 
             // tbFriHour
             // 
-            this.tbFriHour.Location = new System.Drawing.Point(151, 138);
+            this.tbFriHour.Location = new System.Drawing.Point(158, 177);
             this.tbFriHour.Name = "tbFriHour";
             this.tbFriHour.Size = new System.Drawing.Size(100, 20);
             this.tbFriHour.TabIndex = 10;
             // 
             // tbFriMinute
             // 
-            this.tbFriMinute.Location = new System.Drawing.Point(257, 138);
+            this.tbFriMinute.Location = new System.Drawing.Point(264, 177);
             this.tbFriMinute.Name = "tbFriMinute";
             this.tbFriMinute.Size = new System.Drawing.Size(100, 20);
             this.tbFriMinute.TabIndex = 11;
@@ -177,7 +181,7 @@ namespace RoombaSharp.Settings
             // lblMonday
             // 
             this.lblMonday.AutoSize = true;
-            this.lblMonday.Location = new System.Drawing.Point(35, 37);
+            this.lblMonday.Location = new System.Drawing.Point(42, 76);
             this.lblMonday.Name = "lblMonday";
             this.lblMonday.Size = new System.Drawing.Size(45, 13);
             this.lblMonday.TabIndex = 12;
@@ -186,7 +190,7 @@ namespace RoombaSharp.Settings
             // lblTuesday
             // 
             this.lblTuesday.AutoSize = true;
-            this.lblTuesday.Location = new System.Drawing.Point(32, 63);
+            this.lblTuesday.Location = new System.Drawing.Point(39, 102);
             this.lblTuesday.Name = "lblTuesday";
             this.lblTuesday.Size = new System.Drawing.Size(48, 13);
             this.lblTuesday.TabIndex = 13;
@@ -195,7 +199,7 @@ namespace RoombaSharp.Settings
             // lblThursday
             // 
             this.lblThursday.AutoSize = true;
-            this.lblThursday.Location = new System.Drawing.Point(29, 115);
+            this.lblThursday.Location = new System.Drawing.Point(36, 154);
             this.lblThursday.Name = "lblThursday";
             this.lblThursday.Size = new System.Drawing.Size(51, 13);
             this.lblThursday.TabIndex = 14;
@@ -204,7 +208,7 @@ namespace RoombaSharp.Settings
             // lblWednesday
             // 
             this.lblWednesday.AutoSize = true;
-            this.lblWednesday.Location = new System.Drawing.Point(16, 89);
+            this.lblWednesday.Location = new System.Drawing.Point(23, 128);
             this.lblWednesday.Name = "lblWednesday";
             this.lblWednesday.Size = new System.Drawing.Size(64, 13);
             this.lblWednesday.TabIndex = 15;
@@ -213,7 +217,7 @@ namespace RoombaSharp.Settings
             // lblFriday
             // 
             this.lblFriday.AutoSize = true;
-            this.lblFriday.Location = new System.Drawing.Point(45, 141);
+            this.lblFriday.Location = new System.Drawing.Point(52, 180);
             this.lblFriday.Name = "lblFriday";
             this.lblFriday.Size = new System.Drawing.Size(35, 13);
             this.lblFriday.TabIndex = 16;
@@ -221,28 +225,28 @@ namespace RoombaSharp.Settings
             // 
             // tbSatMinute
             // 
-            this.tbSatMinute.Location = new System.Drawing.Point(257, 164);
+            this.tbSatMinute.Location = new System.Drawing.Point(264, 203);
             this.tbSatMinute.Name = "tbSatMinute";
             this.tbSatMinute.Size = new System.Drawing.Size(100, 20);
             this.tbSatMinute.TabIndex = 18;
             // 
             // tbSatHour
             // 
-            this.tbSatHour.Location = new System.Drawing.Point(151, 164);
+            this.tbSatHour.Location = new System.Drawing.Point(158, 203);
             this.tbSatHour.Name = "tbSatHour";
             this.tbSatHour.Size = new System.Drawing.Size(100, 20);
             this.tbSatHour.TabIndex = 17;
             // 
             // tbSunMinute
             // 
-            this.tbSunMinute.Location = new System.Drawing.Point(257, 6);
+            this.tbSunMinute.Location = new System.Drawing.Point(264, 45);
             this.tbSunMinute.Name = "tbSunMinute";
             this.tbSunMinute.Size = new System.Drawing.Size(100, 20);
             this.tbSunMinute.TabIndex = 20;
             // 
             // tbSunHour
             // 
-            this.tbSunHour.Location = new System.Drawing.Point(151, 6);
+            this.tbSunHour.Location = new System.Drawing.Point(158, 45);
             this.tbSunHour.Name = "tbSunHour";
             this.tbSunHour.Size = new System.Drawing.Size(100, 20);
             this.tbSunHour.TabIndex = 19;
@@ -250,7 +254,7 @@ namespace RoombaSharp.Settings
             // lblSaturday
             // 
             this.lblSaturday.AutoSize = true;
-            this.lblSaturday.Location = new System.Drawing.Point(31, 167);
+            this.lblSaturday.Location = new System.Drawing.Point(38, 206);
             this.lblSaturday.Name = "lblSaturday";
             this.lblSaturday.Size = new System.Drawing.Size(49, 13);
             this.lblSaturday.TabIndex = 21;
@@ -259,7 +263,7 @@ namespace RoombaSharp.Settings
             // lblSunday
             // 
             this.lblSunday.AutoSize = true;
-            this.lblSunday.Location = new System.Drawing.Point(37, 9);
+            this.lblSunday.Location = new System.Drawing.Point(44, 48);
             this.lblSunday.Name = "lblSunday";
             this.lblSunday.Size = new System.Drawing.Size(43, 13);
             this.lblSunday.TabIndex = 22;
@@ -268,7 +272,7 @@ namespace RoombaSharp.Settings
             // cbMonEnb
             // 
             this.cbMonEnb.AutoSize = true;
-            this.cbMonEnb.Location = new System.Drawing.Point(86, 36);
+            this.cbMonEnb.Location = new System.Drawing.Point(93, 75);
             this.cbMonEnb.Name = "cbMonEnb";
             this.cbMonEnb.Size = new System.Drawing.Size(59, 17);
             this.cbMonEnb.TabIndex = 23;
@@ -279,7 +283,7 @@ namespace RoombaSharp.Settings
             // cbTueEnb
             // 
             this.cbTueEnb.AutoSize = true;
-            this.cbTueEnb.Location = new System.Drawing.Point(86, 62);
+            this.cbTueEnb.Location = new System.Drawing.Point(93, 101);
             this.cbTueEnb.Name = "cbTueEnb";
             this.cbTueEnb.Size = new System.Drawing.Size(59, 17);
             this.cbTueEnb.TabIndex = 24;
@@ -290,7 +294,7 @@ namespace RoombaSharp.Settings
             // cbThuEnb
             // 
             this.cbThuEnb.AutoSize = true;
-            this.cbThuEnb.Location = new System.Drawing.Point(86, 114);
+            this.cbThuEnb.Location = new System.Drawing.Point(93, 153);
             this.cbThuEnb.Name = "cbThuEnb";
             this.cbThuEnb.Size = new System.Drawing.Size(59, 17);
             this.cbThuEnb.TabIndex = 25;
@@ -301,7 +305,7 @@ namespace RoombaSharp.Settings
             // cbWedEnb
             // 
             this.cbWedEnb.AutoSize = true;
-            this.cbWedEnb.Location = new System.Drawing.Point(86, 88);
+            this.cbWedEnb.Location = new System.Drawing.Point(93, 127);
             this.cbWedEnb.Name = "cbWedEnb";
             this.cbWedEnb.Size = new System.Drawing.Size(59, 17);
             this.cbWedEnb.TabIndex = 26;
@@ -312,7 +316,7 @@ namespace RoombaSharp.Settings
             // cbFriEnb
             // 
             this.cbFriEnb.AutoSize = true;
-            this.cbFriEnb.Location = new System.Drawing.Point(86, 140);
+            this.cbFriEnb.Location = new System.Drawing.Point(93, 179);
             this.cbFriEnb.Name = "cbFriEnb";
             this.cbFriEnb.Size = new System.Drawing.Size(59, 17);
             this.cbFriEnb.TabIndex = 27;
@@ -323,7 +327,7 @@ namespace RoombaSharp.Settings
             // cbSatEnb
             // 
             this.cbSatEnb.AutoSize = true;
-            this.cbSatEnb.Location = new System.Drawing.Point(86, 166);
+            this.cbSatEnb.Location = new System.Drawing.Point(93, 205);
             this.cbSatEnb.Name = "cbSatEnb";
             this.cbSatEnb.Size = new System.Drawing.Size(59, 17);
             this.cbSatEnb.TabIndex = 28;
@@ -334,7 +338,7 @@ namespace RoombaSharp.Settings
             // cbSunEnb
             // 
             this.cbSunEnb.AutoSize = true;
-            this.cbSunEnb.Location = new System.Drawing.Point(86, 8);
+            this.cbSunEnb.Location = new System.Drawing.Point(93, 47);
             this.cbSunEnb.Name = "cbSunEnb";
             this.cbSunEnb.Size = new System.Drawing.Size(59, 17);
             this.cbSunEnb.TabIndex = 29;
@@ -342,11 +346,51 @@ namespace RoombaSharp.Settings
             this.cbSunEnb.UseVisualStyleBackColor = true;
             this.cbSunEnb.CheckedChanged += new System.EventHandler(this.cbSunEnb_CheckedChanged);
             // 
+            // lblDays
+            // 
+            this.lblDays.AutoSize = true;
+            this.lblDays.Location = new System.Drawing.Point(23, 19);
+            this.lblDays.Name = "lblDays";
+            this.lblDays.Size = new System.Drawing.Size(31, 13);
+            this.lblDays.TabIndex = 30;
+            this.lblDays.Text = "Days";
+            // 
+            // lblEnable
+            // 
+            this.lblEnable.AutoSize = true;
+            this.lblEnable.Location = new System.Drawing.Point(90, 19);
+            this.lblEnable.Name = "lblEnable";
+            this.lblEnable.Size = new System.Drawing.Size(40, 13);
+            this.lblEnable.TabIndex = 31;
+            this.lblEnable.Text = "Enable";
+            // 
+            // lblHours
+            // 
+            this.lblHours.AutoSize = true;
+            this.lblHours.Location = new System.Drawing.Point(155, 19);
+            this.lblHours.Name = "lblHours";
+            this.lblHours.Size = new System.Drawing.Size(35, 13);
+            this.lblHours.TabIndex = 32;
+            this.lblHours.Text = "Hours";
+            // 
+            // lblMinutes
+            // 
+            this.lblMinutes.AutoSize = true;
+            this.lblMinutes.Location = new System.Drawing.Point(261, 19);
+            this.lblMinutes.Name = "lblMinutes";
+            this.lblMinutes.Size = new System.Drawing.Size(44, 13);
+            this.lblMinutes.TabIndex = 33;
+            this.lblMinutes.Text = "Minutes";
+            // 
             // ScheduleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(373, 240);
+            this.ClientSize = new System.Drawing.Size(373, 262);
+            this.Controls.Add(this.lblMinutes);
+            this.Controls.Add(this.lblHours);
+            this.Controls.Add(this.lblEnable);
+            this.Controls.Add(this.lblDays);
             this.Controls.Add(this.cbSunEnb);
             this.Controls.Add(this.cbSatEnb);
             this.Controls.Add(this.cbFriEnb);
@@ -377,8 +421,10 @@ namespace RoombaSharp.Settings
             this.Controls.Add(this.tbMonHour);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ScheduleForm";
-            this.Text = "ScheduleForm";
+            this.Text = "Schedule";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScheduleForm_FormClosing);
             this.Load += new System.EventHandler(this.ScheduleForm_Load);
             this.ResumeLayout(false);
@@ -418,5 +464,9 @@ namespace RoombaSharp.Settings
         private System.Windows.Forms.CheckBox cbFriEnb;
         private System.Windows.Forms.CheckBox cbSatEnb;
         private System.Windows.Forms.CheckBox cbSunEnb;
+        private System.Windows.Forms.Label lblDays;
+        private System.Windows.Forms.Label lblEnable;
+        private System.Windows.Forms.Label lblHours;
+        private System.Windows.Forms.Label lblMinutes;
     }
 }

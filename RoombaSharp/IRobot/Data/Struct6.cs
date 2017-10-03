@@ -132,7 +132,7 @@ namespace iRobot.Data
         /// 
         /// </summary>
         [FieldOffset(17)]
-        public ushort Voltage;
+        public UInt16 Voltage;
 
         /// <summary>
         /// 
