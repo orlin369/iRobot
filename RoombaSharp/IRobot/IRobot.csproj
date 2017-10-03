@@ -43,6 +43,10 @@
     <Compile Include="Data\BaudRates.cs" />
     <Compile Include="Data\BumpersAndWheelDropsBits.cs" />
     <Compile Include="Data\ChargingState.cs" />
+    <Compile Include="Data\Note.cs" />
+    <Compile Include="Data\Notes.cs" />
+    <Compile Include="Data\Song.cs" />
+    <Compile Include="Data\Tones.cs" />
     <Compile Include="Data\OIMode.cs" />
     <Compile Include="Data\RoombaDateTime.cs" />
     <Compile Include="Data\RoombaOpcodes.cs" />

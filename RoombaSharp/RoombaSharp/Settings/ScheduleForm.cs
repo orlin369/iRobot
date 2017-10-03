@@ -23,11 +23,11 @@ SOFTWARE.
 */
 
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 using iRobot.Data;
 
-using System.IO;
 
 namespace RoombaSharp.Settings
 {
@@ -260,8 +260,6 @@ namespace RoombaSharp.Settings
             {
                 this.ScheduleData.Days = iRobot.Utils.BitClear(this.ScheduleData.Days, (byte)day);
             }
-
-            Console.WriteLine("Day value: {0}", this.ScheduleData.Days);
         }
         
         /// <summary>
@@ -349,7 +347,6 @@ namespace RoombaSharp.Settings
         }
 
         #endregion
-
 
     }
 }

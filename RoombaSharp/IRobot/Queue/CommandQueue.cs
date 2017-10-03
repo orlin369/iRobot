@@ -36,7 +36,7 @@ namespace iRobot.Queues
         /// <summary>
         /// Event control thread.
         /// </summary>
-        private Thread queServiceThread;
+        private Thread queueServiceThread;
 
         /// <summary>
         /// Requests queue.
@@ -72,31 +72,31 @@ namespace iRobot.Queues
         #region Public Methods
 
         /// <summary>
-        /// Start the que.
+        /// Start the queue.
         /// </summary>
         public void Start()
         {
             this.requestToStopTheThread = false;
             // Create the communication thread.
-            this.queServiceThread = new Thread(new ThreadStart(this.PoolMethod));
+            this.queueServiceThread = new Thread(new ThreadStart(this.PoolMethod));
             // Start the thread
-            this.queServiceThread.Start();
+            this.queueServiceThread.Start();
         }
 
         /// <summary>
-        /// Stop the que.
+        /// Stop the queue.
         /// </summary>
         public void Stop()
         {
             this.requestToStopTheThread = true;
-            this.queServiceThread = null;
+            this.queueServiceThread = null;
         }
 
         /// <summary>
         /// Put item to queue.
         /// </summary>
         /// <param name="request">Request item.</param>
-        public void PutToQue(object request)
+        public void PutToQueue(object request)
         {
             lock (this.lockRequestInput)
             {

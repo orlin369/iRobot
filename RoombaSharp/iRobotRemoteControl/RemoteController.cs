@@ -28,11 +28,12 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
 
+using iRobotRemoteControl.Data;
 using iRobotRemoteControl.Events;
 
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
-using iRobotRemoteControl.Data;
+
 using Newtonsoft.Json;
 
 namespace iRobotRemoteControl
@@ -117,7 +118,7 @@ namespace iRobotRemoteControl
             }
             catch (Exception exception)
             {
-                Console.WriteLine(String.Format("Message: {0}\r\nSourece: {1}", exception.Message, exception.Source));
+                Logger.Log.CreateRecord("iRobotRemoteControl.RemoteController.Connect()", exception.ToString(), Logger.LogMessageTypes.Error);
             }
         }
 
@@ -135,7 +136,7 @@ namespace iRobotRemoteControl
             }
             catch (Exception exception)
             {
-                Console.WriteLine(String.Format("Message: {0}\r\nSourece: {1}", exception.Message, exception.Source));
+                Logger.Log.CreateRecord("iRobotRemoteControl.RemoteController.Disconnect()", exception.ToString(), Logger.LogMessageTypes.Error);
             }
         }
         

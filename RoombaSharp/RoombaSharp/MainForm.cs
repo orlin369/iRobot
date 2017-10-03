@@ -220,22 +220,22 @@ namespace RoombaSharp
                         // Check the robot.
                         if (this.robot == null || !this.robot.IsConnected) return;
 
-                        // Song number.
-                        byte songNumber = 0;
+                        // Create song.
+                        Song testSong = new Song(0);
 
-                        // Song data.
-                        List<byte> notes = new List<byte>();
-                        for (byte i = 0; i <= 5; i++)
-                        {
-                            notes.Add(80);
-                            notes.Add(32);
-                        }
+                        // Create note.
+                        Note note1 = new Note(Tones.GS5, 4);
+                        Note note2 = new Note(Tones.GS6, 4);
+
+                        // Create notes.
+                        testSong.Notes = new Notes();
+                        testSong.Notes.Add(note1);
+                        testSong.Notes.Add(note1);
+                        testSong.Notes.Add(note1);
+                        testSong.Notes.Add(note1);
 
                         // Set song.
-                        this.robot.Song(songNumber, notes.ToArray());
-
-                        // Play song.
-                        this.robot.Play(songNumber);
+                        this.robot.Song(testSong, true);
                     }
                 )
             );

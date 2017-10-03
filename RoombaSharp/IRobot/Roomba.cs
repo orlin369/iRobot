@@ -28,6 +28,7 @@ using iRobot.Data;
 using iRobot.Events;
 using iRobot.Communicators;
 using iRobot.Queues;
+using System.Collections.Generic;
 
 namespace iRobot
 {
@@ -157,7 +158,7 @@ namespace iRobot
         /// <param name="command"></param>
         public void Command(byte[] command)
         {
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
         
         /// <summary>
@@ -167,7 +168,7 @@ namespace iRobot
         /// </summary>
         public void Start()
         {
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.START });
+            this.commandQueue.PutToQueue(new byte[] { (byte)RoombaOpcodes.START });
         }
 
         /// <summary>
@@ -186,7 +187,7 @@ namespace iRobot
         public void Baud(BaudRates baudRate)
         {
 
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.BAUD, (byte)baudRate });
+            this.commandQueue.PutToQueue(new byte[] { (byte)RoombaOpcodes.BAUD, (byte)baudRate });
         }
         
         /// <summary>
@@ -197,7 +198,7 @@ namespace iRobot
         /// </summary>
         public void Control()
         {
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.CONTROL });
+            this.commandQueue.PutToQueue(new byte[] { (byte)RoombaOpcodes.CONTROL });
         }
 
         /// <summary>
@@ -206,7 +207,7 @@ namespace iRobot
         /// </summary>
         public void Safe()
         {
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.SAFE });
+            this.commandQueue.PutToQueue(new byte[] { (byte)RoombaOpcodes.SAFE });
         }
 
         /// <summary>
@@ -216,7 +217,7 @@ namespace iRobot
         /// </summary>
         public void Full()
         {
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.FULL });
+            this.commandQueue.PutToQueue(new byte[] { (byte)RoombaOpcodes.FULL });
         }
 
         /// <summary>
@@ -226,7 +227,7 @@ namespace iRobot
         /// </summary>
         public void Clean()
         {
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.CLEAN });
+            this.commandQueue.PutToQueue(new byte[] { (byte)RoombaOpcodes.CLEAN });
         }
 
         /// <summary>
@@ -237,7 +238,7 @@ namespace iRobot
         /// </summary>
         public void Max()
         {
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.MAX });
+            this.commandQueue.PutToQueue(new byte[] { (byte)RoombaOpcodes.MAX });
         }
         
         /// <summary>
@@ -247,7 +248,7 @@ namespace iRobot
         /// </summary>
         public void Spot()
         {
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.SPOT });
+            this.commandQueue.PutToQueue(new byte[] { (byte)RoombaOpcodes.SPOT });
         }
 
         /// <summary>
@@ -263,7 +264,7 @@ namespace iRobot
         /// </summary>
         public void SeekDock()
         {
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.DOCK });
+            this.commandQueue.PutToQueue(new byte[] { (byte)RoombaOpcodes.DOCK });
         }
 
         /// <summary>
@@ -296,7 +297,7 @@ namespace iRobot
                 (byte)scheduleData.Saturday.Minute,
             };
 
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
         /// <summary>
@@ -325,7 +326,7 @@ namespace iRobot
             byte[] command = { (byte)RoombaOpcodes.SET_DAY_TIME, (byte)day, (byte)hour, (byte)minute };
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
         /// <summary>
@@ -338,7 +339,7 @@ namespace iRobot
         public void Power()
         {
             // Send command package.
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.POWER });
+            this.commandQueue.PutToQueue(new byte[] { (byte)RoombaOpcodes.POWER });
         }
 
         /// <summary>
@@ -368,7 +369,7 @@ namespace iRobot
             byte[] command = { (byte)RoombaOpcodes.DRIVE, bVelocity[1], bVelocity[0], bRadius[1], bRadius[0] };
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
         /// <summary>
@@ -391,7 +392,7 @@ namespace iRobot
             byte[] command = { (byte)RoombaOpcodes.DRIVE_DIRECT, bRightWheel[1], bRightWheel[0], bLeftWheel[1], bLeftWheel[0] };
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
         /// <summary>
@@ -413,7 +414,7 @@ namespace iRobot
             byte[] command = { (byte)RoombaOpcodes.DRIVE_DIRECT, bRightWheel[1], bRightWheel[0], bLeftWheel[1], bLeftWheel[0] };
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
         /// <summary>
@@ -433,7 +434,7 @@ namespace iRobot
             byte[] command = { (byte)RoombaOpcodes.MOTORS, motors };
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
         /// <summary>
@@ -454,7 +455,7 @@ namespace iRobot
             byte[] command = { (byte)RoombaOpcodes.PWM_MOTORS, mainBrushPWM, sideBrushPWM, vacuumPWM };
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
         /// <summary>
@@ -475,16 +476,21 @@ namespace iRobot
             byte[] command = { (byte)RoombaOpcodes.LEDS,  leds, color, intensity };
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
+        /// <summary>
+        /// Schedule LEDs.
+        /// </summary>
+        /// <param name="weekdayLEDBits">Weekday LEDs bits.</param>
+        /// <param name="schedulingLEDBits">Scheduling LEDs bits.</param>
         public void SchedulingLEDs(byte weekdayLEDBits, byte schedulingLEDBits)
         {
             // Build command package.
             byte[] command = new byte[] { (byte)RoombaOpcodes.SCHEDULING_LEDS, weekdayLEDBits, schedulingLEDBits };
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
         /// <summary>
@@ -507,7 +513,7 @@ namespace iRobot
             };
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
         /// <summary>
@@ -519,7 +525,7 @@ namespace iRobot
             byte[] command = new byte[] { (byte)RoombaOpcodes.DIGIT_LEDs_RAW, 0, 0, 0, 0 };
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
         /// <summary>
@@ -538,7 +544,7 @@ namespace iRobot
             byte[] command = { (byte)RoombaOpcodes.DIGIT_LEDs_ASCII, digit3, digit2, digit1, digit0 };
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
         /// <summary>
@@ -564,7 +570,7 @@ namespace iRobot
             byte[] command = { (byte)RoombaOpcodes.BUTTONS, buttons, };
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
         /// <summary>
@@ -581,21 +587,29 @@ namespace iRobot
         /// the mode
         /// </summary>
         /// <param name="song"></param>
-        public void Song(byte songNumber, byte[] song)
+        public void Song(Song song, bool autoPlay = false)
         {
-            if (song.Length > 255) return;
-
-            // Command
-            byte[] command = new byte[1 + 1 + 1 + song.Length];
+            // command package.
+            List<byte> command = new List<byte>();
 
             // Build command package.
-            Buffer.BlockCopy(new byte[] { (byte)RoombaOpcodes.SONG }, 0, command, 0, 1);
-            Buffer.BlockCopy(new byte[] { songNumber               }, 0, command, 1, 1);
-            Buffer.BlockCopy(new byte[] { (byte)(song.Length / 2)  }, 0, command, 2, 1);
-            Buffer.BlockCopy(song,                                    0, command, 3, song.Length);
+            command.Add((byte)RoombaOpcodes.SONG);
+            command.Add(song.Number);
+            command.Add((byte)(song.Notes.Count));
+            foreach(Note note in song.Notes)
+            {
+                command.Add((byte)note.Tone);
+                command.Add(note.Duration);
+            }
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command.ToArray());
+
+            // Auto play.
+            if(autoPlay)
+            {
+                this.Play(song.Number);
+            }
         }
 
         /// <summary>
@@ -609,7 +623,7 @@ namespace iRobot
         public void Play(byte songNumber)
         {
             // Send command package.
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.PLAY, songNumber });
+            this.commandQueue.PutToQueue(new byte[] { (byte)RoombaOpcodes.PLAY, songNumber });
         }
 
         /// <summary>
@@ -623,7 +637,7 @@ namespace iRobot
         public void Sensors(SensorPacketsIDs packageCode)
         {
             // Send command package.
-            this.commandQueue.PutToQue(new byte[] { (byte)RoombaOpcodes.SENSORS, (byte)packageCode });
+            this.commandQueue.PutToQueue(new byte[] { (byte)RoombaOpcodes.SENSORS, (byte)packageCode });
         }
         
         /// <summary>
@@ -644,7 +658,7 @@ namespace iRobot
             Buffer.BlockCopy(packagesIDs                                  , 0, command, 2, packagesIDs.Length);
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
         /// <summary>
@@ -670,7 +684,7 @@ namespace iRobot
             Buffer.BlockCopy(packagesIDs, 0, command, 2, packagesIDs.Length);
 
             // Send command package.
-            this.commandQueue.PutToQue(command);
+            this.commandQueue.PutToQueue(command);
         }
 
         #endregion

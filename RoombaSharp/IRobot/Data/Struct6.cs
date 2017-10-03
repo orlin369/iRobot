@@ -27,7 +27,9 @@ using System.Runtime.InteropServices;
 
 namespace iRobot.Data
 {
-
+    // TODO: See what is going on.
+    // Tis structure is potential bug.
+    // Solution: https://msdn.microsoft.com/en-us/library/ms182285.aspx
     /// <summary>
     /// 
     /// </summary>

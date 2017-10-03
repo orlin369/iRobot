@@ -103,6 +103,10 @@ namespace RoombaSharp
 
         }
 
+        /// <summary>
+        /// Returns date and time.
+        /// </summary>
+        /// <returns></returns>
         public static string GetDateTime()
         {
             return DateTime.Now.ToString("yyyy.MM.dd/HH:mm:ss.fff", System.Globalization.DateTimeFormatInfo.InvariantInfo);
