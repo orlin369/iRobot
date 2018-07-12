@@ -898,6 +898,7 @@ namespace RoombaSharp
         /// <param name="e"></param>
         private void pbSCADA_Paint(object sender, PaintEventArgs e)
         {
+            
             // Get sensor data.
             bool cliffLeft       = this.sensrosDump.CliffLeft != 0;
             bool cliffFrontLeft  = this.sensrosDump.CliffFrontLeft != 0;
@@ -908,23 +909,33 @@ namespace RoombaSharp
             bool bumperLeft      = (this.sensrosDump.BumpersAndWheelDrops & BumpersAndWheelDropsBits.BUMP_LEFT) != 0;
             bool bumperRight     = (this.sensrosDump.BumpersAndWheelDrops & BumpersAndWheelDropsBits.BUMP_RIGHT) != 0;
             bool wallSensor      = this.sensrosDump.Wall != 0;
+            bool dirtDetect      = this.sensrosDump.DirtDetect != 0;
+
+            // Create battery font.
+            Font fontBattery = new Font("Arial", 8);
 
             // Brushes
             SolidBrush brushRed = new SolidBrush(Color.Red);
             SolidBrush brushLimeGreen = new SolidBrush(Color.LimeGreen);
             SolidBrush brushBase = new SolidBrush(Color.Black);
             SolidBrush brushWheel = new SolidBrush(Color.Gray);
+            SolidBrush brushBattery = new SolidBrush(Color.Yellow);
 
             // Pens
             Pen penBumperRed = new Pen(brushRed, 5);
             Pen penBumperLimeGreen = new Pen(brushLimeGreen, 5);
             Pen penWallSensor = new Pen(wallSensor ? brushRed : brushLimeGreen, 5);
             penWallSensor.DashStyle = DashStyle.Dash;
+            Pen penBattary = new Pen(brushBattery, 2);
 
             // Shapes sizes.
             Size sizeBase = new Size(300, 300);
             Size sizeSensors = new Size(20, 10);
             Size sizeWheels = new Size(30, 70);
+            Size sizeBattery = new Size(120, 40);
+            Size sizeWheelCaster = new Size(30, 30);
+            Size sizeSideBrush = new Size(20, 20);
+            Size sizeDirtDetect = new Size(10, 10);
 
             // Main center.
             Point mainCenter = CreateCenter(new Point(this.pbSCADA.Size), this.pbSCADA.Size);
@@ -937,6 +948,10 @@ namespace RoombaSharp
             Point centerCliffRight = CreateCenter(new Point(mainCenter.X + 100, mainCenter.Y - 70), sizeSensors);
             Point centerWheelLeft = CreateCenter(new Point(mainCenter.X - 100, mainCenter.Y), sizeWheels);
             Point centerWheelRight = CreateCenter(new Point(mainCenter.X + 100, mainCenter.Y), sizeWheels);
+            Point centerBattery = CreateCenter(new Point(mainCenter.X, mainCenter.Y - 70), sizeBattery);
+            Point centerWheelCaster = CreateCenter(new Point(mainCenter.X, mainCenter.Y - 130), sizeWheelCaster);
+            Point centerSideBrush = CreateCenter(new Point(mainCenter.X + 90, mainCenter.Y - 90), sizeSideBrush);
+            Point centerDirtDetect = CreateCenter(new Point(mainCenter.X, mainCenter.Y), sizeSideBrush);
 
             // Graphics modes.
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
@@ -974,7 +989,26 @@ namespace RoombaSharp
             e.Graphics.DrawLine(penWallSensor, mainCenter.X - 200, mainCenter.Y - 170, mainCenter.X + 200, mainCenter.Y - 170);
             e.Graphics.DrawLine(penWallSensor, mainCenter.X - 200, mainCenter.Y - 180, mainCenter.X + 200, mainCenter.Y - 180);
             e.Graphics.DrawLine(penWallSensor, mainCenter.X - 200, mainCenter.Y - 190, mainCenter.X + 200, mainCenter.Y - 190);
+
+            // Draw battery status.
+            this.DrawRoundedRectangle(e.Graphics, penBattary, new Rectangle(centerBattery, sizeBattery), 4);
+            // Compose text.
+            string textBattery = string.Format("Capacity: {0}\r\nTemperature: {1}\r\nCharge: {2}",
+                this.sensrosDump.BatteryCapacity,
+                this.sensrosDump.BatteryTemperature,
+                this.sensrosDump.BatteryCharge);
+            // Draw battery capacity, temperature.
+            e.Graphics.DrawString(textBattery, fontBattery, brushLimeGreen, new PointF(centerBattery.X, centerBattery.Y));
+
+            // Draw wheel caster.
+            e.Graphics.FillEllipse(brushWheel, new RectangleF(centerWheelCaster, sizeWheelCaster));
+
+            // Experimental
+            e.Graphics.FillEllipse(brushWheel, new RectangleF(centerSideBrush, sizeSideBrush));
+
         }
+
+
 
         /// <summary>
         /// Draw the sensors.
@@ -1009,7 +1043,34 @@ namespace RoombaSharp
             return new Point(x, y);
         }
 
-
+        private void DrawRoundedRectangle(Graphics g, Pen pen, Rectangle rect, int radius)
+        {
+            using (GraphicsPath path = new GraphicsPath())
+            {
+                path.AddLine(rect.X + radius, rect.Y, rect.X + rect.Width - (radius * 2), rect.Y);
+                if(radius > 0)
+                {
+                    path.AddArc(rect.X + rect.Width - (radius * 2), rect.Y, radius * 2, radius * 2, 270, 90);
+                }
+                path.AddLine(rect.X + rect.Width, rect.Y + radius, rect.X + rect.Width, rect.Y + rect.Height - (radius * 2));
+                if (radius > 0)
+                {
+                    path.AddArc(rect.X + rect.Width - (radius * 2), rect.Y + rect.Height - (radius * 2), radius * 2, radius * 2, 0, 90);
+                }
+                path.AddLine(rect.X + rect.Width - (radius * 2), rect.Y + rect.Height, rect.X + radius, rect.Y + rect.Height);
+                if (radius > 0)
+                {
+                    path.AddArc(rect.X, rect.Y + rect.Height - (radius * 2), radius * 2, radius * 2, 90, 90);
+                }
+                path.AddLine(rect.X, rect.Y + rect.Height - (radius * 2), rect.X, rect.Y + radius);
+                if (radius > 0)
+                {
+                    path.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90);
+                }
+                path.CloseFigure();
+                g.DrawPath(pen, path);
+            }
+        }
         #endregion
 
         #region Log
@@ -1171,8 +1232,6 @@ namespace RoombaSharp
 
             // Draw the SCADA.
             this.DrawSCADA();
-
-
         }
         
         #endregion

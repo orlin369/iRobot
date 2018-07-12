@@ -27,12 +27,16 @@ using System.Runtime.InteropServices;
 
 namespace iRobot.Data
 {
-    // TODO: See what is going on.
-    // Tis structure is potential bug.
-    // Solution: https://msdn.microsoft.com/en-us/library/ms182285.aspx
+
     /// <summary>
-    /// 
+    /// Structure 6 - specification by this documentation.
+    /// http://irobot.lv/uploaded_files/File/iRobot_Roomba_500_Open_Interface_Spec.pdf
     /// </summary>
+    /// <remarks>
+    /// TODO: See what is going on.
+    /// Tis structure is potential bug.
+    /// Solution: https://msdn.microsoft.com/en-us/library/ms182285.aspx
+    /// </remarks>
     [Serializable]
     [StructLayout(LayoutKind.Explicit)]
     public struct Struct6

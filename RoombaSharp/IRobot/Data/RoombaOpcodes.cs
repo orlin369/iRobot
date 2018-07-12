@@ -26,6 +26,7 @@ namespace iRobot.Data
 {
     /// <summary>
     /// Roomba operation codes.
+    /// http://irobot.lv/uploaded_files/File/iRobot_Roomba_500_Open_Interface_Spec.pdf
     /// </summary>
     public enum RoombaOpcodes : byte
     {
@@ -48,7 +49,7 @@ namespace iRobot.Data
         DOCK = 143,             //0x8F
         PWM_MOTORS = 144,       //0x90
         DRIVE_DIRECT = 145,     //0x91
-        DRIVE_PWN = 146,        //0x92
+        DRIVE_PWM = 146,        //0x92
         DIGITAL_OUTPUT = 147,   //0x93
         STREAM = 148,           //0x94
         QUERY_LIST = 149,       //0x95

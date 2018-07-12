@@ -23,12 +23,12 @@ SOFTWARE.
 */
 
 using System;
+using System.Collections.Generic;
 
 using iRobot.Data;
 using iRobot.Events;
 using iRobot.Communicators;
 using iRobot.Queues;
-using System.Collections.Generic;
 
 namespace iRobot
 {
